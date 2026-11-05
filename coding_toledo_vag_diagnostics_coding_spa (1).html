@@ -1,0 +1,3528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>@coding.toledo | Diagnóstico Avançado & Codificação VAG (VW / Audi) em Toledo - PR</title>
+  <meta name="description" content="Especialista em Diagnóstico Eletrônico VCDS HEX-V2, Laudo Pré-Compra e Codificação de Funções Ocultas para Volkswagen e Audi em Toledo - PR." />
+  
+  <!-- Google Fonts: Rajdhani (Technical Cluster Font) & Inter (Clean UI Readability) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS & AUTOMOTIVE DARK THEME PALETTE
+       ========================================================================== */
+    :root {
+      --bg-deep: #12151a;
+      --bg-secondary: #181c22;
+      --bg-card: #1f242c;
+      --bg-card-hover: #252b35;
+      --bg-input: #14181f;
+      
+      --border-subtle: #2d3542;
+      --border-focus: #3b76b8;
+      
+      --accent-navy: #214a7a;
+      --accent-navy-light: #2a5d99;
+      --accent-steel: #3b76b8;
+      --accent-glow: rgba(42, 93, 153, 0.32);
+      
+      --text-white: #f3f4f6;
+      --text-silver: #d1d5db;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      
+      --status-ok: #2e8b57;
+      --status-ok-bg: rgba(46, 139, 87, 0.15);
+      --status-ok-text: #6ee7b7;
+      
+      --status-warn: #b45309;
+      --status-warn-bg: rgba(180, 83, 9, 0.16);
+      --status-warn-text: #fcd34d;
+
+      --status-danger: #991b1b;
+      --status-danger-bg: rgba(153, 27, 27, 0.18);
+      --status-danger-text: #fca5a5;
+
+      --font-tech: 'Rajdhani', sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE STYLES
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-deep);
+      color: var(--text-silver);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 0%, #1c2430 0%, var(--bg-deep) 65%);
+      min-height: 100vh;
+      padding-bottom: 130px; /* Space for fixed bottom bar */
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .tech-font {
+      font-family: var(--font-tech);
+      color: var(--text-white);
+      letter-spacing: 0.03em;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-deep);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-steel);
+    }
+
+    /* ==========================================================================
+       3. LAYOUT & HEADER
+       ========================================================================== */
+    .container {
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .app-header {
+      background: rgba(18, 21, 26, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      padding: 12px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-emblem {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-navy) 0%, #162a45 100%);
+      border: 1px solid var(--accent-steel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text-white);
+      box-shadow: 0 0 15px var(--accent-glow);
+      flex-shrink: 0;
+    }
+
+    .brand-titles h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-titles p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vcds-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.78rem;
+      color: var(--text-silver);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--accent-steel);
+      box-shadow: 0 0 6px var(--accent-steel);
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      margin: 20px 0 24px;
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::after {
+      content: "VCDS HEX-V2";
+      position: absolute;
+      right: -10px;
+      bottom: -18px;
+      font-family: var(--font-tech);
+      font-size: 4.2rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.025);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(33, 74, 122, 0.25);
+      border: 1px solid var(--accent-navy-light);
+      color: #93c5fd;
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .hero-banner h2 {
+      font-size: 1.55rem;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .hero-banner p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 620px;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 53, 66, 0.7);
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-val {
+      font-family: var(--font-tech);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .metric-lbl {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       4. STEP SECTIONS & CARDS
+       ========================================================================== */
+    .step-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-card);
+      transition: border-color var(--transition-fast);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .step-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-navy);
+      border: 1px solid var(--accent-steel);
+      color: var(--text-white);
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-title-text h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .step-title-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Form Controls */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 560px) {
+      .form-grid.cols-3 {
+        grid-template-columns: 1fr 1.3fr 0.9fr;
+      }
+      .form-grid.cols-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .step-section {
+        padding: 22px 20px;
+      }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-silver);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-control, .select-control {
+      width: 100%;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      color: var(--text-white);
+      font-size: 0.94rem;
+      transition: all var(--transition-fast);
+    }
+
+    .select-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+    }
+
+    .input-control:focus, .select-control:focus {
+      border-color: var(--accent-steel);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .input-control:disabled, .select-control:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Brand Selector Buttons */
+    .brand-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .brand-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-silver);
+      transition: all var(--transition-fast);
+    }
+
+    .brand-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: #3d4859;
+    }
+
+    .brand-btn.active {
+      background: linear-gradient(145deg, var(--accent-navy) 0%, #19375c 100%);
+      border-color: var(--accent-steel);
+      color: var(--text-white);
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    /* Platform Telemetry Badge */
+    .platform-telemetry {
+      margin-top: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--accent-steel);
+      border-left: 4px solid var(--accent-steel);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .platform-telemetry.visible {
+      display: block;
+    }
+
+    .telemetry-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .platform-code-badge {
+      background: var(--accent-navy);
+      color: var(--text-white);
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 3px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .protocol-badge {
+      font-family: var(--font-tech);
+      font-size: 0.8rem;
+      color: #93c5fd;
+      background: rgba(33, 74, 122, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(59, 118, 184, 0.4);
+    }
+
+    .telemetry-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       5. DYNAMIC HARDWARE QUESTIONS & CONTINGENCY PHOTO UPLOAD
+       ========================================================================== */
+    .hw-question-block {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(45, 53, 66, 0.6);
+    }
+
+    .hw-question-block:last-of-type {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .hw-question-title {
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.98rem;
+      color: var(--text-white);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hw-options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    @media (min-width: 520px) {
+      .hw-options-grid.cols-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .hw-option-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: left;
+    }
+
+    .hw-option-card:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .hw-option-card.selected {
+      background: rgba(33, 74, 122, 0.28);
+      border-color: var(--accent-steel);
+      box-shadow: inset 0 0 0 1px var(--accent-steel);
+    }
+
+    .radio-indicator {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .hw-option-card.selected .radio-indicator {
+      border-color: #60a5fa;
+    }
+
+    .hw-option-card.selected .radio-indicator::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #60a5fa;
+    }
+
+    .hw-opt-texts {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hw-opt-main {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-white);
+    }
+
+    .hw-opt-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Contingency Photo Upload Box */
+    .contingency-box {
+      margin-top: 16px;
+      background: rgba(33, 74, 122, 0.14);
+      border: 1px dashed var(--accent-steel);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .contingency-box.visible {
+      display: block;
+    }
+
+    .contingency-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .contingency-header h4 {
+      font-size: 1rem;
+      color: #93c5fd;
+    }
+
+    .contingency-box p {
+      font-size: 0.82rem;
+      color: var(--text-silver);
+      margin-bottom: 12px;
+    }
+
+    .upload-btn-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-upload {
+      background: var(--accent-navy);
+      border: 1px solid var(--accent-steel);
+      color: var(--text-white);
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+
+    .btn-upload:hover {
+      background: var(--accent-navy-light);
+    }
+
+    .photo-preview-area {
+      margin-top: 12px;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .photo-preview-area.visible {
+      display: flex;
+    }
+
+    .photo-preview-area img {
+      width: 68px;
+      height: 68px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid var(--accent-steel);
+    }
+
+    .photo-meta {
+      flex: 1;
+      font-size: 0.8rem;
+    }
+
+    .btn-remove-photo {
+      color: var(--status-danger-text);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: var(--status-danger-bg);
+    }
+
+    /* ==========================================================================
+       6. DIAGNOSTICS, PRE-PURCHASE & PACKAGES (STEP 3)
+       ========================================================================== */
+    .category-group-title {
+      font-family: var(--font-tech);
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #93c5fd;
+      margin: 18px 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .category-group-title:first-of-type {
+      margin-top: 4px;
+    }
+
+    .service-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 15px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .service-card:hover {
+      background: var(--bg-card-hover);
+      border-color: #3f4a5c;
+    }
+
+    .service-card.active {
+      background: linear-gradient(160deg, rgba(33, 74, 122, 0.32) 0%, rgba(24, 28, 34, 0.95) 100%);
+      border-color: var(--accent-steel);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .service-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .service-check-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .checkbox-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      border: 2px solid var(--text-muted);
+      background: var(--bg-input);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: all var(--transition-fast);
+    }
+
+    .service-card.active .checkbox-box,
+    .coding-item-card.active .checkbox-box {
+      background: var(--accent-steel);
+      border-color: var(--accent-steel);
+      color: var(--text-white);
+    }
+
+    .service-name {
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 1.08rem;
+      color: var(--text-white);
+      line-height: 1.2;
+    }
+
+    .service-price-box {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .service-price {
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text-white);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    .service-card.active .service-price {
+      background: var(--accent-navy);
+      border-color: var(--accent-steel);
+      color: #fff;
+    }
+
+    .service-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      padding-left: 30px;
+    }
+
+    .rule-callout {
+      margin-left: 30px;
+      background: var(--status-ok-bg);
+      border: 1px solid rgba(46, 139, 87, 0.4);
+      color: var(--status-ok-text);
+      font-size: 0.77rem;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .promo-callout {
+      margin-left: 30px;
+      background: rgba(42, 93, 153, 0.22);
+      border: 1px solid var(--accent-steel);
+      color: #93c5fd;
+      font-size: 0.77rem;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ==========================================================================
+       7. CODING CATALOG LIST (STEP 4)
+       ========================================================================== */
+    .catalog-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      background: var(--bg-card);
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .catalog-counter {
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-silver);
+    }
+
+    .catalog-counter strong {
+      color: #60a5fa;
+      font-size: 1.05rem;
+    }
+
+    .catalog-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-mini {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-silver);
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.8rem;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-mini:hover {
+      border-color: var(--accent-steel);
+      color: var(--text-white);
+    }
+
+    .coding-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .coding-item-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 13px 14px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .coding-item-card:hover:not(.disabled) {
+      background: var(--bg-card-hover);
+      border-color: #3f4a5c;
+    }
+
+    .coding-item-card.active {
+      background: rgba(33, 74, 122, 0.25);
+      border-color: var(--accent-steel);
+    }
+
+    .coding-item-card.disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      background: rgba(20, 24, 31, 0.6);
+    }
+
+    .coding-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .coding-info h4 {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-white);
+      margin-bottom: 3px;
+    }
+
+    .coding-info p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .compat-badge {
+      display: inline-block;
+      margin-top: 6px;
+      font-family: var(--font-tech);
+      font-size: 0.73rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .compat-badge.ok {
+      background: rgba(59, 118, 184, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 118, 184, 0.35);
+    }
+
+    .compat-badge.warn {
+      background: var(--status-warn-bg);
+      color: var(--status-warn-text);
+      border: 1px solid rgba(180, 83, 9, 0.4);
+    }
+
+    .compat-badge.blocked {
+      background: var(--status-danger-bg);
+      color: var(--status-danger-text);
+      border: 1px solid rgba(153, 27, 27, 0.4);
+    }
+
+    /* Quick Search & Category Filter Pills */
+    .search-filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+      background: var(--bg-card);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input-wrap svg {
+      position: absolute;
+      left: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-input-wrap .input-control {
+      padding-left: 38px;
+      font-size: 0.88rem;
+    }
+
+    .platform-filter-pills {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .platform-pill-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.76rem;
+      padding: 5px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+    }
+
+    .platform-pill-btn.active {
+      background: var(--accent-navy);
+      border-color: var(--accent-steel);
+      color: var(--text-white);
+    }
+
+    /* Category Filter Tabs in Step 4 */
+    .cat-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    .cat-tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-silver);
+      font-family: var(--font-tech);
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 7px 12px;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+    }
+
+    .cat-tab-btn.active {
+      background: var(--accent-navy);
+      border-color: var(--accent-steel);
+      color: var(--text-white);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .catalog-policy-banner {
+      background: linear-gradient(135deg, rgba(33, 74, 122, 0.24) 0%, rgba(24, 28, 34, 0.95) 100%);
+      border: 1px solid var(--accent-steel);
+      border-left: 4px solid #60a5fa;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+      color: var(--text-silver);
+      line-height: 1.45;
+    }
+
+    .catalog-policy-banner strong {
+      color: #93c5fd;
+      font-family: var(--font-tech);
+      font-size: 0.9rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .catalog-category-divider {
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 14px 0 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border-subtle);
+    }
+
+    /* ==========================================================================
+       8. FLOATING BOTTOM BAR & SUMMARY DRAWER
+       ========================================================================== */
+    .floating-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: rgba(18, 21, 26, 0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--accent-steel);
+      box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.6);
+      padding: 10px 0;
+    }
+
+    .bottom-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .quote-summary-trigger {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .quote-label-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .quote-total-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .quote-total-value {
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 1.55rem;
+      color: var(--text-white);
+      line-height: 1.1;
+    }
+
+    .quote-savings-pill {
+      display: none;
+      background: var(--status-ok-bg);
+      color: var(--status-ok-text);
+      border: 1px solid rgba(46, 139, 87, 0.45);
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .quote-savings-pill.visible {
+      display: inline-block;
+    }
+
+    .btn-whatsapp-cta {
+      background: linear-gradient(135deg, var(--accent-navy-light) 0%, var(--accent-navy) 100%);
+      border: 1px solid #4d8fd6;
+      color: var(--text-white);
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.03em;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      box-shadow: 0 4px 16px var(--accent-glow);
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-whatsapp-cta:hover {
+      background: linear-gradient(135deg, #326eb3 0%, var(--accent-navy-light) 100%);
+      transform: translateY(-1px);
+    }
+
+    .btn-whatsapp-cta:active {
+      transform: translateY(0);
+    }
+
+    /* Modal / Drawer for Quote Breakdown & Preview */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 60;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    @media (min-width: 600px) {
+      .modal-backdrop {
+        align-items: center;
+      }
+    }
+
+    .modal-sheet {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      animation: slideUp 0.22s ease-out;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 14px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.2rem;
+    }
+
+    .btn-close-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-silver);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .breakdown-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.86rem;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(45, 53, 66, 0.5);
+    }
+
+    .breakdown-line.discount {
+      color: var(--status-ok-text);
+      font-weight: 600;
+    }
+
+    .breakdown-line.total {
+      font-family: var(--font-tech);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-white);
+      border-bottom: none;
+      padding-top: 12px;
+    }
+
+    .wa-preview-box {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: var(--text-silver);
+      white-space: pre-wrap;
+      max-height: 220px;
+      overflow-y: auto;
+      margin: 12px 0;
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: var(--bg-card);
+      border: 1px solid var(--accent-steel);
+      color: var(--text-white);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.86rem;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      z-index: 80;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Footer & Deploy Utilities */
+    .app-footer {
+      margin-top: 32px;
+      padding: 20px 0;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .footer-tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Notification -->
+  <div id="toastMsg" class="toast-msg" role="status" aria-live="polite"></div>
+
+  <!-- ==========================================================================
+       HEADER
+       ========================================================================== -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <div class="brand-emblem" aria-hidden="true">CT</div>
+        <div class="brand-titles">
+          <h1>@coding.toledo</h1>
+          <p>Diagnóstico & Codificação VAG • Toledo - PR • (41) 99244-1057</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <a href="https://wa.me/5541992441057" target="_blank" rel="noopener noreferrer" class="vcds-pill" style="text-decoration:none; border-color:var(--accent-steel); color:#93c5fd;" title="Falar diretamente no WhatsApp (41) 99244-1057">
+          <span>WA: (41) 99244-1057</span>
+        </a>
+        <div class="vcds-pill" title="Interface Original Ross-Tech VCDS HEX-V2">
+          <span class="status-dot"></span>
+          <span>HEX-V2 READY</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ==========================================================================
+         HERO BANNER
+         ========================================================================== -->
+    <section class="hero-banner">
+      <div class="hero-tag">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>Engenharia Eletrônica Volkswagen & Audi</span>
+      </div>
+      <h2>PERSONALIZAÇÃO OEM, DIAGNÓSTICO AVANÇADO & LAUDO PRÉ-COMPRA</h2>
+      <p>Selecione seu veículo para identificar automaticamente a arquitetura eletrônica (PQ34, PQ35/PQ46 ou MQB), filtrar funções compatíveis e simular seu orçamento em tempo real.</p>
+      <div class="hero-metrics">
+        <div class="metric-item">
+          <span class="metric-val">100% OEM</span>
+          <span class="metric-lbl">Sem cortes de fios</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val">Abatimento</span>
+          <span class="metric-lbl">AutoScan R$ 50 incluso no Coding</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val">Toledo - PR</span>
+          <span class="metric-lbl">Atendimento especializado</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STEP 1: SELEÇÃO DO VEÍCULO & DETECÇÃO DE PLATAFORMA
+         ========================================================================== -->
+    <section class="step-section" id="step1">
+      <div class="step-header">
+        <div class="step-title-group">
+          <div class="step-number">01</div>
+          <div class="step-title-text">
+            <h3>Identificação do Veículo (Base Completa HEX-V2)</h3>
+            <p>De 1998 a ~2022 (Sem bloqueio SFD2) • Classificação automática de arquitetura</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand Switch -->
+      <div class="brand-selector" role="radiogroup" aria-label="Marca do Veículo">
+        <button type="button" class="brand-btn active" id="btnBrandVW" onclick="selectBrand('VW')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M7 8l3 8 2-5 2 5 3-8"/></svg>
+          <span>VOLKSWAGEN</span>
+        </button>
+        <button type="button" class="brand-btn" id="btnBrandAudi" onclick="selectBrand('AUDI')">
+          <svg width="22" height="18" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="8" r="5"/><circle cx="13" cy="8" r="5"/><circle cx="19" cy="8" r="5"/><circle cx="25" cy="8" r="5"/></svg>
+          <span>AUDI</span>
+        </button>
+      </div>
+
+      <!-- Quick Search & Platform Filter Bar -->
+      <div class="search-filter-bar">
+        <div class="search-input-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="modelSearchInput" class="input-control" placeholder="Buscar modelo rápido (Ex: Q3, Jetta, Amarok, Up, Golf, A4, Nivus...)" oninput="onSearchModelInput()" />
+        </div>
+        <div class="platform-filter-pills" id="platformFilterPills">
+          <button type="button" class="platform-pill-btn active" onclick="setPlatformFilter('ALL')">Todas as Plataformas</button>
+          <button type="button" class="platform-pill-btn" onclick="setPlatformFilter('MQB')">MQB / MQB-A0 (Modernos)</button>
+          <button type="button" class="platform-pill-btn" onclick="setPlatformFilter('PQ35')">PQ35 / PQ46 (Médios/SUVs)</button>
+          <button type="button" class="platform-pill-btn" onclick="setPlatformFilter('MLB')">MLB / PL71 (Audi A4/Q5/A6/Touareg)</button>
+          <button type="button" class="platform-pill-btn" onclick="setPlatformFilter('PQ25')">PQ24 / PQ25 / NSF (Compactos & Amarok)</button>
+          <button type="button" class="platform-pill-btn" onclick="setPlatformFilter('PQ34')">PQ34 (Clássicos K-Line)</button>
+        </div>
+      </div>
+
+      <div class="form-grid cols-2">
+        <div class="field-group">
+          <label class="field-label" for="selectModel">
+            <span>Modelo / Geração</span>
+            <span id="modelCountLabel" style="font-size:0.74rem; color:#93c5fd;"></span>
+          </label>
+          <select id="selectModel" class="select-control" onchange="onModelChange()">
+            <!-- Populated dynamically via JS -->
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="selectYear">Ano Modelo</label>
+          <select id="selectYear" class="select-control" onchange="onYearChange()">
+            <!-- Populated dynamically via JS -->
+          </select>
+        </div>
+      </div>
+
+      <!-- Dynamic Platform Telemetry Banner -->
+      <div id="platformTelemetry" class="platform-telemetry visible">
+        <div class="telemetry-top">
+          <span id="badgePlatformCode" class="platform-code-badge">PLATAFORMA MQB</span>
+          <span id="badgeProtocol" class="protocol-badge">Protocolo: UDS / ODX (CAN Rápida)</span>
+        </div>
+        <p id="telemetryDesc" class="telemetry-desc">
+          Arquitetura modular com Central Elétrica BCM integrada (Módulo 09), Gateway 19 e suporte a personalizações avançadas via adaptação UDS.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STEP 2: PERGUNTAS DINÂMICAS DE HARDWARE
+         ========================================================================== -->
+    <section class="step-section" id="step2">
+      <div class="step-header">
+        <div class="step-title-group">
+          <div class="step-number">02</div>
+          <div class="step-title-text">
+            <h3>Mapeamento de Hardware</h3>
+            <p>Responda para filtrarmos apenas o que seu carro realmente suporta</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="hardwareQuestionsContainer">
+        <!-- Rendered dynamically by JS according to PQ34 / PQ35 / MQB -->
+      </div>
+
+      <!-- Contingency Box for "Não sei / Dúvida" with Photo Preview -->
+      <div id="contingencyBox" class="contingency-box">
+        <div class="contingency-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <h4>Assistente Técnico de Identificação (Opcional)</h4>
+        </div>
+        <p id="contingencyTipText">
+          Como você marcou <strong>"Não sei / Dúvida"</strong> em algum item, liberamos todas as funções potenciais no catálogo abaixo. Você pode anexar uma foto do seu painel ou multimídia para conferência visual imediata e envio no WhatsApp:
+        </p>
+        <div class="upload-btn-wrapper">
+          <label for="hwPhotoInput" class="btn-upload">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>Anexar Foto do Painel / Mídia</span>
+          </label>
+          <input type="file" id="hwPhotoInput" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)" />
+          <span style="font-size:0.75rem; color:var(--text-muted);">Formatos: JPG, PNG, HEIC</span>
+        </div>
+
+        <div id="photoPreviewArea" class="photo-preview-area">
+          <img id="photoPreviewImg" src="" alt="Preview do hardware do veículo" />
+          <div class="photo-meta">
+            <div id="photoFileName" style="color:var(--text-white); font-weight:600;">foto_painel.jpg</div>
+            <div style="color:var(--status-ok-text); font-size:0.74rem;">✓ Foto anexada! Será sinalizada no resumo do WhatsApp.</div>
+          </div>
+          <button type="button" class="btn-remove-photo" onclick="removePhoto()">Remover</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STEP 3: DIAGNÓSTICO, LAUDO PRÉ-COMPRA E PACOTES COMERCIAIS
+         ========================================================================== -->
+    <section class="step-section" id="step3">
+      <div class="step-header">
+        <div class="step-title-group">
+          <div class="step-number">03</div>
+          <div class="step-title-text">
+            <h3>Diagnóstico, Pré-Compra & Pacotes</h3>
+            <p>Modalidades comerciais em Toledo - PR com cálculo inteligente de abatimento</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Diagnóstico Especializado -->
+      <div class="category-group-title">
+        <span>1. Diagnóstico Eletrônico Especializado</span>
+        <span style="font-size:0.75rem; color:var(--text-muted);">VCDS HEX-V2</span>
+      </div>
+      <div class="service-cards-grid">
+        <!-- AutoScan Inicial -->
+        <div class="service-card" id="cardAutoscan" onclick="toggleDiagService('autoscan')">
+          <div class="service-card-top">
+            <div class="service-check-title">
+              <div class="checkbox-box" id="chkAutoscan">✓</div>
+              <div>
+                <div class="service-name">AutoScan Inicial (Varredura Completa)</div>
+              </div>
+            </div>
+            <div class="service-price-box">
+              <span class="service-price" id="priceBadgeAutoscan">R$ 50,00</span>
+            </div>
+          </div>
+          <p class="service-desc">Leitura rápida de códigos de falha (DTC) em todos os módulos eletrônicos do veículo com emissão de relatório técnico em PDF.</p>
+          <div class="rule-callout">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Regra de Abatimento:</strong> Se fechar qualquer serviço de codificação, os R$ 50 do AutoScan são 100% abatidos do valor final!</span>
+          </div>
+        </div>
+
+        <!-- Diagnóstico Avançado -->
+        <div class="service-card" id="cardAdvDiag" onclick="toggleDiagService('adv_diag')">
+          <div class="service-card-top">
+            <div class="service-check-title">
+              <div class="checkbox-box" id="chkAdvDiag">✓</div>
+              <div>
+                <div class="service-name">Diagnóstico Avançado & Telemetria</div>
+              </div>
+            </div>
+            <div class="service-price-box">
+              <span class="service-price">R$ 150,00</span>
+            </div>
+          </div>
+          <p class="service-desc">Investigação aprofundada de falhas intermitentes, testes de atuadores seletivos e análise gráfica de dados em tempo real (Data Logging).</p>
+        </div>
+      </div>
+
+      <!-- 2. Laudo Pré-Compra VAG -->
+      <div class="category-group-title">
+        <span>2. Laudo Pré-Compra VAG (Inspeção de Usados)</span>
+        <span style="font-size:0.75rem; color:var(--text-muted);">Segurança na Compra</span>
+      </div>
+      <div class="service-cards-grid">
+        <!-- Avaliação Estática -->
+        <div class="service-card" id="cardPreStatic" onclick="togglePrePurchase('static')">
+          <div class="service-card-top">
+            <div class="service-check-title">
+              <div class="checkbox-box" id="chkPreStatic">✓</div>
+              <div>
+                <div class="service-name">Avaliação Estática no Local</div>
+              </div>
+            </div>
+            <div class="service-price-box">
+              <span class="service-price">R$ 150,00</span>
+            </div>
+          </div>
+          <p class="service-desc">Varredura profunda de módulos, detecção de erros mascarados, conferência de KM gravado em módulos compatíveis e histórico de falhas com o carro parado.</p>
+        </div>
+
+        <!-- Avaliação Dinâmica Completa -->
+        <div class="service-card" id="cardPreDynamic" onclick="togglePrePurchase('dynamic')">
+          <div class="service-card-top">
+            <div class="service-check-title">
+              <div class="checkbox-box" id="chkPreDynamic">✓</div>
+              <div>
+                <div class="service-name">Avaliação Dinâmica Completa (Estática + Teste de Rodagem)</div>
+              </div>
+            </div>
+            <div class="service-price-box">
+              <span class="service-price">R$ 250,00</span>
+            </div>
+          </div>
+          <p class="service-desc">Inclui toda a Avaliação Estática + monitoramento com o carro em trânsito: parâmetros de bicos/injeção, pressão de turbo, desgaste/adaptação de embreagens DSG/Tiptronic e temperaturas operacionais.</p>
+        </div>
+      </div>
+
+      <!-- 3. Pacote Full Coding -->
+      <div class="category-group-title">
+        <span>3. Pacote Promocional de Personalização</span>
+        <span style="font-size:0.75rem; color:var(--text-muted);">Melhor Custo-Benefício</span>
+      </div>
+      <div class="service-cards-grid">
+        <div class="service-card" id="cardFullCoding" onclick="toggleFullCodingPackage()">
+          <div class="service-card-top">
+            <div class="service-check-title">
+              <div class="checkbox-box" id="chkFullCoding">✓</div>
+              <div>
+                <div class="service-name">PACOTE FULL CODING (Ativar Todas as Funções Compatíveis)</div>
+              </div>
+            </div>
+            <div class="service-price-box">
+              <span class="service-price" id="priceBadgeFullCoding">R$ 400,00</span>
+            </div>
+          </div>
+          <p class="service-desc">Liberamos todas as funções ocultas compatíveis com seu carro de uma só vez, incluindo AutoScan inicial gratuito/abatido.</p>
+          <div class="promo-callout" id="fullCodingCallout">
+            💡 <strong>Tarifa Inteligente:</strong> Funções avulsas custam R$ 100 (ou +R$ 50 se já contratou o AutoScan), com desconto no Combo 5+ funções. No <strong>Full Coding (R$ 400)</strong> você ativa tudo (ficando apenas +R$ 350 se já marcou o AutoScan prévio!).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STEP 4: CATÁLOGO DE CODIFICAÇÃO (OFERTA TOTAL + VALIDAÇÃO AUTOSCAN)
+         ========================================================================== -->
+    <section class="step-section" id="step4">
+      <div class="step-header">
+        <div class="step-title-group">
+          <div class="step-number">04</div>
+          <div class="step-title-text">
+            <h3>Catálogo Completo de Funções Ocultas (Coding)</h3>
+            <p id="catalogSubtitle">Todas as opções possíveis da plataforma liberadas para seleção</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aviso Comercial Estratégico: Oferta Total + Validação no AutoScan -->
+      <div class="catalog-policy-banner">
+        <strong>⚡ Política de Oferta Total + Validação via AutoScan</strong>
+        Exibimos todas as funções possíveis da arquitetura do seu veículo para que nenhuma oportunidade fique de fora. Você pode selecionar livremente tudo o que deseja! A disponibilidade final de cada item é validada presencialmente no AutoScan conforme a versão exata dos módulos instalados de fábrica.
+      </div>
+
+      <!-- Abas de Categoria -->
+      <div class="cat-tabs" id="codingCategoryTabs">
+        <button type="button" class="cat-tab-btn active" onclick="setCodingCategoryFilter('ALL')">Todas as Categorias</button>
+        <button type="button" class="cat-tab-btn" onclick="setCodingCategoryFilter('Painel & Mídia')">Painel & Mídia</button>
+        <button type="button" class="cat-tab-btn" onclick="setCodingCategoryFilter('Iluminação & Estética')">Iluminação & Estética</button>
+        <button type="button" class="cat-tab-btn" onclick="setCodingCategoryFilter('Conforto & Chave')">Conforto & Chave</button>
+        <button type="button" class="cat-tab-btn" onclick="setCodingCategoryFilter('Dinâmica & Assistência')">Dinâmica & Assistência</button>
+      </div>
+
+      <div class="catalog-toolbar">
+        <div class="catalog-counter">
+          Selecionadas: <strong id="countSelectedFuncs">0</strong> de <span id="countTotalCompatible">0</span> opções da plataforma
+        </div>
+        <div class="catalog-actions">
+          <button type="button" class="btn-mini" style="border-color:#60a5fa; color:#93c5fd;" onclick="selectAllCompatibleFunctions()">
+            Selecionar Todas da Plataforma (Migrar p/ Full Coding)
+          </button>
+          <button type="button" class="btn-mini" onclick="clearAllFunctions()">Limpar</button>
+        </div>
+      </div>
+
+      <div id="codingCatalogGrid" class="coding-grid">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         STEP 5: IDENTIFICAÇÃO DO CLIENTE & FECHAMENTO
+         ========================================================================== -->
+    <section class="step-section" id="step5">
+      <div class="step-header">
+        <div class="step-title-group">
+          <div class="step-number">05</div>
+          <div class="step-title-text">
+            <h3>Seus Dados para Agendamento</h3>
+            <p>Preencha para gerar o resumo técnico formatado no WhatsApp da @coding.toledo</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid cols-2">
+        <div class="field-group">
+          <label class="field-label" for="clientName">Seu Nome *</label>
+          <input type="text" id="clientName" class="input-control" placeholder="Ex: Lucas Martins" oninput="updateLiveSummary()" />
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="clientPhone">Seu WhatsApp (com DDD) *</label>
+          <input type="tel" id="clientPhone" class="input-control" placeholder="(45) 99999-9999" maxlength="15" oninput="handlePhoneMask(event)" />
+        </div>
+      </div>
+
+      <div class="form-grid" style="margin-top: 14px;">
+        <div class="field-group">
+          <label class="field-label" for="clientNotes">
+            <span>Observações / Sintomas do Veículo (Opcional)</span>
+          </label>
+          <input type="text" id="clientNotes" class="input-control" placeholder="Ex: Luz de injeção acesa, ou desejo avaliar carro em loja no centro de Toledo..." oninput="updateLiveSummary()" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p><strong>@coding.toledo</strong> • Diagnóstico Eletrônico e Codificação VAG (Volkswagen & Audi) • Toledo - PR • WhatsApp: <strong>(41) 99244-1057</strong></p>
+      <p style="margin-top:4px; color:var(--text-dim);">Orçamento prévio sujeito à confirmação presencial da compatibilidade física dos módulos via AutoScan.</p>
+      <div class="footer-tools">
+        <button type="button" class="btn-mini" onclick="openSummaryModal()">Ver Detalhamento do Orçamento</button>
+        <button type="button" class="btn-mini" onclick="copyFormattedQuoteText()">Copiar Texto do Orçamento</button>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ==========================================================================
+       FLOATING BOTTOM BAR (MOBILE-FIRST STICKY BAR)
+       ========================================================================== -->
+  <div class="floating-bottom-bar">
+    <div class="container bottom-bar-inner">
+      <div class="quote-summary-trigger" onclick="openSummaryModal()" title="Clique para ver o detalhamento do cálculo">
+        <div class="quote-label-row">
+          <span id="bottomBarSummaryLabel">Subtotal Estimado</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        </div>
+        <div class="quote-total-row">
+          <span class="quote-total-value" id="bottomBarTotalValue">R$ 0,00</span>
+          <span class="quote-savings-pill" id="bottomBarSavingsPill">Abatimento Ativo</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn-whatsapp-cta" onclick="submitToWhatsApp()">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span>Solicitar no WhatsApp</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SUMMARY & WHATSAPP PREVIEW MODAL
+       ========================================================================== -->
+  <div id="summaryModal" class="modal-backdrop" onclick="if(event.target === this) closeSummaryModal()">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3>RESUMO TÉCNICO DO ORÇAMENTO</h3>
+        <button type="button" class="btn-close-modal" onclick="closeSummaryModal()" aria-label="Fechar">✕</button>
+      </div>
+
+      <div id="modalBreakdownList">
+        <!-- Populated dynamically -->
+      </div>
+
+      <div style="margin-top:14px; font-family:var(--font-tech); font-size:0.85rem; color:var(--text-muted); text-transform:uppercase;">
+        Prévia da Mensagem para o WhatsApp:
+      </div>
+      <div id="waMessagePreview" class="wa-preview-box"></div>
+
+      <div style="display:flex; gap:10px; margin-top:14px;">
+        <button type="button" class="btn-mini" style="flex:1; padding:11px;" onclick="copyFormattedQuoteText()">
+          Copiar Mensagem
+        </button>
+        <button type="button" class="btn-whatsapp-cta" style="flex:1.6; justify-content:center;" onclick="submitToWhatsApp()">
+          Enviar no WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT APPLICATION ENGINE (VANILLA ES6+)
+       ========================================================================== -->
+  <script>
+    /* --------------------------------------------------------------------------
+       1. CONFIGURAÇÃO E BASE DE DADOS TÉCNICA VAG COMPLETA (5 PLATAFORMAS HEX-V2)
+       -------------------------------------------------------------------------- */
+    const WHATSAPP_NUMBER = "5541992441057";
+
+    const PLATFORM_INFO = {
+      PQ25: {
+        code: "PLATAFORMA PQ24 / PQ25 / NSF",
+        protocol: "Protocolo: CAN TP2.0 / UDS & K-Line (BCM 09 / 17 / 46)",
+        description: "Arquitetura de compactos VAG (Up!, Polo, Fox, Gol G5-G8, Audi A1) e picape Amarok. Suporta personalizações de iluminação, conforto, painel, direção e diagnósticos avançados via VCDS HEX-V2."
+      },
+      PQ34: {
+        code: "PLATAFORMA PQ34 / B5",
+        protocol: "Protocolo: KWP1281 / KWP2000 (K-Line)",
+        description: "Arquitetura clássica VAG (Módulo Conforto CCM 46, Instrumentos 17 e Injeção 01). Permite ativações de conforto, alarmes, computador de bordo FIS/VDO e calibrações básicas."
+      },
+      PQ35: {
+        code: "PLATAFORMA PQ35 / PQ46",
+        protocol: "Protocolo: CAN TP2.0 / UDS (BCM 09 / CECM / 17 / 53 / 5F)",
+        description: "Arquitetura consagrada em Jetta MK5/MK6, Golf MK5/MK6, Fusca TSI, Tiguan 5N, Passat B6/B7/CC, Audi A3 8P, Q3 8U e TT 8J. Altíssimo potencial de funções ocultas em painel, LEDs, conforto e dinâmica."
+      },
+      MLB: {
+        code: "PLATAFORMA MLB / PL71 / PL72",
+        protocol: "Protocolo: UDS / CAN Estendida (BCM1 09 / BCM2 46 / MMI 5F)",
+        description: "Arquitetura longitudinal premium Audi (A4, A5, Q5, A6, A7, Q7) e VW Touareg. Módulos dedicados de chassi, Audi Drive Select, freio EPB, MMI avançado e iluminação Matrix/Xenon."
+      },
+      MQB: {
+        code: "PLATAFORMA MQB / MQB-A0",
+        protocol: "Protocolo: UDS / ODX (CAN de Alta Velocidade)",
+        description: "Arquitetura modular moderna (Golf MK7, Jetta GLI, Polo, Virtus, Nivus, T-Cross, Taos, Tiguan Allspace, Passat B8, Audi A3 8V, Q3 F3, TT 8S) com canais Leuchte, Active Info Display e VW Play/MIB."
+      }
+    };
+
+    function rangeYears(start, end) {
+      const arr = [];
+      for (let y = start; y <= end; y++) arr.push(y);
+      return arr;
+    }
+
+    const VEHICLE_DATABASE = [
+      // ==================== VOLKSWAGEN: PQ24 / PQ25 / NSF ====================
+      { id: "vw_up", brand: "VW", name: "Up! (MPI / Move / High / Cross / Pepper TSI)", platform: "PQ25", years: rangeYears(2014, 2021) },
+      { id: "vw_fox", brand: "VW", name: "Fox / CrossFox / SpaceFox / SpaceCross", platform: "PQ25", years: rangeYears(2004, 2021) },
+      { id: "vw_polo_9n_6r", brand: "VW", name: "Polo Classic / Hatch / Sedan (9N / 9N3 / 6R)", platform: "PQ25", years: rangeYears(2002, 2015) },
+      { id: "vw_gol_g5_g8", brand: "VW", name: "Gol (G5 / G6 / G7 / G8 — 1.0 / 1.6 / MSI)", platform: "PQ25", years: rangeYears(2008, 2022) },
+      { id: "vw_voyage_g5_g8", brand: "VW", name: "Voyage (G5 / G6 / G7 / G8 — 1.0 / 1.6 / MSI)", platform: "PQ25", years: rangeYears(2008, 2022) },
+      { id: "vw_saveiro_g5_g8", brand: "VW", name: "Saveiro (G5 / G6 / G7 / G8 — Cross / Robust / Pepper)", platform: "PQ25", years: rangeYears(2009, 2022) },
+      { id: "vw_amarok", brand: "VW", name: "Amarok (2.0 TDI Biturbo / V6 3.0 TDI)", platform: "PQ25", years: rangeYears(2010, 2022) },
+
+      // ==================== VOLKSWAGEN: PQ34 / B5 ====================
+      { id: "vw_golf_mk4", brand: "VW", name: "Golf MK4 / MK4.5 (1.6 / 2.0 / GTI 1.8T / VR6)", platform: "PQ34", years: rangeYears(1999, 2014) },
+      { id: "vw_bora", brand: "VW", name: "Bora (2.0 Comfortline / Automático)", platform: "PQ34", years: rangeYears(2000, 2011) },
+      { id: "vw_new_beetle", brand: "VW", name: "New Beetle (2.0 Manual / Tiptronic)", platform: "PQ34", years: rangeYears(1999, 2010) },
+      { id: "vw_passat_b5", brand: "VW", name: "Passat / Variant B5 & B5.5 (1.8T / 2.8 V6)", platform: "PQ34", years: rangeYears(1998, 2005) },
+
+      // ==================== VOLKSWAGEN: PQ35 / PQ46 ====================
+      { id: "vw_jetta_mk6", brand: "VW", name: "Jetta MK6 (2.0 Comfortline / 2.0 TSI Highline / 1.4 TSI / 2.5)", platform: "PQ35", years: rangeYears(2011, 2018) },
+      { id: "vw_jetta_mk5", brand: "VW", name: "Jetta MK5 & Jetta Variant (2.5 5cc 150cv / 170cv)", platform: "PQ35", years: rangeYears(2006, 2011) },
+      { id: "vw_golf_mk5_mk6", brand: "VW", name: "Golf MK5 GTI & Golf MK6 (Sportline / GT / GTI)", platform: "PQ35", years: rangeYears(2007, 2013) },
+      { id: "vw_fusca_tsi", brand: "VW", name: "Novo Fusca (Design / R-Line 2.0 TSI DSG)", platform: "PQ35", years: rangeYears(2012, 2016) },
+      { id: "vw_tiguan_5n", brand: "VW", name: "Tiguan MK1 5N (2.0 TSI 4Motion / 1.4 TSI)", platform: "PQ35", years: rangeYears(2009, 2017) },
+      { id: "vw_passat_b6_b7", brand: "VW", name: "Passat / Variant B6 & B7 (2.0 FSI / 2.0 TSI / 3.2 V6)", platform: "PQ35", years: rangeYears(2006, 2015) },
+      { id: "vw_passat_cc", brand: "VW", name: "Passat CC / VW CC (2.0 TSI / 3.6 V6 R-Line)", platform: "PQ35", years: rangeYears(2009, 2016) },
+      { id: "vw_eos", brand: "VW", name: "Eos Conversível (2.0 TFSI / TSI)", platform: "PQ35", years: rangeYears(2008, 2011) },
+
+      // ==================== VOLKSWAGEN: MLB / PL71 ====================
+      { id: "vw_touareg", brand: "VW", name: "Touareg 7L / 7P (3.6 V6 / 4.2 V8 R-Line)", platform: "MLB", years: rangeYears(2004, 2018) },
+
+      // ==================== VOLKSWAGEN: MQB / MQB-A0 ====================
+      { id: "vw_golf_mk7", brand: "VW", name: "Golf MK7 / MK7.5 & Variant (1.4 TSI / 1.6 MSI / GTI / GTE)", platform: "MQB", years: rangeYears(2013, 2020) },
+      { id: "vw_jetta_mk7", brand: "VW", name: "Jetta MK7 (250 TSI Comfortline / R-Line / 350 TSI GLI)", platform: "MQB", years: rangeYears(2018, 2022) },
+      { id: "vw_polo_mqb", brand: "VW", name: "Polo MQB (MPI / MSI / 200 TSI Comfortline / Highline / GTS)", platform: "MQB", years: rangeYears(2018, 2022) },
+      { id: "vw_virtus", brand: "VW", name: "Virtus (MSI / 200 TSI Comfortline / Highline / GTS)", platform: "MQB", years: rangeYears(2018, 2022) },
+      { id: "vw_nivus", brand: "VW", name: "Nivus (200 TSI Comfortline / Highline)", platform: "MQB", years: rangeYears(2020, 2022) },
+      { id: "vw_tcross", brand: "VW", name: "T-Cross (200 TSI / 250 TSI Highline)", platform: "MQB", years: rangeYears(2019, 2022) },
+      { id: "vw_taos", brand: "VW", name: "Taos (250 TSI Comfortline / Highline / Launching Ed.)", platform: "MQB", years: rangeYears(2021, 2022) },
+      { id: "vw_tiguan_mqb", brand: "VW", name: "Tiguan Allspace MK2 (250 TSI / 350 TSI R-Line 4Motion)", platform: "MQB", years: rangeYears(2018, 2021) },
+      { id: "vw_passat_b8", brand: "VW", name: "Passat B8 (2.0 TSI Highline MQB)", platform: "MQB", years: rangeYears(2016, 2019) },
+
+      // ==================== AUDI: PQ25 ====================
+      { id: "audi_a1_8x", brand: "AUDI", name: "Audi A1 8X / Sportback (1.4 TFSI Attraction / Ambition / Quattro)", platform: "PQ25", years: rangeYears(2011, 2018) },
+
+      // ==================== AUDI: PQ34 ====================
+      { id: "audi_a3_8l", brand: "AUDI", name: "Audi A3 8L (1.6 / 1.8 20v / 1.8T 150cv e 180cv)", platform: "PQ34", years: rangeYears(1999, 2006) },
+      { id: "audi_tt_8n", brand: "AUDI", name: "Audi TT 8N Coupé / Roadster (1.8T 180cv / 225cv Quattro)", platform: "PQ34", years: rangeYears(1999, 2006) },
+
+      // ==================== AUDI: PQ35 ====================
+      { id: "audi_q3_8u", brand: "AUDI", name: "Audi Q3 8U (1.4 TFSI / 2.0 TFSI Attraction / Ambiente / Ambition)", platform: "PQ35", years: rangeYears(2012, 2018) },
+      { id: "audi_rsq3_8u", brand: "AUDI", name: "Audi RSQ3 8U (2.5 TFSI 5cc Quattro)", platform: "PQ35", years: rangeYears(2014, 2017) },
+      { id: "audi_a3_8p", brand: "AUDI", name: "Audi A3 8P / Sportback (1.6 / 2.0 TFSI S-Tronic)", platform: "PQ35", years: rangeYears(2006, 2013) },
+      { id: "audi_s3_8p", brand: "AUDI", name: "Audi S3 8P (2.0 TFSI Quattro)", platform: "PQ35", years: rangeYears(2008, 2012) },
+      { id: "audi_tt_8j", brand: "AUDI", name: "Audi TT / TTS / TTRS 8J (2.0 TFSI / 2.5 TFSI)", platform: "PQ35", years: rangeYears(2007, 2014) },
+
+      // ==================== AUDI: MLB / PL71 / PL72 ====================
+      { id: "audi_a4_b8_b9", brand: "AUDI", name: "Audi A4 / Avant / S4 / RS4 (B8 / B8.5 / B9 — 1.8 / 2.0 TFSI / V6)", platform: "MLB", years: rangeYears(2008, 2020) },
+      { id: "audi_a5_8t_f5", brand: "AUDI", name: "Audi A5 / Sportback / Cabriolet / S5 / RS5 (8T / F5)", platform: "MLB", years: rangeYears(2008, 2020) },
+      { id: "audi_q5_8r_fy", brand: "AUDI", name: "Audi Q5 / SQ5 (8R / FY — 2.0 TFSI / 3.0 V6 Quattro)", platform: "MLB", years: rangeYears(2009, 2020) },
+      { id: "audi_a6_c6_c7", brand: "AUDI", name: "Audi A6 / Avant / S6 / RS6 (C6 4F / C7 4G)", platform: "MLB", years: rangeYears(2005, 2018) },
+      { id: "audi_a7_4g", brand: "AUDI", name: "Audi A7 / S7 / RS7 Sportback (4G)", platform: "MLB", years: rangeYears(2011, 2018) },
+      { id: "audi_q7_4l_4m", brand: "AUDI", name: "Audi Q7 (4L / 4M — 3.0 TFSI / TDI / V8)", platform: "MLB", years: rangeYears(2006, 2020) },
+
+      // ==================== AUDI: MQB ====================
+      { id: "audi_a3_8v", brand: "AUDI", name: "Audi A3 8V Sedan / Sportback / Cabrio (1.4 TFSI / 1.8 / 2.0 TFSI)", platform: "MQB", years: rangeYears(2013, 2021) },
+      { id: "audi_s3_rs3_8v", brand: "AUDI", name: "Audi S3 8V (2.0 TFSI) & RS3 8V (2.5 TFSI Quattro)", platform: "MQB", years: rangeYears(2014, 2020) },
+      { id: "audi_q3_f3", brand: "AUDI", name: "Nova Audi Q3 / Q3 Sportback F3 (1.4 35 TFSI / 2.0 40 TFSI)", platform: "MQB", years: rangeYears(2020, 2022) },
+      { id: "audi_tt_8s", brand: "AUDI", name: "Audi TT / TTS / TTRS 8S (Virtual Cockpit MQB)", platform: "MQB", years: rangeYears(2015, 2020) }
+    ];
+
+    /* --------------------------------------------------------------------------
+       2. PERGUNTAS DINÂMICAS DE HARDWARE POR PLATAFORMA
+       (Filosofia Oferta Total: Respostas ajustam o selo informativo para
+        "Compatível" ou "Confirmar no AutoScan", sem NUNCA bloquear a seleção!)
+       -------------------------------------------------------------------------- */
+    const HARDWARE_SCHEMA = {
+      MQB: [
+        {
+          key: "mqb_cluster",
+          title: "Painel de Instrumentos (Cluster 17)",
+          options: [
+            { val: "digital", label: "100% Digital (AID / Virtual Cockpit)", sub: "Libera temas esportivos, escalas e layouts" },
+            { val: "analog", label: "Analógico com Ponteiros", sub: "Possui tela central MFA/FIS" },
+            { val: "duvida", label: "Não sei / Confirmar no Scan", sub: "Verificamos presencialmente" }
+          ]
+        },
+        {
+          key: "mqb_mib",
+          title: "Central Multimídia (Módulo 5F)",
+          options: [
+            { val: "mib2", label: "MIB2 / MMI (Com botões giratórios)", sub: "Tela original com menu Car" },
+            { val: "mib3_vwplay", label: "VW Play / MIB3 (100% Touch)", sub: "Tela grande de vidro sem botões físicos" },
+            { val: "basica", label: "Rádio Básico / Mídia Simples", sub: "Conferir suporte a menus via AutoScan" },
+            { val: "duvida", label: "Não sei / Dúvida", sub: "Conferir por foto ou no AutoScan" }
+          ]
+        },
+        {
+          key: "mqb_startstop",
+          title: "Sistema Start-Stop e Chave",
+          options: [
+            { val: "sim", label: "Com Start-Stop / Keyless", sub: "Desliga em paradas / Partida por botão" },
+            { val: "nao", label: "Sem Start-Stop / Chave Canivete", sub: "Partida convencional" },
+            { val: "duvida", label: "Não sei / Dúvida", sub: "Validar módulos no AutoScan" }
+          ]
+        }
+      ],
+      PQ35: [
+        {
+          key: "pq35_cluster",
+          title: "Painel de Instrumentos (Módulo 17)",
+          options: [
+            { val: "vdo", label: "Painel VDO / Audi DIS / Color / MFA+", sub: "Com computador de bordo completo" },
+            { val: "marelli", label: "Magneti Marelli / Simples", sub: "Validaremos Staging/Funções no AutoScan" },
+            { val: "duvida", label: "Não sei / Confirmar no AutoScan", sub: "Identificamos o fabricante via scanner" }
+          ]
+        },
+        {
+          key: "pq35_lights",
+          title: "Conjunto Óptico e Conforto (Módulo 09 / 46)",
+          options: [
+            { val: "xenon_led", label: "Xenon / Bi-Xenon / LED de Fábrica", sub: "Farol com projetor e DRL em LED OEM" },
+            { val: "halogeno", label: "Farol Halógeno + Milhas", sub: "Refletor original" },
+            { val: "duvida", label: "Não sei / Dúvida", sub: "Validar BCM 09 via AutoScan" }
+          ]
+        },
+        {
+          key: "pq35_media",
+          title: "Multimídia / Rádio Original (Módulo 5F / 56)",
+          options: [
+            { val: "mmi_rns", label: "Audi MMI / RNS / RCD 510 / MIB PQ", sub: "Com tela central original" },
+            { val: "simples_after", label: "Rádio Simples ou Multimídia Trocada", sub: "Conferir integração CAN no AutoScan" },
+            { val: "duvida", label: "Não sei / Dúvida", sub: "Anexar foto ou testar no AutoScan" }
+          ]
+        }
+      ],
+      MLB: [
+        {
+          key: "mlb_mmi",
+          title: "Sistema Audi MMI / Central (Módulo 5F)",
+          options: [
+            { val: "mmi3g_mib", label: "MMI Navigation Plus / MIB (Com Joystick/Touch)", sub: "Suporte a Green Menu, VIM e Drive Select" },
+            { val: "concert_symphony", label: "MMI Básico / Concert / Symphony", sub: "Validar funções estendidas no AutoScan" },
+            { val: "duvida", label: "Não sei / Dúvida", sub: "Confirmar geração do MMI no AutoScan" }
+          ]
+        },
+        {
+          key: "mlb_extras",
+          title: "Opcionais de Conforto (Retrovisores / Porta-Malas)",
+          options: [
+            { val: "completo", label: "Com Rebatimento Elétrico / Mala Elétrica", sub: "Módulos 42/52/6D presentes" },
+            { val: "padrao", label: "Padrão / Não tenho certeza", sub: "Testaremos todos os módulos via AutoScan" }
+          ]
+        }
+      ],
+      PQ25: [
+        {
+          key: "pq25_bcm",
+          title: "Versão de Acabamento / Central Elétrica (BCM 09)",
+          options: [
+            { val: "high", label: "Highline / TSI / Cross / Ambition / V6", sub: "BCM High com suporte amplo a conforto e luzes" },
+            { val: "std", label: "Versão de Entrada / Intermediária", sub: "Confirmaremos cada canal via AutoScan" },
+            { val: "duvida", label: "Não sei / Confirmar no AutoScan", sub: "Leitura completa via VCDS" }
+          ]
+        }
+      ],
+      PQ34: [
+        {
+          key: "pq34_cluster",
+          title: "Painel e Módulo Conforto (17-Instruments / 46-CCM)",
+          options: [
+            { val: "com_cb", label: "Com Computador de Bordo (Meio FIS / FIS Completo)", sub: "Painel VDO + Vidros elétricos originais" },
+            { val: "sem_cb", label: "Sem CB / Não sei o fabricante", sub: "Validaremos painel e CCM no AutoScan" }
+          ]
+        }
+      ]
+    };
+
+    /* --------------------------------------------------------------------------
+       3. CATÁLOGO EXAUSTIVO DE CODIFICAÇÕES POR PLATAFORMA (SEM OCULTAR NADA!)
+       Cada função possui `category` e `checkCompat(hw)` que SEMPRE retorna
+       `compatible: true`, variando apenas o badge entre "ok" (Módulo Padrão) e
+       "warn" (Requer confirmação física do módulo via AutoScan).
+       -------------------------------------------------------------------------- */
+    const okBadge = (txt) => ({ compatible: true, badge: txt || "Compatível via VCDS", status: "ok" });
+    const scanBadge = (txt) => ({ compatible: true, badge: txt || "Requer confirmação física do módulo via AutoScan", status: "warn" });
+
+    const CODING_CATALOG = [
+      // ========================================================================
+      // PLATAFORMA PQ35 / PQ46 (Audi Q3 8U, A3 8P, Jetta MK6, Tiguan 5N, Fusca TSI, Passat B6/B7/CC, Golf MK6) - 30 FUNÇÕES
+      // ========================================================================
+      // --- Painel & Mídia ---
+      {
+        id: "pq35_staging", platform: "PQ35", category: "Painel & Mídia",
+        name: "Varredura de ponteiros (Needle Sweep / Staging)",
+        desc: "Os ponteiros de RPM e velocímetro varrem até o fim da escala ao girar a chave na ignição.",
+        checkCompat: (hw) => hw.pq35_cluster === "marelli"
+          ? scanBadge("Painel Marelli: Requer confirmação de suporte via AutoScan")
+          : okBadge("Módulo 17 - Instruments (VDO / DIS)")
+      },
+      {
+        id: "pq35_laptimer_oil", platform: "PQ35", category: "Painel & Mídia",
+        name: "Lap Timer (Cronômetro de voltas) + Temperatura do Óleo no FIS/DIS",
+        desc: "Habilita cronômetro de pista e leitura digital exata da temperatura do óleo do motor no painel (Audi Q3, A3, Jetta, Tiguan, Passat).",
+        checkCompat: () => okBadge("Módulo 17 - Computador de Bordo FIS/DIS")
+      },
+      {
+        id: "pq35_efficiency_prog", platform: "PQ35", category: "Painel & Mídia",
+        name: "Programa de Eficiência no computador de bordo (Audi DIS / MFA+)",
+        desc: "Ativa tela exclusiva mostrando consumo instantâneo de equipamentos (ar, desembaçador) e dicas de economia.",
+        checkCompat: () => scanBadge("Disponível em painéis Audi DIS / VW MFA+ (Validar no AutoScan)")
+      },
+      {
+        id: "pq35_vel_digital", platform: "PQ35", category: "Painel & Mídia",
+        name: "Velocímetro digital grande no painel (MFI / DIS)",
+        desc: "Habilita a exibição permanente da velocidade digital em destaque no visor central do painel.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "pq35_refuel_qty", platform: "PQ35", category: "Painel & Mídia",
+        name: "Litros para reabastecer / Volume necessário no tanque",
+        desc: "Exibe no painel quantos litros exatos cabem no tanque antes de abastecer (Conforme revisão de software do cluster).",
+        checkCompat: () => scanBadge("Requer confirmação da revisão do painel via AutoScan")
+      },
+      {
+        id: "pq35_bip_cinto", platform: "PQ35", category: "Painel & Mídia",
+        name: "Desativação do aviso sonoro e visual do cinto de segurança",
+        desc: "Remove o bip contínuo ao movimentar o carro em garagens ou manobras sem o cinto afivelado.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "pq35_ops_display", platform: "PQ35", category: "Painel & Mídia",
+        name: "Gráfico visual do sensor de estacionamento (OPS - Optical Parking System)",
+        desc: "Exibe o desenho do carro com barras de aproximação na tela central (MMI / RCD / RNS) mesmo em veículos só com sensor traseiro.",
+        checkCompat: () => scanBadge("Requer módulo de estacionamento 10 com suporte OPS (Validar no Scan)")
+      },
+      {
+        id: "pq35_green_menu_vim", platform: "PQ35", category: "Painel & Mídia",
+        name: "Menu Secreto de Engenharia (Hidden Green Menu Audi MMI) & Vídeo em Movimento / Bluetooth",
+        desc: "Libera o menu avançado no Audi MMI (Q3 / A3 / TT), ajustes de Bluetooth integrado e desbloqueio de vídeo (VIM quando aplicável).",
+        checkCompat: (hw) => hw.pq35_media === "mmi_rns"
+          ? okBadge("Módulo 5F / 56 - Audi MMI / RNS")
+          : scanBadge("Requer MMI Navigation / RNS compatível (Validar no AutoScan)")
+      },
+
+      // --- Iluminação & Estética ---
+      {
+        id: "pq35_drl_milha", platform: "PQ35", category: "Iluminação & Estética",
+        name: "DRL (Luz Diurna) nos faróis de milha com brilho ajustável ou meia-luz",
+        desc: "Ativa os faróis de neblina como luz diurna automática ao ligar o carro, poupando o farol principal.",
+        checkCompat: () => okBadge("Módulo 09 - Central Elétrica BCM")
+      },
+      {
+        id: "pq35_led_brightness", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Ajuste de brilho do LED DRL ao ligar farol baixo ou meia-luz",
+        desc: "Mantém a assinatura em LED (Audi Q3 / A3 / Jetta / Tiguan Xenon) mais forte à noite sem enfraquecer excessivamente.",
+        checkCompat: (hw) => hw.pq35_lights === "xenon_led"
+          ? okBadge("Otimizado p/ Faróis Xenon / LED OEM")
+          : scanBadge("Aplicável a veículos com DRL em LED (Confirmar no AutoScan)")
+      },
+      {
+        id: "pq35_no_led_wink", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Desativação do 'LED Wink' (Não apagar o LED DRL ao dar seta — Audi Q3 / A3 / TT)",
+        desc: "Impede que o farol de LED diurno apague completamente do lado em que a seta está piscando (ou reduz suavemente).",
+        checkCompat: () => okBadge("Especialidade Audi BCM 09")
+      },
+      {
+        id: "pq35_scandinavian_drl", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Lanternas traseiras acesas junto com o DRL diurno (Scandinavian DRL)",
+        desc: "Mantém as lanternas traseiras (especialmente guias de LED da Q3, Jetta, Fusca e Tiguan) acesas durante o dia.",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq35_drl_handbrake", platform: "PQ35", category: "Iluminação & Estética",
+        name: "DRL apaga automaticamente ao puxar o freio de mão",
+        desc: "Desliga toda a iluminação diurna (DRL) enquanto o veículo estiver parado com o freio de estacionamento acionado.",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq35_drl_menu_mfi", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Opção de ligar/desligar o DRL pelo menu do painel (MFI / DIS / MMI)",
+        desc: "Adiciona caixa de seleção no computador de bordo ou MMI para você ativar ou desativar o DRL quando quiser.",
+        checkCompat: () => okBadge("Módulo 09 - BCM + Painel 17")
+      },
+      {
+        id: "pq35_cornering", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Cornering Lights (Farol de milha acende ao esterçar ou dar seta em baixa velocidade)",
+        desc: "Ilumina o canto interno da curva automaticamente em manobras até 40 km/h com acendimento e apagamento suave.",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq35_fogs_with_highbeam", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Farol de milha aceso junto com o farol alto (Flash-to-pass com milhas)",
+        desc: "Impede que os milhas apaguem ao acionar a luz alta ou os faz piscar junto no lampejo de farol.",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq35_ch_lh", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Coming Home & Leaving Home (Nos milhas ou farol baixo)",
+        desc: "Acende a iluminação externa ao destrancar o carro no escuro e mantém acesa por alguns segundos ao sair (permite transferir do Xenon para os milhas).",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq35_comfort_blinker", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Pisca de conforto configurável (Alterar de 3 para 4 ou 5 piscadas)",
+        desc: "Aumenta o número de piscadas da seta ao dar um leve toque na alavanca para mudanças de faixa mais seguras.",
+        checkCompat: () => okBadge("Adaptação Módulo 09 - BCM")
+      },
+      {
+        id: "pq35_emergency_brake_light", platform: "PQ35", category: "Iluminação & Estética",
+        name: "Emergency Brake Light / Hazard Flashing (Frenagem de emergência)",
+        desc: "Faz as luzes de freio piscarem rapidamente e aciona o pisca-alerta automaticamente em frenagens bruscas de emergência.",
+        checkCompat: () => okBadge("Módulo 09 / 03 ABS")
+      },
+
+      // --- Conforto & Chave ---
+      {
+        id: "pq35_vidros_1toque", platform: "PQ35", category: "Conforto & Chave",
+        name: "Subida de vidros e teto solar com 1 simples toque no controle",
+        desc: "Ao trancar ou segurar brevemente, os vidros sobem sozinhos até o fim sem precisar ficar segurando o botão da chave.",
+        checkCompat: () => scanBadge("Compatível na maioria dos BCMs PQ35 (Confirmar revisão no AutoScan)")
+      },
+      {
+        id: "pq35_rain_closing", platform: "PQ35", category: "Conforto & Chave",
+        name: "Fechamento automático dos vidros e teto solar na chuva (Rain Closing)",
+        desc: "Se o carro estiver estacionado e trancado com frestas abertas, o sensor de chuva fecha tudo ao detectar água.",
+        checkCompat: () => scanBadge("Requer sensor de chuva/luz RLS original (Validar no AutoScan)")
+      },
+      {
+        id: "pq35_tilt_down", platform: "PQ35", category: "Conforto & Chave",
+        name: "Tilt-Down do retrovisor direito ao engatar a marcha à ré",
+        desc: "Abaixa o espelho direito automaticamente ao dar ré para visualizar o meio-fio e evitar ralar as rodas (Audi Q3, A3, Jetta, Tiguan, Passat).",
+        checkCompat: () => scanBadge("Requer módulo de porta 52 com memória/suporte (Validar no AutoScan)")
+      },
+      {
+        id: "pq35_fold_mirrors", platform: "PQ35", category: "Conforto & Chave",
+        name: "Rebatimento automático dos retrovisores pelo controle remoto",
+        desc: "Recolhe os retrovisores eletricamente ao trancar na chave e abre ao ligar a ignição ou abrir a porta.",
+        checkCompat: () => scanBadge("Requer retrovisores com rebatimento elétrico físico (Validar no Scan)")
+      },
+      {
+        id: "pq35_bip_alarme", platform: "PQ35", category: "Conforto & Chave",
+        name: "Confirmação sonora do alarme ao trancar/destrancar (Bip + Menu no painel)",
+        desc: "Ativa o bip curto na sirene/buzina ao trancar (e 2 bips ao destrancar), adicionando opção de ligar/desligar no painel.",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq35_memoria_ac", platform: "PQ35", category: "Conforto & Chave",
+        name: "Memória de recirculação e aquecimento de bancos do Ar Digital Climatronic",
+        desc: "Faz o ar-condicionado lembrar que a recirculação estava ligada mesmo após desligar o carro.",
+        checkCompat: () => okBadge("Módulo 08 - Auto HVAC")
+      },
+      {
+        id: "pq35_teardrop", platform: "PQ35", category: "Conforto & Chave",
+        name: "Tear Drop Wiping (Limpeza extra da última gota no para-brisa)",
+        desc: "Após esguichar água e limpar o vidro, a palheta dá uma varrida final 5 segundos depois para remover a gota que escorre.",
+        checkCompat: () => okBadge("Módulo 09 - Subsistema Wiper")
+      },
+
+      // --- Dinâmica & Assistência ---
+      {
+        id: "pq35_epb_autounlock", platform: "PQ35", category: "Dinâmica & Assistência",
+        name: "Liberação automática do freio de mão eletrônico (EPB) mesmo sem cinto (Audi Q3 / Passat / Tiguan)",
+        desc: "Permite arrancar suavemente soltando o freio de estacionamento eletrônico sem exigir que o cinto já esteja afivelado.",
+        checkCompat: () => scanBadge("Exclusivo p/ veículos com Freio Eletrônico Módulo 53 (Q3 / Passat / Tiguan)")
+      },
+      {
+        id: "pq35_startstop_off", platform: "PQ35", category: "Dinâmica & Assistência",
+        name: "Desativação ou Memória do sistema Start-Stop (Audi Q3 / Passat / Tiguan / A3)",
+        desc: "Memoriza a última posição do botão Start-Stop, inverte o LED ou desativa via parâmetro de tensão/temperatura.",
+        checkCompat: () => scanBadge("Aplicável a veículos equipados com Start-Stop (Validar no AutoScan)")
+      },
+      {
+        id: "pq35_steering_assist", platform: "PQ35", category: "Dinâmica & Assistência",
+        name: "Ajuste de peso e sensibilidade da direção elétrica (Perfil Dynamic / GTI / Audi)",
+        desc: "Deixa o volante mais firme, direto e comunicativo em velocidades de estrada, eliminando a sensação de direção boba.",
+        checkCompat: () => okBadge("Módulo 44 - Steering Assist")
+      },
+      {
+        id: "pq35_xds_hillhold", platform: "PQ35", category: "Dinâmica & Assistência",
+        name: "Ativação/Ajuste do Bloqueio Eletrônico de Diferencial (XDS) + Hill Hold Assist",
+        desc: "Melhora a contorno de curvas reduzindo o subesterço (XDS nível 2) e ajusta o tempo de soltura do assistente de rampa.",
+        checkCompat: () => scanBadge("Módulo 03 - ABS MK60EC1 (Confirmar versão no AutoScan)")
+      },
+
+      // ========================================================================
+      // PLATAFORMA MQB / MQB-A0 (Golf MK7, Jetta GLI, Polo, Virtus, Nivus, T-Cross, Taos, Tiguan Allspace, A3 8V, Q3 F3) - 26 FUNÇÕES
+      // ========================================================================
+      // --- Painel & Mídia ---
+      {
+        id: "mqb_temas_aid", platform: "MQB", category: "Painel & Mídia",
+        name: "Temas esportivos no painel digital Active Info Display (R-Line / GTI / GLI / S3) + Escalas 280/300 km/h",
+        desc: "Altera o layout gráfico do painel digital, adiciona números intermediários (30, 50, 70...) e expande o fundo de escala.",
+        checkCompat: (hw) => hw.mqb_cluster === "digital"
+          ? okBadge("Módulo 17 - Active Info Display / Virtual Cockpit")
+          : scanBadge("Funções de layout exigem Painel Digital (Validar no AutoScan)")
+      },
+      {
+        id: "mqb_cores_30", platform: "MQB", category: "Painel & Mídia",
+        name: "Paleta de 10 ou 30 cores no painel digital e Central Multimídia",
+        desc: "Libera o seletor de cores estendido (vermelho GTI, azul R, roxo, amarelo, verde...) na tela do multimídia e cluster.",
+        checkCompat: () => okBadge("Módulo 09 BCM + 5F Multimídia")
+      },
+      {
+        id: "mqb_staging", platform: "MQB", category: "Painel & Mídia",
+        name: "Varredura de ponteiros ao ligar a ignição (Staging / Celebration)",
+        desc: "Saudação esportiva dos ponteiros físicos ou dos gráficos do painel digital ao dar contato.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "mqb_offroad_perf", platform: "MQB", category: "Painel & Mídia",
+        name: "Menu Off-Road Display / Performance Monitor na Multimídia",
+        desc: "Ativa mostradores de ângulo de direção, bússola, altímetro e temperaturas de água/óleo na tela central.",
+        checkCompat: () => scanBadge("Disponível em MIB2 / Discover Media (Confirmar via AutoScan)")
+      },
+      {
+        id: "mqb_laptimer_oil", platform: "MQB", category: "Painel & Mídia",
+        name: "Lap Timer (Cronômetro de voltas) + Temperatura do Óleo no painel",
+        desc: "Habilita o cronômetro de pista e indicador de temperatura do óleo no computador de bordo.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "mqb_refuel", platform: "MQB", category: "Painel & Mídia",
+        name: "Litros a reabastecer (Volume de reabastecimento no painel)",
+        desc: "Exibe exatamente quantos litros faltam para completar o tanque de combustível.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "mqb_driving_school", platform: "MQB", category: "Painel & Mídia",
+        name: "Modo Escola de Condução (Velocidade e setas na tela da multimídia)",
+        desc: "Habilita tela especial no menu Car exibindo velocidade digital e acionamento dos piscas.",
+        checkCompat: () => scanBadge("Compatível com MIB2 (Confirmar no AutoScan)")
+      },
+      {
+        id: "mqb_vwplay_unlock", platform: "MQB", category: "Painel & Mídia",
+        name: "Desbloqueio de digitação em movimento / Ajustes VW Play & MIB (VIM)",
+        desc: "Permite usar o teclado de busca e ajustes da central multimídia mesmo com o veículo em movimento.",
+        checkCompat: () => scanBadge("Módulo 5F - Multimídia (Validar versão de SW no AutoScan)")
+      },
+      {
+        id: "mqb_bip_cinto", platform: "MQB", category: "Painel & Mídia",
+        name: "Desativação do alerta sonoro de cinto de segurança",
+        desc: "Desliga o aviso sonoro contínuo de cinto desafivelado para manobras internas.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+
+      // --- Iluminação & Estética ---
+      {
+        id: "mqb_pace_car", platform: "MQB", category: "Iluminação & Estética",
+        name: "Setas traseiras alternadas (Efeito Pace-Car / Oposição de Fase)",
+        desc: "Faz as lanternas traseiras ou DRL piscarem de forma intercalada com a seta, criando visual exclusivo.",
+        checkCompat: () => okBadge("Canais Leuchte - Módulo 09 BCM")
+      },
+      {
+        id: "mqb_scandinavian_drl", platform: "MQB", category: "Iluminação & Estética",
+        name: "Lanternas traseiras em LED acesas junto com o DRL diurno (Scandinavian DRL)",
+        desc: "Mantém a assinatura luminosa traseira acesa permanentemente durante o dia junto com o DRL dianteiro.",
+        checkCompat: () => okBadge("Canais Leuchte - Módulo 09 BCM")
+      },
+      {
+        id: "mqb_drl_freio_mao_menu", platform: "MQB", category: "Iluminação & Estética",
+        name: "DRL apaga com freio de mão puxado + Botão Liga/Desliga DRL na Multimídia",
+        desc: "Apaga o DRL ao puxar o freio de estacionamento e cria opção na tela para desligar todas as luzes externas quando parado.",
+        checkCompat: () => okBadge("Módulo 09 BCM")
+      },
+      {
+        id: "mqb_fogs_highbeam", platform: "MQB", category: "Iluminação & Estética",
+        name: "Farol de milha pisca junto com o lampejo de farol alto (Flash-to-Pass)",
+        desc: "Aciona os faróis de neblina simultaneamente ao dar sinal de luz alta para máxima iluminação da via.",
+        checkCompat: () => okBadge("Canais Leuchte - Módulo 09 BCM")
+      },
+      {
+        id: "mqb_cornering_ch_lh", platform: "MQB", category: "Iluminação & Estética",
+        name: "Cornering Lights (Luz de curva nos milhas) + Coming/Leaving Home Automático",
+        desc: "Acende o milha do lado da curva em manobras e ilumina o caminho automaticamente ao destrancar o veículo.",
+        checkCompat: () => okBadge("Módulo 09 BCM")
+      },
+      {
+        id: "mqb_pisca_conforto_5x", platform: "MQB", category: "Iluminação & Estética",
+        name: "Pisca de conforto estendido (Alterar de 3 para 4 ou 5 piscadas)",
+        desc: "Reprograma a seta rápida de mudança de faixa para piscar 4 ou 5 vezes com apenas um toque.",
+        checkCompat: () => okBadge("Módulo 09 BCM + Reset Luzes no Menu")
+      },
+
+      // --- Conforto & Chave ---
+      {
+        id: "mqb_lock_running", platform: "MQB", category: "Conforto & Chave",
+        name: "Trancar o carro por fora com o motor ligado (Keyless Kessy)",
+        desc: "Permite sair do veículo deixando o motor e o ar-condicionado ligados e trancar as portas pelo controle remoto.",
+        checkCompat: () => okBadge("Módulo 09 BCM")
+      },
+      {
+        id: "mqb_tilt_down", platform: "MQB", category: "Conforto & Chave",
+        name: "Tilt-Down aprimorado do retrovisor direito na marcha à ré",
+        desc: "Habilita ou ajusta o rebatimento automático da lente direita ao engatar a ré com controle no menu.",
+        checkCompat: () => okBadge("Módulo 52 - Door Elect. Pass.")
+      },
+      {
+        id: "mqb_vidros_ignition_off", platform: "MQB", category: "Conforto & Chave",
+        name: "Manter energia dos vidros elétricos mesmo após desligar e abrir a porta",
+        desc: "Permite fechar os vidros pelos botões internos mesmo depois de desligar a ignição e abrir a porta do motorista.",
+        checkCompat: () => okBadge("Módulo 09 BCM")
+      },
+      {
+        id: "mqb_rain_closing", platform: "MQB", category: "Conforto & Chave",
+        name: "Fechamento automático de vidros e teto na chuva (Rain Closing)",
+        desc: "Fecha os vidros automaticamente caso o sensor de chuva RLHS/RLFS detecte água com o carro trancado.",
+        checkCompat: () => scanBadge("Requer sensor de chuva compatível (Confirmar revisão no AutoScan)")
+      },
+      {
+        id: "mqb_ac_auto_fan_memory", platform: "MQB", category: "Conforto & Chave",
+        name: "Exibição da velocidade do ventilador no modo AUTO + Memória de Recirculação",
+        desc: "Mostra os LEDs de intensidade do ar-condicionado Digital Climatronic mesmo quando está no modo Automático.",
+        checkCompat: () => okBadge("Módulo 08 - Auto HVAC")
+      },
+      {
+        id: "mqb_easy_entry", platform: "MQB", category: "Conforto & Chave",
+        name: "Easy Entry (Recuo automático do banco elétrico ao entrar e sair — Jetta GLI / Passat / Tiguan / Audi)",
+        desc: "Move o banco do motorista eletricamente para trás ao desligar o carro para facilitar a saída e retorna ao ligar.",
+        checkCompat: () => scanBadge("Exclusivo p/ veículos com Banco Elétrico c/ Memória Módulo 36")
+      },
+      {
+        id: "mqb_bip_alarme", platform: "MQB", category: "Conforto & Chave",
+        name: "Confirmação sonora (Bip suave) ao trancar/destrancar + Menu na Multimídia",
+        desc: "Habilita o alerta sonoro curto de confirmação ao trancar as portas com opção de desativar na tela.",
+        checkCompat: () => okBadge("Módulo 09 BCM")
+      },
+
+      // --- Dinâmica & Assistência ---
+      {
+        id: "mqb_pedal_audi", platform: "MQB", category: "Dinâmica & Assistência",
+        name: "Resposta linear e imediata do acelerador (Perfil Audi / Sem Delay)",
+        desc: "Muda a programação de resposta do acelerador eletrônico do modo gradual VW para o perfil direto Audi.",
+        checkCompat: () => okBadge("Módulo 01 Engine / 44 Steering")
+      },
+      {
+        id: "mqb_steering_xds", platform: "MQB", category: "Dinâmica & Assistência",
+        name: "Direção elétrica no modo Dynamic + Bloqueio de Diferencial XDS em modo Forte",
+        desc: "Deixa a direção mais firme e precisa em alta velocidade e aumenta a tração nas saídas de curva.",
+        checkCompat: () => okBadge("Módulos 44 Steering & 03 ABS")
+      },
+      {
+        id: "mqb_startstop_off", platform: "MQB", category: "Dinâmica & Assistência",
+        name: "Desativação definitiva do Start-Stop (Via limite de tensão/temperatura)",
+        desc: "Inibe o desligamento automático do motor em paradas sem gerar erros no painel.",
+        checkCompat: (hw) => hw.mqb_startstop === "nao"
+          ? scanBadge("Marcado sem Start-Stop (Se possuir, ativamos via Gateway 19)")
+          : okBadge("Módulo 19 - CAN Gateway / 08 HVAC")
+      },
+      {
+        id: "mqb_soundaktor_esc", platform: "MQB", category: "Dinâmica & Assistência",
+        name: "Ajuste ou Desativação do Soundaktor (Gerador de som GTI / GLI / GTS) + Modo ESC Sport/Off",
+        desc: "Regula o volume (0% a 100%) do vibrador acústico do painel e libera o modo ESC Sport/Desligado no controle de estabilidade.",
+        checkCompat: () => scanBadge("Módulo A9 Soundaktor (GTI/GLI/GTS/S3) & Módulo 03 ABS")
+      },
+
+      // ========================================================================
+      // PLATAFORMA MLB / PL71 (Audi A4 B8/B9, A5, Q5, A6, A7, Q7, VW Touareg) - 17 FUNÇÕES
+      // ========================================================================
+      {
+        id: "mlb_needle_sweep", platform: "MLB", category: "Painel & Mídia",
+        name: "Varredura de ponteiros (Needle Sweep / Gauge Test)",
+        desc: "Saudação esportiva dos ponteiros ao ligar a ignição (Padrão S4 / RS4 / SQ5).",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "mlb_laptimer_oil_boost", platform: "MLB", category: "Painel & Mídia",
+        name: "Lap Timer + Temperatura do Óleo + Barra de Pressão de Turbo (Boost)",
+        desc: "Habilita o menu de pista com termômetro digital do óleo do motor no painel central DIS/Virtual Cockpit.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "mlb_green_menu_vim", platform: "MLB", category: "Painel & Mídia",
+        name: "Hidden Green Menu (Menu Secreto MMI) + Vídeo em Movimento (VIM) + Nível da Bateria",
+        desc: "Desbloqueia o menu de engenharia Audi MMI, reprodução de vídeo acima de 15 km/h e medidor de carga da bateria na tela.",
+        checkCompat: () => okBadge("Módulo 5F - Information Electr.")
+      },
+      {
+        id: "mlb_ops_graphic", platform: "MLB", category: "Painel & Mídia",
+        name: "Gráfico visual de estacionamento (Audi Parking System OPS) na tela MMI",
+        desc: "Ativa a representação gráfica do veículo na tela central ao engatar a marcha à ré.",
+        checkCompat: () => scanBadge("Módulo 10 - Park/Steer Assist (Validar no AutoScan)")
+      },
+      {
+        id: "mlb_bip_cinto", platform: "MLB", category: "Painel & Mídia",
+        name: "Desativação do aviso sonoro do cinto de segurança",
+        desc: "Remove o alerta sonoro contínuo de cinto no painel de instrumentos.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "mlb_no_led_wink", platform: "MLB", category: "Iluminação & Estética",
+        name: "Desativação do 'LED Wink' (Manter LED DRL aceso junto com a seta)",
+        desc: "Impede que a barra de LED diurna apague do lado em que a seta é acionada.",
+        checkCompat: () => okBadge("Módulo 09 - Cent. Elect. BCM1")
+      },
+      {
+        id: "mlb_led_brightness", platform: "MLB", category: "Iluminação & Estética",
+        name: "Aumento de brilho do LED DRL com farol baixo ou lanterna acesa",
+        desc: "Eleva a intensidade do LED (de ~26% original para 50%-100%) quando as luzes de posição ou faróis estão ligados.",
+        checkCompat: () => okBadge("Módulo 09 - Cent. Elect. BCM1")
+      },
+      {
+        id: "mlb_scandinavian_drl", platform: "MLB", category: "Iluminação & Estética",
+        name: "Lanternas traseiras em LED acesas durante o dia com o DRL",
+        desc: "Mantém a assinatura traseira em LED ligada continuamente junto com o DRL dianteiro.",
+        checkCompat: () => okBadge("Módulo 46 - Central Conv. BCM2")
+      },
+      {
+        id: "mlb_cornering_fogs", platform: "MLB", category: "Iluminação & Estética",
+        name: "Cornering Lights (Luz de conversão estática nos faróis de neblina)",
+        desc: "Acende o farol de neblina correspondente ao lado da curva em manobras de baixa velocidade.",
+        checkCompat: () => okBadge("Módulo 09 - Cent. Elect. BCM1")
+      },
+      {
+        id: "mlb_ambient_lighting", platform: "MLB", category: "Iluminação & Estética",
+        name: "Controle de Iluminação Ambiente (Luzes dos pés acesas em rodagem com ajuste no MMI)",
+        desc: "Habilita o menu Background/Ambient Lighting no MMI para regular o brilho das luzes internas à noite.",
+        checkCompat: () => okBadge("Módulo 09 + Menu MMI 5F")
+      },
+      {
+        id: "mlb_emergency_braking", platform: "MLB", category: "Iluminação & Estética",
+        name: "Adaptive Brake Lights (Pisca-alerta e luz de freio intermitente em frenagem brusca)",
+        desc: "Sinaliza frenagens severas piscando rapidamente as lanternas de freio em LED.",
+        checkCompat: () => okBadge("Módulo 46 - Central Conv. BCM2")
+      },
+      {
+        id: "mlb_tilt_down_fold", platform: "MLB", category: "Conforto & Chave",
+        name: "Tilt-Down do retrovisor direito na ré + Rebatimento automático na chave",
+        desc: "Abaixa a lente direita ao engatar a marcha à ré e recolhe os espelhos ao trancar o veículo.",
+        checkCompat: () => scanBadge("Módulos 42/52 Door Elect. (Confirmar presença de motor de rebatimento no Scan)")
+      },
+      {
+        id: "mlb_remote_windows_trunk", platform: "MLB", category: "Conforto & Chave",
+        name: "Abertura/Fechamento de vidros, teto solar e porta-malas elétrico pelo controle",
+        desc: "Permite abrir e fechar completamente o teto panorâmico e a tampa traseira elétrica usando a chave.",
+        checkCompat: () => okBadge("Módulo 46 BCM2 / 6D Trunk Elect.")
+      },
+      {
+        id: "mlb_bip_alarme", platform: "MLB", category: "Conforto & Chave",
+        name: "Bip sonoro de confirmação ao trancar o veículo",
+        desc: "Emite um bip discreto na sirene original do alarme ao trancar as portas.",
+        checkCompat: () => okBadge("Módulo 46 - Central Conv. BCM2")
+      },
+      {
+        id: "mlb_audi_drive_select", platform: "MLB", category: "Dinâmica & Assistência",
+        name: "Ativação do Audi Drive Select (ADS — Modos Comfort / Auto / Dynamic / Individual no MMI)",
+        desc: "Libera na tela do MMI a seleção de perfil de condução para alterar resposta de motor, câmbio S-Tronic/Tiptronic e direção!",
+        checkCompat: () => okBadge("Módulo 09 BCM1 + 5F MMI")
+      },
+      {
+        id: "mlb_startstop_memory", platform: "MLB", category: "Dinâmica & Assistência",
+        name: "Memória ou Inversão do botão Start-Stop (Permanecer desligado)",
+        desc: "Faz o veículo lembrar que o Start-Stop foi desligado ou inverte a lógica do botão no painel.",
+        checkCompat: () => okBadge("Módulo 09 - Adaptação c/ Security Access")
+      },
+      {
+        id: "mlb_epb_autounlock", platform: "MLB", category: "Dinâmica & Assistência",
+        name: "Destravamento automático do freio de mão eletrônico (EPB) sem exigir cinto",
+        desc: "Solta o freio de estacionamento automaticamente ao acelerar mesmo sem o cinto afivelado.",
+        checkCompat: () => okBadge("Módulo 53 - Parking Brake")
+      },
+
+      // ========================================================================
+      // PLATAFORMA PQ24 / PQ25 / NSF (Up!, Fox, Polo 9N/6R, Gol/Voyage/Saveiro G5-G8, Amarok, Audi A1 8X) - 18 FUNÇÕES
+      // ========================================================================
+      {
+        id: "pq25_staging", platform: "PQ25", category: "Painel & Mídia",
+        name: "Varredura de ponteiros ao ligar a ignição (Staging / Needle Sweep)",
+        desc: "Os ponteiros de RPM e velocidade vão até o final e voltam ao girar a chave (Up!, Amarok, Fox/Gol compatíveis, Polo, Audi A1).",
+        checkCompat: () => scanBadge("Módulo 17 Instruments (Sujeito à versão de SW do painel no AutoScan)")
+      },
+      {
+        id: "pq25_vel_digital_consumo", platform: "PQ25", category: "Painel & Mídia",
+        name: "Ajuste de consumo KM/L e funções estendidas no Computador de Bordo / DIS",
+        desc: "Altera unidade de L/100km para km/L (Audi A1 / Amarok) e calibra aferição de consumo real.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "pq25_ops_camera", platform: "PQ25", category: "Painel & Mídia",
+        name: "Ativação de Câmera de Ré / Gráfico de Estacionamento OPS na Multimídia Original",
+        desc: "Codifica a entrada de câmera de ré e ilustração gráfica de sensores no rádio/multimídia original (Amarok, Fox, Gol, Up, A1).",
+        checkCompat: () => scanBadge("Módulo 56/5F Radio & Módulo 10 Park Assist")
+      },
+      {
+        id: "pq25_bip_cinto", platform: "PQ25", category: "Painel & Mídia",
+        name: "Desativação do bip sonoro do cinto de segurança",
+        desc: "Desliga o aviso sonoro de cinto desafivelado no painel.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "pq25_cornering", platform: "PQ25", category: "Iluminação & Estética",
+        name: "Cornering Lights (Farol de milha acende ao virar o volante ou dar seta)",
+        desc: "Ilumina o lado interno da curva automaticamente em baixa velocidade (Up! TSI, Fox Highline, Amarok, Polo, Audi A1).",
+        checkCompat: () => scanBadge("Módulo 09 BCM (Requer BCM compatível c/ controle dos milhas)")
+      },
+      {
+        id: "pq25_drl_scandinavian", platform: "PQ25", category: "Iluminação & Estética",
+        name: "Ativação de DRL (Luz Diurna) / Lanternas acesas / Ajuste de LED (Audi A1 / Amarok / Up)",
+        desc: "Configura funcionamento das luzes diurnas, evita apagar o LED na seta (Audi A1) ou acende lanternas com DRL.",
+        checkCompat: () => okBadge("Módulo 09 - Central Elétrica BCM")
+      },
+      {
+        id: "pq25_ch_lh", platform: "PQ25", category: "Iluminação & Estética",
+        name: "Coming Home (Faróis permanecem acesos por 30s ao sair do carro à noite)",
+        desc: "Acende o caminho ao dar um toque na alavanca de farol alto antes de abrir a porta ou automaticamente.",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq25_pisca_conforto", platform: "PQ25", category: "Iluminação & Estética",
+        name: "Pisca de conforto configurável (Alterar de 3 para 4 ou 5 piscadas)",
+        desc: "Aumenta a quantidade de piscadas da seta ao dar um toque rápido na alavanca.",
+        checkCompat: () => okBadge("Adaptação Módulo 09 - BCM")
+      },
+      {
+        id: "pq25_emergency_brake", platform: "PQ25", category: "Iluminação & Estética",
+        name: "Emergency Brake Flashing (Pisca-alerta automático em frenagem de pânico)",
+        desc: "Aciona a sinalização de emergência automaticamente em desacelerações bruscas.",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq25_vidros_conforto", platform: "PQ25", category: "Conforto & Chave",
+        name: "Subida e descida de vidros pelo controle remoto com 1 toque",
+        desc: "Permite abrir e fechar todos os vidros elétricos diretamente pela chave canivete.",
+        checkCompat: () => okBadge("Módulo 09 BCM / 46 Conforto")
+      },
+      {
+        id: "pq25_autolock_unlock", platform: "PQ25", category: "Conforto & Chave",
+        name: "Travamento automático das portas a 15 km/h + Destravamento ao retirar a chave",
+        desc: "Tranca o veículo automaticamente ao iniciar o deslocamento e destrava ao desligar a ignição.",
+        checkCompat: () => okBadge("Módulo 09 BCM / 46 Conforto")
+      },
+      {
+        id: "pq25_bip_alarme", platform: "PQ25", category: "Conforto & Chave",
+        name: "Confirmação sonora (Bip na buzina/sirene) ao trancar e destrancar",
+        desc: "Ativa ou desativa o aviso sonoro curto do alarme original ao usar o controle.",
+        checkCompat: () => okBadge("Módulo 09 BCM / 46 Conforto")
+      },
+      {
+        id: "pq25_tilt_down", platform: "PQ25", category: "Conforto & Chave",
+        name: "Tilt-Down do retrovisor direito ao engatar a ré (Fox / SpaceFox / Gol / Polo c/ módulo)",
+        desc: "Configura e calibra o rebatimento da lente direita na marcha à ré.",
+        checkCompat: () => scanBadge("Disponível em veículos com sistema Tilt-Down de fábrica")
+      },
+      {
+        id: "pq25_teardrop_rearwiper", platform: "PQ25", category: "Conforto & Chave",
+        name: "Tear Drop Wiping (Limpeza da última gota) + Limpador traseiro inteligente na ré",
+        desc: "Varredura extra após lavar o para-brisa e acionamento automático do limpador traseiro ao dar ré na chuva.",
+        checkCompat: () => okBadge("Módulo 09 - BCM")
+      },
+      {
+        id: "pq25_steering_weight", platform: "PQ25", category: "Dinâmica & Assistência",
+        name: "Ajuste de curva de assistência da Direção Elétrica / Eletro-hidráulica (Perfil Sport / Dynamic)",
+        desc: "Altera o mapa de peso da direção (Polo, Fox Bluemotion/Highline, Up!, Audi A1) para maior firmeza e precisão.",
+        checkCompat: () => scanBadge("Módulo 44 - Steering Assist (Nos modelos equipados)")
+      },
+      {
+        id: "pq25_pedal_hillhold", platform: "PQ25", category: "Dinâmica & Assistência",
+        name: "Ajuste do Assistente de Partida em Rampa (Hill Hold) + Bloqueio XDS",
+        desc: "Regula o tempo de retenção do freio em subidas e aprimora a tração em curvas (Up! TSI, Audi A1, Amarok, Fox Highline).",
+        checkCompat: () => scanBadge("Módulo 03 - ABS c/ suporte HHC/XDS (Validar no AutoScan)")
+      },
+      {
+        id: "pq25_amarok_dpf_injectors", platform: "PQ25", category: "Dinâmica & Assistência",
+        name: "Especial Amarok TDI / V6: Monitoramento de Saturação e Regeneração de DPF + Codificação IMA de Bicos",
+        desc: "Leitura de gramatura de fuligem do filtro de partículas, regeneração de serviço e calibração de injetores.",
+        checkCompat: () => scanBadge("Exclusivo Amarok 2.0 TDI / V6 3.0 TDI (Módulo 01 Engine)")
+      },
+
+      // ========================================================================
+      // PLATAFORMA PQ34 / B5 (Golf MK4/MK4.5, Audi A3 8L, Bora, New Beetle, Passat B5, TT 8N) - 14 FUNÇÕES
+      // ========================================================================
+      {
+        id: "pq34_range", platform: "PQ34", category: "Painel & Mídia",
+        name: "Autonomia no painel — Range (Quilômetros restantes com o tanque atual)",
+        desc: "Libera no computador de bordo FIS / Meio-FIS a estimativa de quantos KM o carro ainda roda até a reserva.",
+        checkCompat: (hw) => hw.pq34_cluster === "com_cb"
+          ? okBadge("Painel VDO Immo3 c/ FIS")
+          : scanBadge("Requer painel VDO compatível (Confirmar no AutoScan)")
+      },
+      {
+        id: "pq34_lit_needles", platform: "PQ34", category: "Painel & Mídia",
+        name: "Ponteiros e/ou escalas acesos direto ao ligar a ignição (Lit Needles)",
+        desc: "Mantém os ponteiros vermelhos iluminados durante o dia mesmo com os faróis desligados (Estilo Audi / R32).",
+        checkCompat: () => scanBadge("Requer painel VDO Immo3 (Confirmar via AutoScan)")
+      },
+      {
+        id: "pq34_welcome_msg", platform: "PQ34", category: "Painel & Mídia",
+        name: "Mensagem de Boas-Vindas ('WELCOME') no painel Full FIS + Aferição de Consumo",
+        desc: "Ativa a saudação ao ligar a chave em painéis FIS completos e calibra a margem de erro do consumo médio.",
+        checkCompat: () => scanBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "pq34_idioma_avisos", platform: "PQ34", category: "Painel & Mídia",
+        name: "Configuração de idioma do computador de bordo + Avisos de cinto / pastilha / líquido lavador",
+        desc: "Ajusta o idioma das mensagens do painel e ativa/desativa alertas específicos no módulo 17.",
+        checkCompat: () => okBadge("Módulo 17 - Instruments")
+      },
+      {
+        id: "pq34_autolock", platform: "PQ34", category: "Conforto & Chave",
+        name: "Travamento automático das portas a 15 km/h (Auto-Lock)",
+        desc: "Tranca todas as portas e porta-malas assim que o veículo atinge 15 km/h.",
+        checkCompat: () => okBadge("Módulo 46 - Central Conv. CCM / 35 Cent. Locks")
+      },
+      {
+        id: "pq34_autounlock", platform: "PQ34", category: "Conforto & Chave",
+        name: "Destravamento automático ao retirar a chave da ignição (Auto-Unlock)",
+        desc: "Destrava todas as portas imediatamente ao desligar o carro e puxar a chave do contato.",
+        checkCompat: () => okBadge("Módulo 46 - Central Conv. CCM")
+      },
+      {
+        id: "pq34_selective_unlock", platform: "PQ34", category: "Conforto & Chave",
+        name: "Destravamento seletivo (1 toque abre só motorista / 2 toques abre tudo — ou abrir tudo em 1 toque)",
+        desc: "Configura o comportamento do controle remoto para máxima segurança ou praticidade.",
+        checkCompat: () => okBadge("Módulo 46 - Central Conv. CCM")
+      },
+      {
+        id: "pq34_bip_alarme", platform: "PQ34", category: "Conforto & Chave",
+        name: "Bip sonoro na buzina/sirene ao trancar e destrancar + Piscar setas",
+        desc: "Ativa a confirmação sonora clássica da linha MK4 / A3 8L ao acionar o alarme original.",
+        checkCompat: () => okBadge("Adaptação Canais 06 e 07 - Módulo 46 CCM")
+      },
+      {
+        id: "pq34_remote_windows", platform: "PQ34", category: "Conforto & Chave",
+        name: "Subida e descida de vidros pelo controle remoto da chave",
+        desc: "Habilita o fechamento e abertura dos vidros elétricos diretamente pelos botões do telecomando original.",
+        checkCompat: () => scanBadge("Módulo 46 CCM (Conforme revisão da central de conforto)")
+      },
+      {
+        id: "pq34_key_matching", platform: "PQ34", category: "Conforto & Chave",
+        name: "Sincronização e casamento de telecomandos originais (Canal 01 do Módulo 46)",
+        desc: "Reprograma chaves canivete originais que perderam a sincronia com o alarme e travas.",
+        checkCompat: () => okBadge("Módulo 46 - Adaptação Canal 01")
+      },
+      {
+        id: "pq34_alarme_delay", platform: "PQ34", category: "Iluminação & Estética",
+        name: "Desativação do atraso do alarme ao abrir na lâmina + Ajuste do sensor de ultrassom interno",
+        desc: "Faz o alarme disparar imediatamente se a fechadura for forçada e regula a sensibilidade do sensor volumétrico.",
+        checkCompat: () => okBadge("Módulo 46 - Central Conv. CCM")
+      },
+      {
+        id: "pq34_tba_adaptation", platform: "PQ34", category: "Dinâmica & Assistência",
+        name: "Alinhamento e Adaptação de Corpo de Borboleta Eletrônico (TBA — Canal 060 / 098)",
+        desc: "Recalibra os batentes da borboleta motorizada (1.6 / 2.0 / 1.8 20v / 1.8T) para marcha lenta perfeita e resposta limpa.",
+        checkCompat: () => okBadge("Módulo 01 - Engine Basic Settings")
+      },
+      {
+        id: "pq34_haldex_abs_diag", platform: "PQ34", category: "Dinâmica & Assistência",
+        name: "Teste de Atuadores de ABS / Haldex (TT Quattro / S3) e Reset de Parâmetros Adaptativos (Fuel Trims)",
+        desc: "Zera os aprendizados antigos da injeção eletrônica e executa testes funcionais de válvulas e bombas.",
+        checkCompat: () => okBadge("Módulos 01 Engine / 03 ABS / 22 AWD")
+      },
+      {
+        id: "pq34_service_reset", platform: "PQ34", category: "Painel & Mídia",
+        name: "Reset e programação de aviso de Revisão / Troca de Óleo ('SERVICE INSP / OIL') no painel",
+        desc: "Apaga o aviso de revisão no cluster e configura o intervalo correto em quilômetros e dias.",
+        checkCompat: () => okBadge("SRI Reset - Módulo 17 Instruments")
+      }
+    ];
+
+    /* --------------------------------------------------------------------------
+       4. ESTADO GLOBAL DA APLICAÇÃO
+       -------------------------------------------------------------------------- */
+    const appState = {
+      selectedBrand: "VW",
+      platformFilter: "ALL",
+      searchQuery: "",
+      codingCategoryFilter: "ALL",
+      selectedVehicleId: "vw_golf_mk7",
+      selectedYear: 2018,
+      currentPlatform: "MQB",
+      hardwareAnswers: {
+        // MQB defaults
+        mqb_cluster: "digital",
+        mqb_mib: "mib2",
+        mqb_startstop: "sim",
+        // PQ35 defaults
+        pq35_cluster: "vdo",
+        pq35_lights: "xenon_led",
+        pq35_media: "mmi_rns",
+        // MLB defaults
+        mlb_mmi: "mmi3g_mib",
+        mlb_extras: "completo",
+        // PQ25 defaults
+        pq25_bcm: "high",
+        // PQ34 defaults
+        pq34_cluster: "com_cb"
+      },
+      attachedPhotoName: null,
+      // Diagnostic & Pre-Purchase Services
+      autoscanSelected: false,
+      advDiagSelected: false,
+      prePurchaseMode: null, // null | 'static' | 'dynamic'
+      // Coding selections
+      fullCodingActive: false,
+      selectedCodingIds: new Set()
+    };
+
+    /* --------------------------------------------------------------------------
+       5. INICIALIZAÇÃO, BUSCA E FILTRO DE VEÍCULOS / PLATAFORMA
+       -------------------------------------------------------------------------- */
+    window.addEventListener("DOMContentLoaded", () => {
+      populateModelsByBrand(appState.selectedBrand);
+      renderHardwareQuestions();
+      renderCodingCatalog();
+      updateLiveSummary();
+    });
+
+    function selectBrand(brand) {
+      appState.selectedBrand = brand;
+      document.getElementById("btnBrandVW").classList.toggle("active", brand === "VW");
+      document.getElementById("btnBrandAudi").classList.toggle("active", brand === "AUDI");
+      populateModelsByBrand(brand);
+    }
+
+    function setPlatformFilter(platCode) {
+      appState.platformFilter = platCode;
+      const buttons = document.querySelectorAll("#platformFilterPills .platform-pill-btn");
+      buttons.forEach(btn => {
+        const isMatch =
+          (platCode === "ALL" && btn.textContent.includes("Todas")) ||
+          (platCode !== "ALL" && btn.getAttribute("onclick").includes(`'${platCode}'`));
+        btn.classList.toggle("active", isMatch);
+      });
+      populateModelsByBrand(appState.selectedBrand);
+    }
+
+    function onSearchModelInput() {
+      appState.searchQuery = (document.getElementById("modelSearchInput").value || "").trim().toLowerCase();
+      populateModelsByBrand(appState.selectedBrand, true);
+    }
+
+    function populateModelsByBrand(brand, allowCrossBrandIfSearching = false) {
+      const modelSelect = document.getElementById("selectModel");
+      const q = appState.searchQuery;
+
+      let filteredModels = VEHICLE_DATABASE.filter(v => {
+        const brandMatch = q && allowCrossBrandIfSearching ? true : v.brand === brand;
+        const platMatch = appState.platformFilter === "ALL" || v.platform === appState.platformFilter;
+        const textMatch = !q || v.name.toLowerCase().includes(q) || v.platform.toLowerCase().includes(q);
+        return brandMatch && platMatch && textMatch;
+      });
+
+      // Fallback if filter combination yields 0 results
+      if (filteredModels.length === 0) {
+        filteredModels = VEHICLE_DATABASE.filter(v =>
+          !q ? v.brand === brand : (v.name.toLowerCase().includes(q) || v.platform.toLowerCase().includes(q))
+        );
+      }
+      if (filteredModels.length === 0) {
+        filteredModels = VEHICLE_DATABASE.filter(v => v.brand === brand);
+      }
+
+      modelSelect.innerHTML = "";
+      filteredModels.forEach(vehicle => {
+        const opt = document.createElement("option");
+        opt.value = vehicle.id;
+        const prefix = q && vehicle.brand !== brand ? `[${vehicle.brand}] ` : "";
+        opt.textContent = `${prefix}${vehicle.name} [${vehicle.platform}]`;
+        modelSelect.appendChild(opt);
+      });
+
+      document.getElementById("modelCountLabel").textContent = `${filteredModels.length} modelos listados`;
+
+      const stillExists = filteredModels.some(v => v.id === appState.selectedVehicleId);
+      appState.selectedVehicleId = stillExists ? appState.selectedVehicleId : filteredModels[0].id;
+      modelSelect.value = appState.selectedVehicleId;
+      onModelChange();
+    }
+
+    function onModelChange() {
+      const modelSelect = document.getElementById("selectModel");
+      const vehicle = VEHICLE_DATABASE.find(v => v.id === modelSelect.value);
+      if (!vehicle) return;
+
+      const prevPlatform = appState.currentPlatform;
+      appState.selectedVehicleId = vehicle.id;
+      appState.currentPlatform = vehicle.platform;
+
+      // Keep brand buttons in sync if user searched across brands
+      if (vehicle.brand !== appState.selectedBrand) {
+        appState.selectedBrand = vehicle.brand;
+        document.getElementById("btnBrandVW").classList.toggle("active", vehicle.brand === "VW");
+        document.getElementById("btnBrandAudi").classList.toggle("active", vehicle.brand === "AUDI");
+      }
+
+      // Populate years
+      const yearSelect = document.getElementById("selectYear");
+      yearSelect.innerHTML = "";
+      [...vehicle.years].reverse().forEach(yr => {
+        const opt = document.createElement("option");
+        opt.value = yr;
+        opt.textContent = yr;
+        yearSelect.appendChild(opt);
+      });
+      appState.selectedYear = vehicle.years[vehicle.years.length - 1];
+      yearSelect.value = appState.selectedYear;
+
+      // Update Platform Telemetry Banner
+      const pInfo = PLATFORM_INFO[vehicle.platform];
+      document.getElementById("badgePlatformCode").textContent = pInfo.code;
+      document.getElementById("badgeProtocol").textContent = pInfo.protocol;
+      document.getElementById("telemetryDesc").textContent = pInfo.description;
+
+      if (prevPlatform !== vehicle.platform) {
+        appState.selectedCodingIds.clear();
+      }
+
+      renderHardwareQuestions();
+      syncCatalogWithHardware();
+    }
+
+    function onYearChange() {
+      appState.selectedYear = parseInt(document.getElementById("selectYear").value, 10);
+      updateLiveSummary();
+    }
+
+    /* --------------------------------------------------------------------------
+       6. RENDERIZAÇÃO DE PERGUNTAS DE HARDWARE E CAIXA DE CONTINGÊNCIA
+       -------------------------------------------------------------------------- */
+    function renderHardwareQuestions() {
+      const container = document.getElementById("hardwareQuestionsContainer");
+      const questions = HARDWARE_SCHEMA[appState.currentPlatform] || [];
+      container.innerHTML = "";
+
+      questions.forEach(q => {
+        const block = document.createElement("div");
+        block.className = "hw-question-block";
+
+        const title = document.createElement("div");
+        title.className = "hw-question-title";
+        title.innerHTML = `<span>${q.title}</span>`;
+        block.appendChild(title);
+
+        const grid = document.createElement("div");
+        grid.className = "hw-options-grid cols-2";
+
+        q.options.forEach(opt => {
+          const isSelected = appState.hardwareAnswers[q.key] === opt.val;
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = `hw-option-card ${isSelected ? "selected" : ""}`;
+          card.onclick = () => selectHardwareOption(q.key, opt.val);
+
+          card.innerHTML = `
+            <div class="radio-indicator"></div>
+            <div class="hw-opt-texts">
+              <span class="hw-opt-main">${opt.label}</span>
+              <span class="hw-opt-sub">${opt.sub}</span>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        block.appendChild(grid);
+        container.appendChild(block);
+      });
+
+      checkContingencyBoxVisibility();
+    }
+
+    function selectHardwareOption(questionKey, optionVal) {
+      appState.hardwareAnswers[questionKey] = optionVal;
+      renderHardwareQuestions();
+      syncCatalogWithHardware();
+    }
+
+    function checkContingencyBoxVisibility() {
+      const questions = HARDWARE_SCHEMA[appState.currentPlatform] || [];
+      let hasDoubt = false;
+      questions.forEach(q => {
+        const ans = appState.hardwareAnswers[q.key];
+        if (ans === "duvida" || ans === "sem_cb" || ans === "padrao") {
+          hasDoubt = true;
+        }
+      });
+
+      const box = document.getElementById("contingencyBox");
+      box.classList.toggle("visible", hasDoubt || Boolean(appState.attachedPhotoName));
+    }
+
+    function handlePhotoUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      appState.attachedPhotoName = file.name;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById("photoPreviewImg").src = e.target.result;
+        document.getElementById("photoFileName").textContent = file.name;
+        document.getElementById("photoPreviewArea").classList.add("visible");
+        showToast("Foto carregada com sucesso! Envie-a na conversa do WhatsApp.");
+        updateLiveSummary();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removePhoto() {
+      appState.attachedPhotoName = null;
+      document.getElementById("hwPhotoInput").value = "";
+      document.getElementById("photoPreviewArea").classList.remove("visible");
+      checkContingencyBoxVisibility();
+      updateLiveSummary();
+    }
+
+    /* --------------------------------------------------------------------------
+       7. CATÁLOGO DE CODIFICAÇÃO (OFERTA TOTAL + VALIDAÇÃO AUTOSCAN)
+       -------------------------------------------------------------------------- */
+    function setCodingCategoryFilter(catName) {
+      appState.codingCategoryFilter = catName;
+      const tabs = document.querySelectorAll("#codingCategoryTabs .cat-tab-btn");
+      tabs.forEach(btn => {
+        const isAll = catName === "ALL" && btn.textContent.includes("Todas");
+        const isExact = btn.textContent.trim() === catName;
+        btn.classList.toggle("active", isAll || isExact);
+      });
+      renderCodingCatalog();
+    }
+
+    function getCompatibleFunctionsForCurrentState() {
+      const platformItems = CODING_CATALOG.filter(item => item.platform === appState.currentPlatform);
+      return platformItems.map(item => {
+        const compatInfo = item.checkCompat(appState.hardwareAnswers);
+        // Garantia absoluta da Filosofia Oferta Total: NUNCA bloquear seleção
+        return {
+          ...item,
+          compatInfo: {
+            compatible: true,
+            badge: compatInfo.badge,
+            status: compatInfo.status === "blocked" ? "warn" : compatInfo.status
+          }
+        };
+      });
+    }
+
+    function syncCatalogWithHardware() {
+      const evaluatedItems = getCompatibleFunctionsForCurrentState();
+
+      // Se o pacote Full Coding estiver ativo, mantém todas as opções da plataforma marcadas
+      if (appState.fullCodingActive) {
+        appState.selectedCodingIds.clear();
+        evaluatedItems.forEach(item => {
+          appState.selectedCodingIds.add(item.id);
+        });
+      }
+
+      renderCodingCatalog();
+      updateServiceCardsUI();
+      updateLiveSummary();
+    }
+
+    function renderCodingCatalog() {
+      const grid = document.getElementById("codingCatalogGrid");
+      const evaluatedItems = getCompatibleFunctionsForCurrentState();
+      grid.innerHTML = "";
+
+      document.getElementById("countTotalCompatible").textContent = evaluatedItems.length;
+      document.getElementById("countSelectedFuncs").textContent = appState.selectedCodingIds.size;
+
+      const vehicle = VEHICLE_DATABASE.find(v => v.id === appState.selectedVehicleId);
+      document.getElementById("catalogSubtitle").textContent =
+        `${evaluatedItems.length} funções listadas para ${vehicle ? vehicle.name : ""} (${PLATFORM_INFO[appState.currentPlatform].code})`;
+
+      const categoriesOrder = [
+        "Painel & Mídia",
+        "Iluminação & Estética",
+        "Conforto & Chave",
+        "Dinâmica & Assistência"
+      ];
+
+      categoriesOrder.forEach(cat => {
+        if (appState.codingCategoryFilter !== "ALL" && appState.codingCategoryFilter !== cat) return;
+
+        const itemsInCat = evaluatedItems.filter(i => i.category === cat);
+        if (itemsInCat.length === 0) return;
+
+        const catHeader = document.createElement("div");
+        catHeader.className = "catalog-category-divider";
+        catHeader.innerHTML = `
+          <span>${cat}</span>
+          <span style="font-size:0.75rem; color:var(--text-muted);">${itemsInCat.length} opções</span>
+        `;
+        grid.appendChild(catHeader);
+
+        itemsInCat.forEach(item => {
+          const isSelected = appState.selectedCodingIds.has(item.id);
+
+          const card = document.createElement("div");
+          card.className = `coding-item-card ${isSelected ? "active" : ""}`;
+          card.onclick = () => toggleCodingFunction(item.id);
+
+          card.innerHTML = `
+            <div class="coding-left">
+              <div class="checkbox-box">${isSelected ? "✓" : ""}</div>
+              <div class="coding-info">
+                <h4>${item.name}</h4>
+                <p>${item.desc}</p>
+                <span class="compat-badge ${item.compatInfo.status}">
+                  ${item.compatInfo.status === "warn" ? "⚡ " : "✓ "}${item.compatInfo.badge}
+                </span>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      });
+    }
+
+    function toggleCodingFunction(funcId) {
+      if (appState.selectedCodingIds.has(funcId)) {
+        appState.selectedCodingIds.delete(funcId);
+        appState.fullCodingActive = false;
+      } else {
+        appState.selectedCodingIds.add(funcId);
+        const allItems = getCompatibleFunctionsForCurrentState();
+        if (appState.selectedCodingIds.size === allItems.length && allItems.length > 0) {
+          appState.fullCodingActive = true;
+        }
+      }
+
+      renderCodingCatalog();
+      updateServiceCardsUI();
+      updateLiveSummary();
+    }
+
+    function selectAllCompatibleFunctions() {
+      appState.fullCodingActive = true;
+      const evaluatedItems = getCompatibleFunctionsForCurrentState();
+      appState.selectedCodingIds.clear();
+      evaluatedItems.forEach(item => {
+        appState.selectedCodingIds.add(item.id);
+      });
+      renderCodingCatalog();
+      updateServiceCardsUI();
+      updateLiveSummary();
+      showToast(`Pacote Full Coding ativado: todas as ${evaluatedItems.length} opções da plataforma foram marcadas!`);
+    }
+
+    function clearAllFunctions() {
+      appState.fullCodingActive = false;
+      appState.selectedCodingIds.clear();
+      renderCodingCatalog();
+      updateServiceCardsUI();
+      updateLiveSummary();
+    }
+
+    /* --------------------------------------------------------------------------
+       8. INTERAÇÃO COM CARDS DE DIAGNÓSTICO, PRÉ-COMPRA E PACOTES (STEP 3)
+       -------------------------------------------------------------------------- */
+    function toggleDiagService(serviceKey) {
+      if (serviceKey === "autoscan") {
+        appState.autoscanSelected = !appState.autoscanSelected;
+      } else if (serviceKey === "adv_diag") {
+        appState.advDiagSelected = !appState.advDiagSelected;
+      }
+      updateServiceCardsUI();
+      updateLiveSummary();
+    }
+
+    function togglePrePurchase(mode) {
+      // Mutual exclusivity between Static (R$150) and Complete Dynamic (R$250)
+      if (appState.prePurchaseMode === mode) {
+        appState.prePurchaseMode = null;
+      } else {
+        appState.prePurchaseMode = mode;
+      }
+      updateServiceCardsUI();
+      updateLiveSummary();
+    }
+
+    function toggleFullCodingPackage() {
+      if (appState.fullCodingActive) {
+        clearAllFunctions();
+      } else {
+        selectAllCompatibleFunctions();
+      }
+    }
+
+    function updateServiceCardsUI() {
+      // AutoScan
+      document.getElementById("cardAutoscan").classList.toggle("active", appState.autoscanSelected);
+      // Advanced Diag
+      document.getElementById("cardAdvDiag").classList.toggle("active", appState.advDiagSelected);
+      // Pre-Purchase
+      document.getElementById("cardPreStatic").classList.toggle("active", appState.prePurchaseMode === "static");
+      document.getElementById("cardPreDynamic").classList.toggle("active", appState.prePurchaseMode === "dynamic");
+      // Full Coding
+      document.getElementById("cardFullCoding").classList.toggle("active", appState.fullCodingActive);
+
+      // Dynamic price badges when AutoScan is selected
+      const fullCodingBadge = document.getElementById("priceBadgeFullCoding");
+      if (appState.autoscanSelected) {
+        fullCodingBadge.textContent = "+ R$ 350,00 (c/ Abatimento)";
+      } else {
+        fullCodingBadge.textContent = "R$ 400,00";
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       9. MOTOR DE CÁLCULO COMERCIAL E REGRAS DE ABATIMENTO (TOLEDO - PR)
+       -------------------------------------------------------------------------- */
+    function calculateQuoteBreakdown() {
+      const numFuncs = appState.selectedCodingIds.size;
+      const hasCoding = numFuncs > 0 || appState.fullCodingActive;
+      const lines = [];
+      let rawSubtotal = 0;
+      let totalDiscount = 0;
+
+      // 1. AutoScan Inicial (R$ 50)
+      if (appState.autoscanSelected) {
+        rawSubtotal += 50;
+        lines.push({ label: "AutoScan Inicial (Leitura completa de módulos)", value: 50, type: "item" });
+      }
+
+      // 2. Diagnóstico Avançado (R$ 150)
+      if (appState.advDiagSelected) {
+        rawSubtotal += 150;
+        lines.push({ label: "Diagnóstico Avançado (Análise em tempo real)", value: 150, type: "item" });
+      }
+
+      // 3. Laudo Pré-Compra VAG (Estático R$ 150 ou Dinâmico Completo R$ 250)
+      if (appState.prePurchaseMode === "static") {
+        rawSubtotal += 150;
+        lines.push({ label: "Laudo Pré-Compra VAG — Avaliação Estática no Local", value: 150, type: "item" });
+      } else if (appState.prePurchaseMode === "dynamic") {
+        rawSubtotal += 250;
+        lines.push({ label: "Laudo Pré-Compra VAG — Avaliação Dinâmica Completa", value: 250, type: "item" });
+      }
+
+      // 4. Codificação de Funções (Individual / Combo 5+ / Pacote Full Coding)
+      let codingNetPrice = 0;
+      let codingTariffName = "";
+
+      if (hasCoding) {
+        const individualNominal = numFuncs * 100; // R$ 100 por função avulsa
+
+        if (appState.fullCodingActive) {
+          codingNetPrice = 400;
+          codingTariffName = `Pacote Full Coding (${numFuncs} funções compatíveis)`;
+          rawSubtotal += Math.max(400, individualNominal);
+          lines.push({ label: codingTariffName, value: 400, type: "item" });
+
+          if (individualNominal > 400) {
+            const pkgSave = individualNominal - 400;
+            totalDiscount += pkgSave;
+            lines.push({
+              label: `Economia Pacote Full Coding (vs ${numFuncs}x R$ 100 avulsas)`,
+              value: -pkgSave,
+              type: "info_saving"
+            });
+          }
+        } else if (numFuncs >= 5) {
+          // Combo 5+ Funções: Desconto progressivo (R$ 70/função no combo 5, limitado ao teto de R$ 400 do Full Coding)
+          const progressiveComboPrice = Math.min(400, 350); // Combo 5+ fechado em R$ 350 (ou R$ 400 Full)
+          codingNetPrice = progressiveComboPrice;
+          codingTariffName = `Combo 5+ Funções (${numFuncs} ativações c/ desconto progressivo)`;
+          rawSubtotal += individualNominal;
+          const comboDiscount = individualNominal - codingNetPrice;
+          totalDiscount += comboDiscount;
+
+          lines.push({ label: `${numFuncs}x Funções de Codificação (Tarifa base R$ 100/un)`, value: individualNominal, type: "item" });
+          lines.push({ label: "Desconto Progressivo Combo 5+ Funções", value: -comboDiscount, type: "discount" });
+        } else {
+          // 1 a 4 funções: Tarifa individual R$ 100 na 1ª e teto inteligente em R$ 400
+          if (individualNominal >= 400) {
+            codingNetPrice = 400;
+            codingTariffName = `Teto Promocional Full Coding (${numFuncs} funções)`;
+            rawSubtotal += individualNominal;
+            lines.push({ label: codingTariffName, value: 400, type: "item" });
+          } else {
+            codingNetPrice = individualNominal;
+            codingTariffName = `${numFuncs}x Função(ões) Avulsa(s) de Codificação`;
+            rawSubtotal += codingNetPrice;
+            lines.push({ label: codingTariffName, value: codingNetPrice, type: "item" });
+          }
+        }
+
+        // Regra de Abatimento 100% do AutoScan (R$ 50) ao fechar qualquer codificação
+        if (appState.autoscanSelected) {
+          totalDiscount += 50;
+          lines.push({
+            label: "Abatimento 100% do AutoScan Inicial (Fechamento c/ Coding)",
+            value: -50,
+            type: "discount"
+          });
+        }
+      }
+
+      // Cálculo do valor final líquido
+      let finalTotal = 0;
+      if (appState.autoscanSelected) finalTotal += 50;
+      if (appState.advDiagSelected) finalTotal += 150;
+      if (appState.prePurchaseMode === "static") finalTotal += 150;
+      if (appState.prePurchaseMode === "dynamic") finalTotal += 250;
+      if (hasCoding) {
+        finalTotal += codingNetPrice;
+        if (appState.autoscanSelected) {
+          finalTotal -= 50; // 100% abatido! (1 função R$100 + AutoScan R$50 - R$50 = R$100; ou Full Coding R$400 + R$50 - R$50 = R$400)
+        }
+      }
+
+      return {
+        numFuncs,
+        hasCoding,
+        codingTariffName,
+        codingNetPrice,
+        autoscanAbated: appState.autoscanSelected && hasCoding,
+        totalDiscount,
+        finalTotal,
+        lines
+      };
+    }
+
+    function formatBRL(val) {
+      return val.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    /* --------------------------------------------------------------------------
+       10. ATUALIZAÇÃO EM TEMPO REAL DA BARRA FLUTUANTE, MODAL E WHATSAPP
+       -------------------------------------------------------------------------- */
+    function updateLiveSummary() {
+      const quote = calculateQuoteBreakdown();
+
+      // Update Floating Bottom Bar
+      document.getElementById("bottomBarTotalValue").textContent = formatBRL(quote.finalTotal);
+
+      const savingsPill = document.getElementById("bottomBarSavingsPill");
+      if (quote.autoscanAbated) {
+        savingsPill.textContent = "AutoScan R$ 50 Abatido!";
+        savingsPill.classList.add("visible");
+      } else if (quote.totalDiscount > 0) {
+        savingsPill.textContent = `Economia de ${formatBRL(quote.totalDiscount)}`;
+        savingsPill.classList.add("visible");
+      } else {
+        savingsPill.classList.remove("visible");
+      }
+
+      // Update Summary Label
+      const countServices =
+        (appState.autoscanSelected ? 1 : 0) +
+        (appState.advDiagSelected ? 1 : 0) +
+        (appState.prePurchaseMode ? 1 : 0) +
+        (quote.hasCoding ? 1 : 0);
+
+      document.getElementById("bottomBarSummaryLabel").textContent =
+        countServices > 0
+          ? `Orçamento (${quote.numFuncs} ${quote.numFuncs === 1 ? "função" : "funções"} • Ver detalhes)`
+          : "Selecione os serviços ou funções";
+
+      // Update Modal Breakdown & Preview
+      renderModalBreakdown(quote);
+      document.getElementById("waMessagePreview").textContent = buildWhatsAppMessageText(quote);
+    }
+
+    function renderModalBreakdown(quote) {
+      const container = document.getElementById("modalBreakdownList");
+      container.innerHTML = "";
+
+      if (quote.lines.length === 0) {
+        container.innerHTML = `<div class="empty-state">Nenhum serviço ou função selecionada ainda.</div>`;
+        return;
+      }
+
+      quote.lines.forEach(line => {
+        if (line.type === "info_saving") return; // Shown as informational note
+        const row = document.createElement("div");
+        row.className = `breakdown-line ${line.type === "discount" ? "discount" : ""}`;
+        row.innerHTML = `
+          <span>${line.label}</span>
+          <span>${line.value < 0 ? "- " + formatBRL(Math.abs(line.value)) : formatBRL(line.value)}</span>
+        `;
+        container.appendChild(row);
+      });
+
+      const totalRow = document.createElement("div");
+      totalRow.className = "breakdown-line total";
+      totalRow.innerHTML = `
+        <span>SUBTOTAL ESTIMADO</span>
+        <span>${formatBRL(quote.finalTotal)}</span>
+      `;
+      container.appendChild(totalRow);
+    }
+
+    /* --------------------------------------------------------------------------
+       11. MÁSCARA DE TELEFONE E GERADOR DE MENSAGEM WHATSAPP (7 ITENS EXIGIDOS)
+       -------------------------------------------------------------------------- */
+    function handlePhoneMask(event) {
+      let v = event.target.value.replace(/\D/g, "");
+      if (v.length > 11) v = v.slice(0, 11);
+      if (v.length > 6) {
+        v = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+      } else if (v.length > 2) {
+        v = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+      } else if (v.length > 0) {
+        v = `(${v}`;
+      }
+      event.target.value = v;
+      updateLiveSummary();
+    }
+
+    function getHardwareSummaryLines() {
+      const questions = HARDWARE_SCHEMA[appState.currentPlatform] || [];
+      const lines = [];
+      questions.forEach(q => {
+        const selectedVal = appState.hardwareAnswers[q.key];
+        const opt = q.options.find(o => o.val === selectedVal);
+        if (opt) {
+          lines.push(`• ${q.title}: ${opt.label}`);
+        }
+      });
+      if (appState.attachedPhotoName) {
+        lines.push(`• Foto anexada p/ conferência: ${appState.attachedPhotoName} (Enviarei a imagem a seguir)`);
+      }
+      return lines;
+    }
+
+    function buildWhatsAppMessageText(quoteObj) {
+      const quote = quoteObj || calculateQuoteBreakdown();
+      const name = (document.getElementById("clientName").value || "").trim() || "Não informado";
+      const phone = (document.getElementById("clientPhone").value || "").trim() || "Não informado";
+      const notes = (document.getElementById("clientNotes").value || "").trim();
+
+      const vehicle = VEHICLE_DATABASE.find(v => v.id === appState.selectedVehicleId);
+      const vehicleName = vehicle ? `${vehicle.brand} ${vehicle.name}` : "Veículo VAG";
+      const platformLabel = PLATFORM_INFO[appState.currentPlatform].code;
+
+      // 4. Lista dos Serviços selecionados
+      const selectedServicesList = [];
+      if (appState.autoscanSelected) {
+        selectedServicesList.push(
+          quote.autoscanAbated
+            ? "• AutoScan Inicial (R$ 50,00 -> 100% ABATIDO no Coding)"
+            : "• AutoScan Inicial — Leitura de avarias (R$ 50,00)"
+        );
+      }
+      if (appState.advDiagSelected) {
+        selectedServicesList.push("• Diagnóstico Avançado / Análise em Tempo Real (R$ 150,00)");
+      }
+      if (appState.prePurchaseMode === "static") {
+        selectedServicesList.push("• Laudo Pré-Compra VAG — Avaliação Estática no Local (R$ 150,00)");
+      } else if (appState.prePurchaseMode === "dynamic") {
+        selectedServicesList.push("• Laudo Pré-Compra VAG — Avaliação Dinâmica Completa (R$ 250,00)");
+      }
+      if (quote.hasCoding) {
+        if (appState.fullCodingActive) {
+          selectedServicesList.push(
+            quote.autoscanAbated
+              ? "• Pacote Full Coding — Ativar todas compatíveis (R$ 400,00 | +R$ 350,00 líquido c/ abatimento do AutoScan)"
+              : "• Pacote Full Coding — Ativar todas compatíveis (R$ 400,00 promocional)"
+          );
+        } else {
+          selectedServicesList.push(`• ${quote.codingTariffName} (${formatBRL(quote.codingNetPrice)})`);
+        }
+      }
+      if (selectedServicesList.length === 0) {
+        selectedServicesList.push("• Nenhum pacote/serviço principal selecionado");
+      }
+
+      // 5. Lista das ativações individuais marcadas
+      const evaluatedItems = getCompatibleFunctionsForCurrentState();
+      const chosenFuncs = evaluatedItems.filter(i => appState.selectedCodingIds.has(i.id));
+      const funcLines = chosenFuncs.length > 0
+        ? chosenFuncs.map((f, idx) => `  ${idx + 1}. ${f.name}`)
+        : ["  • Nenhuma ativação de codificação marcada"];
+
+      // 6. Subtotal detalhado com aviso do desconto promocional aplicado
+      let discountNote = "Sem descontos cumulativos adicionais.";
+      if (quote.autoscanAbated && appState.fullCodingActive) {
+        discountNote = "Desconto promocional Full Coding + 100% de abatimento dos R$ 50,00 do AutoScan Inicial aplicados!";
+      } else if (quote.autoscanAbated) {
+        discountNote = "Regra de Abatimento aplicada: R$ 50,00 do AutoScan Inicial 100% descontados no serviço de codificação!";
+      } else if (appState.fullCodingActive) {
+        discountNote = "Tarifa fixa promocional do Pacote Full Coding (R$ 400,00) aplicada!";
+      } else if (quote.totalDiscount > 0) {
+        discountNote = `Desconto progressivo Combo 5+ aplicado (Economia de ${formatBRL(quote.totalDiscount)})!`;
+      }
+
+      const msgParts = [
+        `*SOLICITAÇÃO DE ORÇAMENTO — @coding.toledo*`,
+        `📍 Toledo - PR | WhatsApp: (41) 99244-1057 | VCDS HEX-V2`,
+        ``,
+        `*1. IDENTIFICAÇÃO DO CLIENTE*`,
+        `• Nome: ${name}`,
+        `• WhatsApp: ${phone}`,
+        ...(notes ? [`• Obs: ${notes}`] : []),
+        ``,
+        `*2. VEÍCULO, ANO E PLATAFORMA*`,
+        `• Veículo: ${vehicleName}`,
+        `• Ano Modelo: ${appState.selectedYear}`,
+        `• Plataforma Identificada: ${platformLabel}`,
+        ``,
+        `*3. RESUMO DE HARDWARE INFORMADO*`,
+        ...getHardwareSummaryLines(),
+        ``,
+        `*4. SERVIÇOS E PACOTES SELECIONADOS*`,
+        ...selectedServicesList,
+        ``,
+        `*5. ATIVAÇÕES DE CODIFICAÇÃO DESEJADAS (${chosenFuncs.length})*`,
+        ...funcLines,
+        ``,
+        `*6. SUBTOTAL DETALHADO*`,
+        `• Valor Total Estimado: *${formatBRL(quote.finalTotal)}*`,
+        `• Condição Comercial: ${discountNote}`,
+        ``,
+        `*7. NOTA TÉCNICA DE VALIDAÇÃO*`,
+        `_Exibimos todas as funções possíveis da arquitetura do veículo para que nenhuma oportunidade fique de fora. A disponibilidade final de cada item é validada presencialmente no AutoScan conforme a versão exata dos módulos de fábrica._`,
+        `_Orçamento prévio sujeito à confirmação presencial da compatibilidade física dos módulos via AutoScan._`
+      ];
+
+      return msgParts.join("\n");
+    }
+
+    function submitToWhatsApp() {
+      const quote = calculateQuoteBreakdown();
+      const hasAnySelection =
+        appState.autoscanSelected ||
+        appState.advDiagSelected ||
+        Boolean(appState.prePurchaseMode) ||
+        quote.hasCoding;
+
+      if (!hasAnySelection) {
+        showToast("Selecione ao menos um serviço de Diagnóstico, Laudo Pré-Compra ou função de Codificação.");
+        document.getElementById("step3").scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+
+      const nameInput = document.getElementById("clientName");
+      const phoneInput = document.getElementById("clientPhone");
+
+      if (!nameInput.value.trim()) {
+        showToast("Por favor, informe seu nome no Passo 05 antes de enviar.");
+        nameInput.focus();
+        document.getElementById("step5").scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+
+      const message = buildWhatsAppMessageText(quote);
+      const encodedUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(encodedUrl, "_blank", "noopener,noreferrer");
+    }
+
+    /* --------------------------------------------------------------------------
+       12. UTILITÁRIOS DE MODAL, CLIPBOARD E TOAST
+       -------------------------------------------------------------------------- */
+    function openSummaryModal() {
+      updateLiveSummary();
+      document.getElementById("summaryModal").classList.add("open");
+    }
+
+    function closeSummaryModal() {
+      document.getElementById("summaryModal").classList.remove("open");
+    }
+
+    function copyFormattedQuoteText() {
+      const text = buildWhatsAppMessageText();
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        showToast("Resumo do orçamento copiado para a área de transferência!");
+      } catch (err) {
+        showToast("Não foi possível copiar automaticamente.");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    let toastTimeout = null;
+    function showToast(message) {
+      const toast = document.getElementById("toastMsg");
+      toast.textContent = message;
+      toast.classList.add("show");
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3400);
+    }
+  </script>
+</body>
+</html>

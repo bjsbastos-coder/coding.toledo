@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black November 2026 - Coding Toledo | VCDS HEX-V2</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111;
+            --card: #1a1a1a;
+            --border: #333;
+            --gold: #d4af37;
+            --gold-light: #f0d060;
+            --text: #e0e0e0;
+            --text-muted: #999;
+            --accent: #1a6dd4;
+            --whatsapp: #25D366;
+            --danger: #e74c3c;
+            --success: #27ae60;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(180deg, #0d0d0d 0%, #111 100%);
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header img.logo { max-width: 180px; height: auto; }
+        nav {
+            background: var(--surface);
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+        }
+        nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        nav a:hover { background: #222; color: var(--gold-light); }
+        section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero-banner {
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 40%, #0d1117 100%);
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid #222;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(212,175,55,0.05) 0%, transparent 60%);
+            animation: pulse 6s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+        .hero-banner > * { position: relative; z-index: 1; }
+        .hero-banner h2 { color: var(--gold); font-size: 2rem; margin-bottom: 16px; }
+        .hero-banner h1 { color: var(--gold-light); font-size: 2.5rem; margin-bottom: 10px; }
+        .price-highlight { color: var(--gold-light); font-size: 2.8rem; font-weight: 800; display: block; margin: 12px 0; }
+        .badge {
+            display: inline-block;
+            background: var(--gold);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin: 4px;
+        }
+        .badge-outline {
+            background: transparent;
+            border: 1.5px solid var(--gold);
+            color: var(--gold);
+        }
+        button, .btn, a.btn {
+            background: var(--gold);
+            color: #000;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            margin: 8px 6px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        button:hover, .btn:hover, a.btn:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(212,175,55,0.3); }
+        .btn-outline { background: transparent; border-color: var(--gold); color: var(--gold); }
+        .btn-outline:hover { background: rgba(212,175,55,0.1); color: var(--gold-light); }
+        .btn-whatsapp { background: var(--whatsapp); color: #fff; border-color: var(--whatsapp); }
+        .btn-whatsapp:hover { background: #1ebe57; }
+        .btn-sm { padding: 8px 20px; font-size: 0.9rem; }
+        .btn-danger { background: var(--danger); color: #fff; border-color: var(--danger); }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 12px 0;
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: #555; }
+        .card.highlight { border-color: var(--gold); background: #1a1a15; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+        table th, table td { border: 1px solid var(--border); padding: 12px 14px; text-align: left; }
+        table th { background: var(--card); color: var(--gold); font-weight: 600; }
+        .configurador { background: var(--surface); border-radius: 16px; padding: 30px; border: 1px solid #222; }
+        .configurador select, .configurador input[type="text"], .configurador input[type="tel"] {
+            background: #1c1c1c;
+            color: #fff;
+            border: 1.5px solid #444;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin: 6px 4px;
+            width: 100%;
+            max-width: 400px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        .configurador select:focus, .configurador input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
+        }
+        .configurador label { display: block; color: var(--text-muted); font-size: 0.85rem; margin: 10px 0 4px; font-weight: 500; }
+        .step-indicator { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+        .step { padding: 8px 16px; border-radius: 20px; background: #222; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; }
+        .step.active { background: var(--gold); color: #000; }
+        .step.done { background: var(--success); color: #fff; }
+        footer {
+            background: var(--surface);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid #222;
+        }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        @media (max-width: 768px) {
+            .two-col, .three-col { grid-template-columns: 1fr; }
+            section { padding: 20px 12px; }
+            .hero-banner { padding: 24px 16px; }
+            .configurador select, .configurador input { width: 100%; max-width: 100%; }
+            table { font-size: 0.8rem; }
+            table th, table td { padding: 8px 6px; }
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin: 3px;
+        }
+        .tag-conv { background: #1a3a1a; color: #4ade80; }
+        .tag-premium { background: #3a2a0a; color: var(--gold); }
+        .tag-advanced { background: #2a1a3a; color: #c084fc; }
+        .tag-diag { background: #1a2a3a; color: #60a5fa; }
+        .function-list { max-height: 500px; overflow-y: auto; padding-right: 8px; }
+        .function-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 14px 12px;
+            border-bottom: 1px solid #222;
+            gap: 12px;
+        }
+        .function-item:hover { background: #1a1a1a; }
+        .function-item input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--gold); cursor: pointer; margin-top: 2px; flex-shrink: 0; }
+        .function-item .func-info { flex: 1; }
+        .function-item .func-name { font-weight: 600; margin-bottom: 4px; }
+        .function-item .func-desc { font-size: 0.8rem; color: var(--text-muted); }
+        .function-item .func-price { font-weight: 700; color: var(--gold); margin-top: 4px; }
+        .summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #222; }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .promo-tag {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-block;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .info-box { background: #111; border: 1px solid #333; border-radius: 8px; padding: 16px; margin: 12px 0; }
+        .whatsapp-preview {
+            background: #121212;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header>
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABgAAAAAQAAAGAAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAfCgAwAEAAAAAQAAAfAAAAAA/9sAQwACAQECAQECAgICAgICAgMFAwMDAwMGBAQDBQcGBwcHBgcHCAkLCQgJCggHBw0NCgsMDAwMBwkNDw0MDw4MDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAAAQADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYI/2Qb/aAAwDAQACEQMRAD8A/fyiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z" alt="Coding Toledo Logo" class="logo">
+    <p style="color: var(--text-muted); margin-top: 4px;">📍 Toledo–PR • VCDS HEX-V2 • VW & Audi (2000 a 2019)</p>
+</header>
+
+<!-- ==================== NAVEGAÇÃO ==================== -->
+<nav>
+    <a href="#servicos">Serviços</a>
+    <a href="#configurador">Configurador</a>
+    <a href="#exemplos">Exemplos Visuais</a>
+    <a href="#precos">Tabela de Preços</a>
+    <a href="#parcelamento">Parcelamento</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contato">Contato</a>
+</nav>
+
+<!-- ==================== BANNER PRINCIPAL ==================== -->
+<section>
+    <div class="hero-banner">
+        <span class="badge" style="background:#c0392b;color:#fff;">🔥 BLACK NOVEMBER 2026</span>
+        <h1>FULL CODING + 1 FUNÇÃO PREMIUM DE BÔNUS</h1>
+        <span class="price-highlight">R$ 400</span>
+        <p>à vista no Pix (Válido até 30/11/2026)</p>
+        <br>
+        <a href="#configurador" class="btn">Ativar no Configurador →</a>
+        <a href="#regras" class="btn btn-outline btn-sm">Ver regras da campanha</a>
+    </div>
+</section>
+
+<!-- ==================== SERVIÇOS RÁPIDOS ==================== -->
+<section id="servicos">
+    <h2 style="color: var(--gold); text-align: center; margin-bottom: 30px;">O que você precisa hoje?</h2>
+    <div class="two-col">
+        <div class="card highlight">
+            <h3 style="color: var(--gold);">✨ 1. Personalização</h3>
+            <p>Selecione seu VW ou Audi, descubra as funções ocultas compatíveis e envie pelo WhatsApp.</p>
+            <a href="#configurador" class="btn btn-sm">Escolher Meu Veículo</a>
+        </div>
+        <div class="card">
+            <h3>🛡️ 2. Diagnóstico Pré-Compra</h3>
+            <p>Avaliação Estática (R$ 150) ou Dinâmica (R$ 250). Confira todos os módulos e câmbio DSG.</p>
+            <a href="#pre-compra" class="btn btn-sm btn-outline">Ver Opções</a>
+        </div>
+    </div>
+    <div style="margin-top: 12px;">
+        <div class="card">
+            <h3>⚠️ 3. Luz Acesa no Painel</h3>
+            <p>Luz de injeção, EPC, ABS ou airbag? Leitura de falhas (R$ 50) ou diagnóstico avançado (R$ 150).</p>
+            <a href="#diagnostico" class="btn btn-sm btn-outline">Entender como funciona</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CONFIGURADOR ==================== -->
+<section id="configurador">
+    <h2 style="color: var(--gold); text-align: center; margin-bottom: 10px;">Configurador de Veículos e Orçamento Online</h2>
+    <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Catálogo: <strong>47 veículos</strong> • <strong>104 funções técnicas</strong></p>
+
+    <div class="configurador">
+        <div class="step-indicator">
+            <span class="step active" id="step1-ind">1. Seu Veículo</span>
+            <span class="step" id="step2-ind">2. Funções & Preços</span>
+            <span class="step" id="step3-ind">3. Enviar WhatsApp</span>
+        </div>
+
+        <!-- ETAPA 1 -->
+        <div id="etapa1">
+            <h3 style="color: var(--gold); margin-bottom: 20px;">Etapa 1 — Identifique seu Veículo</h3>
+            <label>1. Marca do Veículo</label>
+            <select id="marcaSelect" onchange="atualizarModelos()">
+                <option value="">-- Selecione a Marca --</option>
+                <option value="volkswagen">Volkswagen</option>
+                <option value="audi">Audi</option>
+            </select>
+
+            <label>2. Modelo e Geração</label>
+            <select id="modeloSelect" onchange="atualizarAnos()">
+                <option value="">-- Primeiro selecione a marca --</option>
+            </select>
+
+            <label>3. Ano do Veículo</label>
+            <select id="anoSelect" onchange="atualizarArquitetura()">
+                <option value="">-- Primeiro selecione o modelo --</option>
+            </select>
+
+            <div id="arquiteturaInfo" style="margin-top: 16px; padding: 12px; background: #111; border-radius: 8px; border: 1px solid #333;" class="hidden">
+                <strong>Arquitetura Identificada:</strong> <span id="arquiteturaNome"></span><br>
+                <small style="color: var(--text-muted);">Protocolo: <span id="protocoloNome"></span></small>
+            </div>
+
+            <div id="veiculoSelecionado" style="margin-top: 20px; padding: 16px; background: #1a1a15; border-radius: 8px; border: 1px solid var(--gold);" class="hidden">
+                ✅ Veículo selecionado: <strong id="veiculoNome"></strong>
+            </div>
+
+            <button class="btn" onclick="irParaFuncoes()" id="btnVerFuncoes" disabled>Ver Funções, Valores e Promoções →</button>
+        </div>
+
+        <!-- ETAPA 2 -->
+        <div id="etapa2" class="hidden">
+            <h3 style="color: var(--gold); margin-bottom: 20px;">Etapa 2 — Escolha as Funções e Personalizações</h3>
+            <p style="margin-bottom: 8px;">Veículo: <strong id="veiculoEtapa2"></strong></p>
+
+            <div style="margin-bottom: 20px;">
+                <span class="badge badge-outline" onclick="selecionarFullCoding()" style="cursor:pointer;">★ Pacote Full Coding (R$ 400)</span>
+                <span class="badge" onclick="selecionarTudoLiberado()" style="cursor:pointer; background: var(--gold); color: #000;">🔥 Tudo Liberado: Conv. + Premiums (R$ 800)</span>
+                <button class="btn btn-sm btn-outline" onclick="limparSelecao()" style="margin-left: 8px;">Limpar Seleção</button>
+            </div>
+
+            <div style="background: #1a1a15; padding: 12px; border-radius: 8px; margin-bottom: 16px; border: 1px solid var(--gold);">
+                <strong>🎁 Bônus Black November:</strong> Ao ativar o <strong>Full Coding (R$ 400)</strong>, a 1ª função Premium (R$ 200) sai por <strong>R$ 0,00 (Bônus)</strong>!
+            </div>
+
+            <div style="margin-bottom: 16px;">
+                <label>Filtrar por Categoria:</label>
+                <select onchange="filtrarFuncoes(this.value)">
+                    <option value="todas">Todas</option>
+                    <option value="convencionais">Convencionais • R$ 100</option>
+                    <option value="premium">★ Premium • R$ 200</option>
+                </select>
+                <select onchange="filtrarPorSistema(this.value)" style="margin-left: 8px;">
+                    <option value="todas">Todas as Áreas</option>
+                    <option value="painel">Painel & Mídia</option>
+                    <option value="iluminacao">Iluminação & Estética</option>
+                    <option value="conforto">Conforto & Chave</option>
+                    <option value="dinamica">Dinâmica & Assistência</option>
+                </select>
+            </div>
+
+            <div class="function-list" id="listaFuncoes">
+                <!-- Preenchido via JavaScript -->
+            </div>
+
+            <div style="margin-top: 20px; padding: 16px; background: #111; border-radius: 8px;">
+                <strong>Total parcial:</strong> <span id="totalParcial" style="color: var(--gold-light); font-size: 1.3rem;">R$ 0,00</span> no Pix
+            </div>
+
+            <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-outline" onclick="voltarEtapa1()">← Trocar Carro</button>
+                <button class="btn" onclick="irParaWhatsApp()">Avançar para Enviar no WhatsApp →</button>
+            </div>
+        </div>
+
+        <!-- ETAPA 3 -->
+        <div id="etapa3" class="hidden">
+            <h3 style="color: var(--gold); margin-bottom: 20px;">Resumo do Orçamento</h3>
+            <p><strong id="veiculoEtapa3"></strong></p>
+            <div id="resumoItens" style="margin: 16px 0;"></div>
+            <div style="padding: 16px; background: #1a1a15; border-radius: 8px; margin: 16px 0;">
+                <h4 style="color: var(--gold-light);">Total à Vista (Pix): <span id="totalFinal" style="font-size: 1.5rem;">R$ 0,00</span></h4>
+            </div>
+            <div class="whatsapp-preview" id="whatsappPreview"></div>
+            <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-outline" onclick="voltarEtapa2()">← Voltar para Funções</button>
+                <button class="btn btn-whatsapp" onclick="enviarWhatsApp()">📱 Enviar pelo WhatsApp</button>
+                <button class="btn btn-outline btn-sm" onclick="copiarOrcamento()">📋 Copiar Texto</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== EXEMPLOS VISUAIS ==================== -->
+<section id="exemplos">
+    <h2 style="color: var(--gold); text-align: center; margin-bottom: 30px;">Exemplos Visuais de Personalizações Premium</h2>
+    <div class="three-col">
+        <div class="card">
+            <h4 style="color: var(--gold-light);">🎨 Painel Esportivo</h4>
+            <p>Temas GTI, GLI, R-Line, S3 • Escala 280/300 km/h • Até 30 cores ambiente • Needle Sweep</p>
+            <span class="tag tag-premium">Premium • R$ 200</span>
+        </div>
+        <div class="card">
+            <h4 style="color: var(--gold-light);">
+

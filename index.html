@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#15191f">
+  <meta name="description" content="Coding Toledo: diagnóstico automotivo, coding sujeito a confirmação específica, linha diesel e avaliação de híbridos e elétricos. Atendimento móvel sem custo de deslocamento dentro do perímetro urbano de Toledo.">
+  <title>Coding Toledo | Diagnóstico e Eletrônica Automotiva</title>
+
+  <style>
+    :root {
+      --bg: #15191f;
+      --bg-soft: #1c222b;
+      --card: #222a35;
+      --navy: #10274c;
+      --blue: #2878bd;
+      --silver: #c7d0da;
+      --white: #f5f7fa;
+      --muted: #a5afba;
+      --line: #34404e;
+      --green: #39c995;
+      --gold: #e5b34e;
+      --red: #e17b7b;
+      --radius: 16px;
+      --shadow: 0 14px 38px rgba(0, 0, 0, .22);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-y: auto;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      color: var(--white);
+      background:
+        radial-gradient(ellipse at top right, rgba(40, 120, 189, .14), transparent 36rem),
+        var(--bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+
+    .container {
+      width: min(1120px, calc(100% - 36px));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: relative;
+      z-index: 2;
+      background: rgba(21, 25, 31, .97);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      min-height: 104px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 20px;
+    }
+
+    .brand img {
+      width: min(270px, 68vw);
+      max-height: 88px;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .hero { padding: 58px 0 34px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 18px;
+      font-size: clamp(2.15rem, 5vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -.035em;
+    }
+
+    h1 span { color: var(--silver); }
+
+    .hero-copy {
+      max-width: 690px;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 11px 18px;
+      color: var(--white);
+      font-weight: 750;
+      border: 1px solid var(--silver);
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1b4a7e, #10274c);
+      cursor: pointer;
+      transition: transform .18s ease, filter .18s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.15);
+    }
+
+    .button.secondary {
+      background: transparent;
+      border-color: var(--line);
+    }
+
+    .mobile-callout {
+      padding: 22px;
+      border: 1px solid rgba(57, 201, 149, .55);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(57, 201, 149, .12), rgba(16, 39, 76, .42));
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-callout strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--green);
+      font-size: 1.13rem;
+    }
+
+    .mobile-callout p { margin: 0; color: var(--silver); }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 25px;
+    }
+
+    .chip {
+      padding: 6px 11px;
+      color: var(--silver);
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: .8rem;
+    }
+
+    .services { padding: 20px 0 55px; }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tab {
+      min-height: 76px;
+      padding: 12px;
+      color: var(--silver);
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      text-align: left;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .tab small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 450;
+    }
+
+    .tab.active {
+      color: var(--white);
+      background: linear-gradient(145deg, #1e5289, #10274c);
+      border-color: var(--silver);
+    }
+
+    .panel {
+      display: none;
+      padding: clamp(18px, 4vw, 32px);
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel.active { display: block; }
+    .panel > h2 { margin-bottom: 6px; }
+    .lead { margin-bottom: 22px; color: var(--muted); }
+
+    /* As imagens funcionam como identificadores visuais da área, não como banners. */
+    .section-image {
+      width: 112px;
+      height: 112px;
+      margin: 6px 0 18px;
+      object-fit: contain;
+      object-position: left center;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #15191f;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      margin: 14px 0 20px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-right: 7px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: .68rem;
+      font-weight: 850;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    .badge.confirm {
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      background: rgba(229, 179, 78, .1);
+    }
+
+    .badge.not-confirmed {
+      color: var(--red);
+      border: 1px solid var(--red);
+      background: rgba(225, 123, 123, .1);
+    }
+
+    .badge.diagnostic {
+      color: var(--silver);
+      border: 1px solid #8794a3;
+      background: rgba(135, 148, 163, .1);
+    }
+
+    .filters, .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .form-grid.five {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      align-items: end;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    select, input {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      color: var(--white);
+      background: #171d25;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+    }
+
+    select:disabled { opacity: .55; }
+
+    .function-list, .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .function-option, .card {
+      padding: 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .function-option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      cursor: pointer;
+    }
+
+    .function-option input {
+      width: auto;
+      min-height: auto;
+      margin-top: 5px;
+      accent-color: var(--blue);
+    }
+
+    .function-option:has(input:checked) {
+      border-color: var(--silver);
+      background: rgba(40, 120, 189, .16);
+    }
+
+    .card h3 { margin-bottom: 6px; font-size: 1.02rem; }
+    .card p { margin-bottom: 0; color: var(--muted); font-size: .91rem; }
+
+    .price {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--silver);
+      font-weight: 800;
+    }
+
+    .notice {
+      margin: 18px 0;
+      padding: 14px 16px;
+      color: var(--silver);
+      background: rgba(229, 179, 78, .08);
+      border-left: 3px solid var(--gold);
+      border-radius: 7px;
+      font-size: .9rem;
+    }
+
+    .notice.mobile {
+      background: rgba(57, 201, 149, .08);
+      border-left-color: var(--green);
+    }
+
+    .notice.caution {
+      background: rgba(225, 123, 123, .08);
+      border-left-color: var(--red);
+    }
+
+    .empty {
+      padding: 18px;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .cta {
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .cta h3 { margin-bottom: 14px; }
+
+    .how { padding: 12px 0 55px; }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .how-grid .card strong {
+      display: inline-grid;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 10px;
+      place-items: center;
+      color: white;
+      background: var(--navy);
+      border: 1px solid var(--silver);
+      border-radius: 50%;
+    }
+
+    footer {
+      padding: 28px 0 90px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: .88rem;
+    }
+
+    footer a { color: var(--silver); text-decoration: underline; }
+
+    .float-wa {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10;
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 900px) {
+      .form-grid.five { grid-template-columns: repeat(2, 1fr); }
+      .form-grid.five > :last-child { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 800px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .tabs { grid-template-columns: repeat(2, 1fr); }
+      .how-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .container { width: min(100% - 24px, 1120px); }
+      .nav { min-height: 82px; }
+      .brand img { width: min(220px, 75vw); max-height: 70px; }
+      .tabs { gap: 7px; }
+      .tab { min-height: 72px; padding: 10px; font-size: .85rem; }
+      .tab small { font-size: .7rem; }
+      .filters, .form-grid, .form-grid.five { grid-template-columns: 1fr; }
+      .form-grid.five > :last-child { grid-column: auto; }
+      .section-image { width: 88px; height: 88px; }
+      .float-wa { right: 12px; bottom: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#" aria-label="Coding Toledo — início">
+        <img src="logo_coding_toledo.png" alt="Logo Coding Toledo">
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Precisão eletrônica automotiva</span>
+          <h1>Diagnóstico e serviços automotivos <span>em Toledo e região.</span></h1>
+          <p class="hero-copy">
+            Diagnóstico, serviços de oficina, linha diesel e avaliação de híbridos e elétricos.
+            Serviços de coding e personalização são tratados como sujeitos a confirmação específica
+            para o veículo, módulo e ferramenta disponível.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#servicos">Ver serviços</a>
+          </div>
+          <div class="chips" aria-label="Equipamentos e recursos">
+            <span class="chip">VCDS HEX-V2</span>
+            <span class="chip">ThinkDiag 2 + DiagZone Pro</span>
+            <span class="chip">CAN-FD / DoIP</span>
+            <span class="chip">Adaptador/bypass SGW disponível</span>
+          </div>
+        </div>
+
+        <aside class="mobile-callout">
+          <strong>Atendimento móvel em Toledo</strong>
+          <p>
+            Um dos nossos diferenciais é ir até você. O deslocamento é
+            <b>sem custo dentro do perímetro urbano de Toledo</b>.
+            Para endereços fora desse perímetro, consulte as condições antes de agendar.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="services container" id="servicos">
+      <div class="tabs" role="tablist" aria-label="Áreas de serviço">
+        <button class="tab active" id="tab-coding" role="tab" aria-selected="true" aria-controls="coding">
+          Personalização & Coding
+          <small>VW · Audi · BMW · Fiat · Jeep</small>
+        </button>
+        <button class="tab" id="tab-diesel" role="tab" aria-selected="false" aria-controls="diesel">
+          Linha Diesel & Oficina
+          <small>DPF · EPB · BMS · TPMS</small>
+        </button>
+        <button class="tab" id="tab-ev" role="tab" aria-selected="false" aria-controls="ev">
+          Híbridos & Elétricos
+          <small>SOH · SOC · diagnóstico EV</small>
+        </button>
+        <button class="tab" id="tab-precompra" role="tab" aria-selected="false" aria-controls="precompra">
+          Diagnóstico & Pré-compra
+          <small>Estático e dinâmico</small>
+        </button>
+      </div>
+
+      <section class="panel active" id="coding" role="tabpanel" aria-labelledby="tab-coding">
+        <h2>Personalização & Coding</h2>
+        <p class="lead">
+          Selecione marca, modelo e versão/geração para informar o veículo no pedido.
+          A seleção não confirma compatibilidade nem disponibilidade da função.
+        </p>
+
+        <div class="legend">
+          <span><span class="badge confirm">A confirmar no veículo</span> compatibilidade ainda não verificada para esta combinação específica</span>
+          <span><span class="badge not-confirmed">Não confirmada</span> não é anunciada como serviço disponível</span>
+        </div>
+
+        <div class="notice caution">
+          <b>Importante:</b> o ThinkDiag 2 com DiagZone Pro pode oferecer diagnóstico, dados ao vivo,
+          testes ou funções de manutenção conforme o veículo. Isso, por si só, não comprova capacidade
+          de codificação ou gravação. Quando aplicável, a execução depende de confirmação do módulo,
+          equipamento original, versão de software e acesso de segurança. Nenhum resultado é garantido
+          antes da avaliação e do procedimento adequado.
+        </div>
+
+        <div class="filters">
+          <div>
+            <label for="make">Marca</label>
+            <select id="make"><option value="">Selecione a marca</option></select>
+          </div>
+          <div>
+            <label for="model">Modelo</label>
+            <select id="model" disabled><option value="">Selecione a marca</option></select>
+          </div>
+          <div>
+            <label for="version">Versão / geração</label>
+            <select id="version" disabled><option value="">Selecione o modelo</option></select>
+          </div>
+        </div>
+
+        <div id="functionBox" class="empty">Selecione marca, modelo e versão para ver os itens sujeitos a confirmação.</div>
+        <div id="brandNotice"></div>
+
+        <div class="notice">
+          <b>Fiat e Jeep — SGW:</b> o adaptador/bypass disponível não deve ser entendido como autorização
+          de acesso à rede da montadora nem como garantia de que uma codificação será gravada. A
+          necessidade de SGW, acesso autorizado, ferramenta, assinatura ou procedimento adicional
+          precisa ser identificada para cada veículo. Não anunciamos funções dependentes de SGW como
+          serviço direto pelo ThinkDiag 2/DiagZone Pro.
+        </div>
+
+        <div class="notice mobile">
+          <b>Atendimento móvel:</b> deslocamento sem custo dentro do perímetro urbano de Toledo.
+          Para outras localidades, consulte as condições.
+        </div>
+
+        <div class="cta">
+          <h3>Solicitar triagem de coding</h3>
+          <div class="form-grid five">
+            <div><label for="codingYear">Ano do veículo</label><input id="codingYear" placeholder="Ex.: 2021"></div>
+            <div><label for="codingCity">Cidade</label><input id="codingCity" placeholder="Ex.: Toledo"></div>
+            <div><label for="codingModelText">Modelo do veículo</label><input id="codingModelText" placeholder="Ex.: Renegade"></div>
+            <div><label for="codingVersionText">Versão / motorização</label><input id="codingVersionText" placeholder="Ex.: Longitude 1.3T"></div>
+            <div>
+              <label for="codingSend">Enviar pedido</label>
+              <button class="button" id="codingSend" type="button">Continuar no WhatsApp</button>
+            </div>
+          </div>
+          <p class="lead">
+            Em peças ou módulos usados/fornecidos pelo cliente, não há garantia sobre funcionamento
+            ou durabilidade do componente.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel" id="diesel" role="tabpanel" aria-labelledby="tab-diesel">
+        <h2>Linha Diesel & Funções Especiais</h2>
+        <p class="lead">
+          Serviços e procedimentos de oficina sujeitos à compatibilidade do veículo, à função
+          disponível na ferramenta e à avaliação técnica prévia.
+        </p>
+
+        <img class="section-image" src="linha_diesel_coding_toledo.png" alt="Identificação visual da área Linha Diesel Coding Toledo" loading="lazy">
+
+        <div class="cards">
+          <article class="card">
+            <h3>Regeneração de DPF</h3>
+            <p>
+              A regeneração forçada é um procedimento de manutenção, não uma codificação.
+              Só deve ser considerada após avaliar compatibilidade, condições do sistema,
+              saturação e demais parâmetros necessários.
+            </p>
+            <span class="price">Referência: R$ 250 a R$ 450+ ou sob consulta</span>
+          </article>
+          <article class="card">
+            <h3>Freio eletrônico (EPB)</h3>
+            <p>
+              Diagnóstico, teste ou procedimento de manutenção/adaptação apenas se a função
+              específica estiver disponível e for apropriada para o veículo.
+            </p>
+            <span class="badge confirm">A confirmar no veículo</span>
+          </article>
+          <article class="card">
+            <h3>Registro de bateria (BMS)</h3>
+            <p>
+              Registro/reset de manutenção, quando suportado. Esse procedimento não equivale
+              a codificação geral de módulos.
+            </p>
+            <span class="badge confirm">A confirmar no veículo</span>
+          </article>
+          <article class="card">
+            <h3>TPMS, TBI e câmbio</h3>
+            <p>
+              Diagnóstico, aprendizado, adaptação ou programação são operações diferentes.
+              A ferramenta e o procedimento compatíveis precisam ser confirmados para cada caso.
+            </p>
+            <span class="badge confirm">A confirmar no veículo</span>
+          </article>
+          <article class="card">
+            <h3>Alinhamento de PROXI — Fiat/Jeep</h3>
+            <p>
+              Não anunciado como função garantida. A disponibilidade depende do veículo, módulos,
+              SGW/acesso de segurança e suporte efetivo da ferramenta para o procedimento.
+            </p>
+            <span class="badge not-confirmed">Não confirmada previamente</span>
+          </article>
+        </div>
+
+        <div class="notice caution">
+          Diagnóstico ou leitura de falhas não comprova que a ferramenta consiga executar teste de
+          atuador, adaptação, codificação ou programação. Cada operação será identificada e verificada
+          separadamente antes de ser oferecida.
+        </div>
+
+        <div class="notice mobile">
+          <b>Atendimento móvel:</b> sem custo de deslocamento dentro do perímetro urbano de Toledo.
+          Fora dessa área, consulte antes de agendar.
+        </div>
+
+        <div class="cta">
+          <h3>Solicitar triagem para linha diesel ou oficina</h3>
+          <div class="form-grid">
+            <div><label for="dieselVehicle">Veículo</label><input id="dieselVehicle" placeholder="Ex.: Hilux SRV 2.8"></div>
+            <div><label for="dieselYear">Ano</label><input id="dieselYear" placeholder="Ex.: 2020"></div>
+            <div><label for="dieselVersion">Versão / motorização</label><input id="dieselVersion" placeholder="Ex.: 2.8 diesel"></div>
+          </div>
+          <div class="form-grid">
+            <div><label for="dieselCity">Cidade</label><input id="dieselCity" placeholder="Ex.: Toledo"></div>
+            <div>
+              <label for="dieselService">Serviço de interesse</label>
+              <select id="dieselService">
+                <option>Diagnóstico / AutoScan</option>
+                <option>Regeneração de DPF — verificar compatibilidade</option>
+                <option>EPB — verificar procedimento</option>
+                <option>BMS — verificar procedimento</option>
+                <option>TPMS — verificar procedimento</option>
+                <option>TBI / câmbio — verificar procedimento</option>
+                <option>PROXI Fiat/Jeep — não confirmado previamente</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div><label>&nbsp;</label><button class="button" id="dieselSend" type="button">Continuar no WhatsApp</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="ev" role="tabpanel" aria-labelledby="tab-ev">
+        <h2>Híbridos & Elétricos</h2>
+        <p class="lead">
+          Avaliação eletrônica de veículos eletrificados. O acesso a dados de bateria e módulos
+          depende do veículo, da cobertura disponível e dos dados expostos pelo sistema.
+        </p>
+
+        <img class="section-image" src="hibridos_e_eletricos_coding_toledo.png" alt="Identificação visual da área Híbridos e Elétricos Coding Toledo" loading="lazy">
+
+        <div class="cards">
+          <article class="card">
+            <h3>Dados de bateria de alta tensão</h3>
+            <p>
+              Consulta de SOH/SOC ou outros parâmetros somente quando disponibilizados pelo veículo
+              e acessíveis pela ferramenta. Não se presume leitura de equilíbrio de células.
+            </p>
+            <span class="badge confirm">A confirmar no veículo</span>
+          </article>
+          <article class="card">
+            <h3>Diagnóstico eletrônico EV/Hybrid</h3>
+            <p>
+              A cobertura de módulos, testes e dados varia conforme marca, modelo, ano e sistema.
+              O AutoScan não garante acesso a todos os módulos ou funções.
+            </p>
+            <span class="badge confirm">A confirmar no veículo</span>
+          </article>
+          <article class="card">
+            <h3>Triagem eletrônica pré-compra</h3>
+            <p>
+              Escopo e disponibilidade devem ser confirmados para o veículo específico.
+              A avaliação eletrônica não substitui inspeção mecânica ou estrutural.
+            </p>
+            <span class="badge confirm">Avaliação prévia</span>
+          </article>
+        </div>
+
+        <div class="notice">Orçamento sob consulta. Informe marca, modelo, ano e versão para a triagem de compatibilidade.</div>
+        <div class="notice mobile">
+          <b>Atendimento móvel:</b> sem custo de deslocamento dentro do perímetro urbano de Toledo.
+          Para outras cidades, consulte as condições.
+        </div>
+
+        <div class="cta">
+          <h3>Solicitar avaliação de híbrido ou elétrico</h3>
+          <div class="form-grid">
+            <div><label for="evVehicle">Veículo</label><input id="evVehicle" placeholder="Ex.: BYD Dolphin"></div>
+            <div><label for="evYear">Ano</label><input id="evYear" placeholder="Ex.: 2024"></div>
+            <div><label for="evVersion">Versão</label><input id="evVersion" placeholder="Ex.: versão/motorização"></div>
+          </div>
+          <div class="form-grid">
+            <div><label for="evCity">Cidade</label><input id="evCity" placeholder="Ex.: Toledo"></div>
+            <div>
+              <label for="evService">Serviço</label>
+              <select id="evService">
+                <option>Verificar dados SOH/SOC disponíveis</option>
+                <option>Diagnóstico eletrônico EV/Hybrid</option>
+                <option>Triagem eletrônica pré-compra</option>
+              </select>
+            </div>
+            <div><label>&nbsp;</label><button class="button" id="evSend" type="button">Continuar no WhatsApp</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="precompra" role="tabpanel" aria-labelledby="tab-precompra">
+        <h2>Diagnóstico & Laudo Pré-Compra</h2>
+        <p class="lead">
+          Diagnóstico eletrônico para apoiar a avaliação de um veículo antes da compra.
+          O escopo é informado com clareza e depende da cobertura disponível para o veículo.
+        </p>
+
+        <div class="cards">
+          <article class="card">
+            <h3>AutoScan — varredura eletrônica</h3>
+            <p>Leitura dos módulos acessíveis e das falhas que o sistema disponibilizar.</p>
+            <span class="price">R$ 100</span>
+            <p style="margin-top:8px"><b style="color:var(--green)">Abatido integralmente</b> se fechar uma ativação ou serviço no mesmo atendimento.</p>
+          </article>
+          <article class="card">
+            <h3>Pré-compra estático</h3>
+            <p>Varredura eletrônica dos módulos acessíveis e leitura de falhas disponíveis.</p>
+            <span class="price">Até 2019: R$ 150<br>2020+: R$ 200</span>
+          </article>
+          <article class="card">
+            <h3>Pré-compra dinâmico</h3>
+            <p>Varredura eletrônica e, quando viável, observação de parâmetros durante teste combinado.</p>
+            <span class="price">Até 2019: R$ 250<br>2020+: R$ 300 a R$ 350</span>
+          </article>
+        </div>
+
+        <div class="notice caution">
+          O diagnóstico eletrônico não é inspeção mecânica, estrutural ou cautelar. A lista de módulos
+          e dados acessíveis pode variar; a realização de AutoScan não confirma capacidade de codificação.
+        </div>
+        <div class="notice mobile">
+          <b>Atendimento móvel:</b> deslocamento sem custo dentro do perímetro urbano de Toledo.
+          Para atendimento fora dessa área, consulte as condições.
+        </div>
+
+        <div class="cta">
+          <h3>Agendar diagnóstico ou pré-compra</h3>
+          <div class="form-grid">
+            <div><label for="preVehicle">Veículo</label><input id="preVehicle" placeholder="Ex.: Corolla XEi"></div>
+            <div><label for="preYear">Ano</label><input id="preYear" placeholder="Ex.: 2019"></div>
+            <div><label for="preVersion">Versão</label><input id="preVersion" placeholder="Ex.: XEi 2.0"></div>
+          </div>
+          <div class="form-grid">
+            <div><label for="preCity">Cidade</label><input id="preCity" placeholder="Ex.: Toledo"></div>
+            <div>
+              <label for="preService">Serviço</label>
+              <select id="preService">
+                <option>AutoScan (varredura eletrônica)</option>
+                <option>Pré-compra estático</option>
+                <option>Pré-compra dinâmico</option>
+              </select>
+            </div>
+            <div><label>&nbsp;</label><button class="button" id="preSend" type="button">Continuar no WhatsApp</button></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="how container">
+      <h2>Como funciona o atendimento</h2>
+      <div class="how-grid">
+        <article class="card">
+          <strong>1</strong>
+          <h3>Envie os dados</h3>
+          <p>Informe veículo, ano, versão, cidade e serviço desejado pelo WhatsApp.</p>
+        </article>
+        <article class="card">
+          <strong>2</strong>
+          <h3>Fazemos a triagem</h3>
+          <p>Verificamos escopo, ferramenta e compatibilidade antes de confirmar o serviço.</p>
+        </article>
+        <article class="card">
+          <strong>3</strong>
+          <h3>Atendimento móvel</h3>
+          <p>Em Toledo, o deslocamento é sem custo dentro do perímetro urbano. Para outras localidades, consulte as condições.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><b>CODING TOLEDO</b> · Toledo, Cascavel e região — Paraná</p>
+      <p>Atendimento móvel sem custo de deslocamento dentro do perímetro urbano de Toledo.</p>
+      <p>
+        WhatsApp: <a href="https://wa.me/5545998496383" target="_blank" rel="noopener">(45) 99849-6383</a>
+        · Instagram: <a href="https://instagram.com/coding.toledo" target="_blank" rel="noopener">@coding.toledo</a>
+      </p>
+      <p>Disponibilidade depende do veículo, ano, módulos, software, equipamento instalado e ferramenta/procedimento aplicável.</p>
+    </div>
+  </footer>
+
+  <a class="button float-wa" id="floatWhatsApp" target="_blank" rel="noopener">WhatsApp</a>
+
+  <script>
+    const WHATSAPP = "5545998496383";
+
+    function makeWhatsAppLink(message) {
+      return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
+    }
+
+    document.getElementById("floatWhatsApp").href = makeWhatsAppLink(
+      "Olá! Vim pelo site da Coding Toledo e gostaria de informações sobre atendimento e orçamento."
+    );
+
+    // Abas: uma área aberta por vez.
+    const tabs = [...document.querySelectorAll(".tab")];
+    const panels = [...document.querySelectorAll(".panel")];
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((item) => {
+          const active = item === tab;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-selected", String(active));
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle(
+            "active",
+            panel.id === tab.getAttribute("aria-controls")
+          );
+        });
+      });
+    });
+
+    /*
+      Banco de seleção de veículos.
+      As versões servem para identificar o veículo no pedido, não comprovam compatibilidade.
+      Nenhuma função é anunciada como "Direto" sem prova específica para veículo/módulo/ferramenta.
+    */
+    const vehicleData = {
+      "Volkswagen": {
+        models: {
+          "Polo": ["Polo (MQB 2018+)", "Polo Track / Comfortline", "Polo Highline / GTS"],
+          "Virtus": ["Virtus (2018+)", "Virtus GTS"],
+          "Nivus": ["Nivus (2020+)"],
+          "T-Cross": ["T-Cross (2019+)"],
+          "Gol": ["Gol G5", "Gol G6", "Gol G7/G8"],
+          "Voyage": ["Voyage G5", "Voyage G6", "Voyage G7/G8"],
+          "Saveiro": ["Saveiro G5", "Saveiro G6", "Saveiro G7/G8"],
+          "Fox": ["Fox (2010–2021)"],
+          "CrossFox": ["CrossFox (2010–2021)"],
+          "SpaceFox": ["SpaceFox (2010–2018)"],
+          "Jetta": ["Jetta MK6", "Jetta MK7"],
+          "Golf": ["Golf MK6", "Golf MK7/7.5", "GTI MK7/7.5"],
+          "Taos": ["Taos (2021+)"],
+          "Tiguan": ["Tiguan Allspace (2018+)", "Tiguan R-Line"],
+          "Passat": ["Passat B7", "Passat B8"],
+          "Fusca": ["Fusca (2012–2016)"],
+          "Amarok": ["Amarok 2.0 TDI", "Amarok V6"],
+          "Up!": ["Up! TSI / MPI"],
+          "Touareg": ["Touareg (2011+)"]
+        },
+        items: [
+          ["Needle Sweep / varredura de ponteiros", "A confirmar no veículo"],
+          ["Tilt Down / retrovisor na ré", "A confirmar no veículo"],
+          ["Cornering Lights / luz de curva", "A confirmar no veículo"],
+          ["Off-Road / Performance Monitor", "A confirmar no veículo"],
+          ["Pisca conforto", "A confirmar no veículo"],
+          ["Vidros pelo controle", "A confirmar no veículo"],
+          ["Travamento automático", "A confirmar no veículo"],
+          ["Scandinavian DRL / iluminação", "A confirmar no veículo"],
+          ["Ajuste relacionado a Start/Stop", "A confirmar no veículo"],
+          ["Tema GTI / R-Line no painel", "A confirmar no veículo"],
+          ["Video in Motion", "Não confirmada — não anunciar sem validação específica"],
+          ["ADAS: Lane Assist / Light Assist / leitura de placas", "Não confirmada — depende de hardware, configuração e procedimento"],
+          ["Soundaktor", "A confirmar no veículo"],
+          ["Funções com SFD1", "A confirmar — requer verificar acesso e ferramenta"],
+          ["Veículos 2024+ / possível SFD2", "Não confirmada — sob consulta, sem promessa de execução"]
+        ],
+        notice: "VCDS HEX-V2 e ThinkDiag 2/DiagZone Pro não são intercambiáveis para todas as operações. Para cada pedido, identificar o módulo e confirmar a ferramenta e o procedimento aplicáveis. SFD/SFD2 podem exigir acesso ou recursos adicionais."
+      },
+      "Audi": {
+        models: {
+          "A1": ["A1 (8X)"],
+          "A3": ["A3 (8P)", "A3 (8V)", "A3 (8Y)"],
+          "A4": ["A4 (B8)", "A4 (B9)"],
+          "A5": ["A5 (8T)", "A5 (F5)"],
+          "A6": ["A6 (C7)", "A6 (C8)"],
+          "Q3": ["Q3 (8U)", "Q3 (F3)"],
+          "Q5": ["Q5 (8R)", "Q5 (FY)"],
+          "Q7": ["Q7 (4L)", "Q7 (4M)"],
+          "Q8": ["Q8 (4M)"],
+          "TT": ["TT (8J)", "TT (8S)"],
+          "Linha RS": ["RS3", "RS4", "RS5", "RS6", "RS Q3", "RS Q8"]
+        },
+        items: [
+          ["Needle Sweep", "A confirmar no veículo"],
+          ["Lap Timer / temperatura de óleo no cluster", "A confirmar no veículo"],
+          ["Tilt Down", "A confirmar no veículo"],
+          ["DRL e ajustes de iluminação", "A confirmar no veículo"],
+          ["Pisca conforto", "A confirmar no veículo"],
+          ["Travamento automático", "A confirmar no veículo"],
+          ["Easy Entry", "A confirmar no veículo"],
+          ["Temas no Virtual Cockpit", "A confirmar no veículo"],
+          ["Video in Motion", "Não confirmada — depende do sistema e procedimento"],
+          ["Menu oculto MMI", "A confirmar no veículo"],
+          ["Layouts MMI / painel", "A confirmar no veículo"],
+          ["ADAS: ACC / Lane Assist / Side Assist", "Não confirmada — hardware não comprova possibilidade de codificação"],
+          ["Funções com SFD1", "A confirmar — verificar acesso e ferramenta"],
+          ["Veículos 2024+ / possível SFD2", "Não confirmada — sob consulta, sem promessa de execução"]
+        ],
+        notice: "A presença de Virtual Cockpit, MMI ou ADAS não confirma que seja possível alterar sua configuração. Confirmar módulo, geração, ferramenta e eventuais requisitos SFD para cada veículo."
+      },
+      "BMW": {
+        models: {
+          "Série 1": ["F20", "F40"],
+          "Série 3": ["F30", "G20"],
+          "Série 5": ["F10", "G30"],
+          "X1": ["F48", "U11"],
+          "X3": ["G01"],
+          "X5": ["F15", "G05"]
+        },
+        items: [
+          ["Memória do Start/Stop", "A confirmar no veículo"],
+          ["Rebatimento de retrovisores ao travar", "A confirmar no veículo"],
+          ["Vidros/teto solar pela chave", "A confirmar no veículo"],
+          ["Destravamento de portas ao desligar", "A confirmar no veículo"],
+          ["Aviso sonoro do cinto", "Não confirmada — não oferecer antes da validação"],
+          ["Velocidade digital no painel", "A confirmar no veículo"],
+          ["Logotipo de inicialização", "A confirmar no veículo"],
+          ["Video in Motion / codecs", "A confirmar — depende de iDrive, módulo e procedimento"],
+          ["Avisos legais de tela/câmera", "Não confirmada — validar requisitos e ferramenta"],
+          ["Funções de câmeras/sensores", "A confirmar no veículo"],
+          ["Funções em módulos recentes / série G", "A confirmar — podem existir bloqueios e requisitos adicionais"]
+        ],
+        notice: "A lista anterior não comprovava compatibilidade por chassis, ano, FEM/BDC/HU nem cobertura do ThinkDiag 2/DiagZone Pro. Cada operação precisa de verificação específica."
+      },
+      "Fiat": {
+        models: {
+          "Argo": ["Argo (2017+)", "Informar ano e versão exatos"],
+          "Cronos": ["Cronos (2018+)", "Informar ano e versão exatos"],
+          "Mobi": ["Mobi (2016+)", "Informar ano e versão exatos"],
+          "Strada": ["Strada (2020+)", "Endurance / Freedom / Volcano — informar ano"],
+          "Toro": ["Toro Flex — informar ano/versão", "Toro Diesel — informar ano/versão"],
+          "Pulse": ["Pulse (2022+) — informar versão"],
+          "Fastback": ["Fastback (2023+) — informar versão"]
+        },
+        items: [
+          ["Cornering Lights / luz de curva", "A confirmar no veículo"],
+          ["DRL e ajustes de iluminação", "A confirmar no veículo"],
+          ["Aviso sonoro do cinto", "Não confirmada — não oferecer antes da validação"],
+          ["Recalibração de medida de pneus/rodas", "Não confirmada — depende de função específica e módulo"],
+          ["Habilitação de câmera, sensores ou neblina", "Não confirmada — exige verificar configuração, hardware e procedimento"],
+          ["Alinhamento de PROXI", "Não confirmada — não anunciar como serviço disponível sem teste específico"],
+          ["Qualquer escrita via SGW", "Não confirmada — bypass não equivale a autorização nem prova de gravação"]
+        ],
+        notice: "Fiat — atenção especial: modelo e ano não bastam para confirmar compatibilidade. Identificar módulo/BCM, versão de software e equipamento instalado. Se houver SGW, confirmar requisitos de acesso autorizado, ferramenta e procedimento. O cabo bypass, por si só, não comprova que uma codificação possa ser feita."
+      },
+      "Jeep": {
+        models: {
+          "Renegade": ["Flex — informar ano e versão", "Diesel — informar ano e versão"],
+          "Compass": ["Flex — informar ano e versão", "Diesel — informar ano e versão", "4xe — informar ano e versão"],
+          "Commander": ["Flex — informar ano e versão", "Diesel — informar ano e versão"]
+        },
+        items: [
+          ["DRL e ajustes de iluminação", "A confirmar no veículo"],
+          ["Cornering Lights / luz de curva", "A confirmar no veículo"],
+          ["Aviso sonoro do cinto", "Não confirmada — não oferecer antes da validação"],
+          ["Recalibração de tamanho de pneus", "Não confirmada — depende de função e módulo específicos"],
+          ["Habilitação de acessórios", "Não confirmada — exige verificar hardware, módulo e procedimento"],
+          ["Alinhamento de PROXI", "Não confirmada — não anunciar como serviço disponível sem teste específico"],
+          ["Qualquer escrita via SGW", "Não confirmada — bypass não equivale a autorização nem prova de gravação"]
+        ],
+        notice: "Jeep — atenção especial: a compatibilidade precisa ser conferida por veículo, ano, versão e módulo. A presença de SGW pode exigir acesso autorizado ou recursos adicionais. O adaptador/bypass disponível não garante acesso de escrita nem execução pelo ThinkDiag 2/DiagZone Pro."
+      }
+    };
+
+    const makeSelect = document.getElementById("make");
+    const modelSelect = document.getElementById("model");
+    const versionSelect = document.getElementById("version");
+    const functionBox = document.getElementById("functionBox");
+    const brandNotice = document.getElementById("brandNotice");
+
+    Object.keys(vehicleData).forEach((make) => {
+      makeSelect.add(new Option(make, make));
+    });
+
+    function resetSelect(select, prompt) {
+      select.innerHTML = "";
+      select.add(new Option(prompt, ""));
+      select.disabled = true;
+    }
+
+    makeSelect.addEventListener("change", () => {
+      resetSelect(modelSelect, "Selecione o modelo");
+      resetSelect(versionSelect, "Selecione o modelo");
+      functionBox.className = "empty";
+      functionBox.textContent = "Selecione marca, modelo e versão para ver os itens sujeitos a confirmação.";
+      brandNotice.innerHTML = "";
+
+      const make = makeSelect.value;
+      if (!make) return;
+
+      Object.keys(vehicleData[make].models).forEach((model) => {
+        modelSelect.add(new Option(model, model));
+      });
+
+      modelSelect.disabled = false;
+      brandNotice.innerHTML = `<div class="notice caution">${vehicleData[make].notice}</div>`;
+    });
+
+    modelSelect.addEventListener("change", () => {
+      resetSelect(versionSelect, "Selecione a versão");
+      functionBox.className = "empty";
+      functionBox.textContent = "Selecione a versão para ver os itens sujeitos a confirmação.";
+
+      const make = makeSelect.value;
+      const model = modelSelect.value;
+      if (!make || !model) return;
+
+      vehicleData[make].models[model].forEach((version) => {
+        versionSelect.add(new Option(version, version));
+      });
+
+      versionSelect.disabled = false;
+    });
+
+    versionSelect.addEventListener("change", renderFunctions);
+
+    function renderFunctions() {
+      const make = makeSelect.value;
+      if (!make || !versionSelect.value) return;
+
+      functionBox.className = "function-list";
+      functionBox.innerHTML = "";
+
+      vehicleData[make].items.forEach(([name, classification]) => {
+        const label = document.createElement("label");
+        label.className = "function-option";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = `${name} — ${classification}`;
+
+        const text = document.createElement("span");
+        const badge = document.createElement("span");
+
+        badge.className = classification.startsWith("Não confirmada")
+          ? "badge not-confirmed"
+          : "badge confirm";
+        badge.textContent = classification.startsWith("Não confirmada")
+          ? "Não confirmada"
+          : "A confirmar no veículo";
+
+        text.append(badge, document.createTextNode(name));
+        label.append(checkbox, text);
+        functionBox.append(label);
+      });
+    }
+
+    document.getElementById("codingSend").addEventListener("click", () => {
+      const make = makeSelect.value;
+      const model = modelSelect.value;
+      const version = versionSelect.value;
+
+      if (!make || !model || !version) {
+        alert("Selecione marca, modelo e versão/geração no filtro antes de enviar.");
+        return;
+      }
+
+      const selected = [...functionBox.querySelectorAll("input:checked")]
+        .map((input) => `- ${input.value}`);
+
+      const year = document.getElementById("codingYear").value.trim() || "A informar";
+      const city = document.getElementById("codingCity").value.trim() || "A informar";
+      const modelText = document.getElementById("codingModelText").value.trim() || model;
+      const versionText = document.getElementById("codingVersionText").value.trim() || version;
+
+      const message = [
+        "Olá! Vim pelo site da Coding Toledo.",
+        "Pedido de triagem de Personalização / Coding",
+        `Marca: ${make}`,
+        `Modelo: ${modelText}`,
+        `Versão / geração selecionada: ${version}`,
+        `Versão / motorização informada: ${versionText}`,
+        `Ano: ${year}`,
+        `Cidade: ${city}`,
+        "Itens de interesse:",
+        selected.length ? selected.join("\n") : "- Gostaria de verificar quais funções são tecnicamente possíveis.",
+        "",
+        "Sei que a seleção não confirma compatibilidade. Gostaria de confirmar ferramenta, módulo, acesso de segurança e procedimento antes de agendar."
+      ].join("\n");
+
+      window.open(makeWhatsAppLink(message), "_blank", "noopener");
+    });
+
+    function bindWhatsAppForm(config) {
+      document.getElementById(config.buttonId).addEventListener("click", () => {
+        const get = (id) => document.getElementById(id).value.trim() || "A informar";
+        const vehicle = get(config.vehicleId);
+        const year = get(config.yearId);
+        const version = get(config.versionId);
+        const city = get(config.cityId);
+        const service = document.getElementById(config.serviceId).value;
+
+        const message = [
+          "Olá! Vim pelo site da Coding Toledo.",
+          `Área: ${config.area}`,
+          `Veículo: ${vehicle}`,
+          `Ano: ${year}`,
+          `Versão / motorização: ${version}`,
+          `Cidade: ${city}`,
+          `Serviço de interesse: ${service}`,
+          "",
+          "Gostaria de confirmar compatibilidade, escopo, ferramenta e orçamento.",
+          "Meu endereço fica dentro do perímetro urbano de Toledo? (informar)"
+        ].join("\n");
+
+        window.open(makeWhatsAppLink(message), "_blank", "noopener");
+      });
+    }
+
+    bindWhatsAppForm({
+      buttonId: "dieselSend",
+      vehicleId: "dieselVehicle",
+      yearId: "dieselYear",
+      versionId: "dieselVersion",
+      cityId: "dieselCity",
+      serviceId: "dieselService",
+      area: "Linha Diesel & Funções Especiais"
+    });
+
+    bindWhatsAppForm({
+      buttonId: "evSend",
+      vehicleId: "evVehicle",
+      yearId: "evYear",
+      versionId: "evVersion",
+      cityId: "evCity",
+      serviceId: "evService",
+      area: "Híbridos & Elétricos"
+    });
+
+    bindWhatsAppForm({
+      buttonId: "preSend",
+      vehicleId: "preVehicle",
+      yearId: "preYear",
+      versionId: "preVersion",
+      cityId: "preCity",
+      serviceId: "preService",
+      area: "Diagnóstico & Laudo Pré-Compra"
+    });
+  </script>
+</body>
+</html>

@@ -589,11 +589,9 @@ document.getElementById("codingSend").addEventListener("click",()=>{
   const msg=["Olá! Vim pelo site da Coding Toledo.","Pedido: Personalização / Coding",
    `Marca: ${make.value}`,`Modelo: ${model.value}`,`Ano: ${year.value}`,`Versão: ${version.value}`,
    `Cidade: ${city}`,"Itens de interesse:",
-   sel.length?sel.join("
-"):"- Quero saber o que é possível no meu veículo.","",
+   sel.length?sel.join("\n"):"- Quero saber o que é possível no meu veículo.","",
    "Gostaria de confirmar compatibilidade e orçamento.",
-   "Meu endereço fica no perímetro urbano de Toledo? (informar)"].join("
-");
+   "Meu endereço fica no perímetro urbano de Toledo? (informar)"].join("\n");
   window.open(link(msg),"_blank","noopener");
 });
 
@@ -605,8 +603,7 @@ function bindForm(c){
      `Ano: ${y}`,`Versão: ${g(c.ver)}`,`Cidade: ${g(c.c)}`,
      `Serviço: ${document.getElementById(c.s).value}`,"",
      "Gostaria de confirmar compatibilidade e orçamento.",
-     "Meu endereço fica no perímetro urbano de Toledo? (informar)"].join("
-");
+     "Meu endereço fica no perímetro urbano de Toledo? (informar)"].join("\n");
     window.open(link(msg),"_blank","noopener");
   });
 }

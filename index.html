@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15191f">
+<meta name="description" content="Coding Toledo: diagnóstico automotivo, coding, linha diesel e híbridos e elétricos. Atendimento móvel sem custo de deslocamento no perímetro urbano de Toledo.">
+<title>Coding Toledo | Diagnóstico e Eletrônica Automotiva</title>
+<style>
+:root{--bg:#15191f;--soft:#1c222b;--card:#222a35;--navy:#10274c;--blue:#2878bd;--silver:#c7d0da;--white:#f5f7fa;--muted:#a5afba;--line:#34404e;--green:#39c995;--gold:#e5b34e;--red:#e17b7b;--r:16px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-y:auto}
+body{margin:0;min-height:100vh;overflow-x:hidden;overflow-y:auto;color:var(--white);background:radial-gradient(ellipse at top right,rgba(40,120,189,.14),transparent 36rem),var(--bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+h1,h2,h3,p{margin-top:0}
+.container{width:min(1100px,calc(100% - 36px));margin-inline:auto}
+.site-header{border-bottom:1px solid var(--line);background:rgba(21,25,31,.97)}
+.nav{min-height:96px;display:flex;align-items:center}
+.brand img{width:min(260px,68vw);max-height:84px;object-fit:contain;object-position:left center}
+.hero{padding:48px 0 24px}
+.hero-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:32px;align-items:center}
+h1{margin-bottom:14px;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;letter-spacing:-.03em}
+h1 span{color:var(--silver)}
+.hero-copy{color:var(--muted);font-size:1.05rem;max-width:560px}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:11px 18px;color:var(--white);font-weight:750;border:1px solid var(--silver);border-radius:10px;background:linear-gradient(135deg,#1b4a7e,#10274c);cursor:pointer;transition:.18s}
+.button:hover{transform:translateY(-2px);filter:brightness(1.15)}
+.mobile-callout{padding:20px;border:1px solid rgba(57,201,149,.55);border-radius:var(--r);background:linear-gradient(145deg,rgba(57,201,149,.12),rgba(16,39,76,.42))}
+.mobile-callout strong{display:block;margin-bottom:6px;color:var(--green);font-size:1.1rem}
+.mobile-callout p{margin:0;color:var(--silver);font-size:.95rem}
+.services{padding:16px 0 44px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.tab{min-height:64px;padding:12px;color:var(--silver);background:var(--soft);border:1px solid var(--line);border-radius:12px;text-align:left;font-weight:750;cursor:pointer}
+.tab.active{color:var(--white);background:linear-gradient(145deg,#1e5289,#10274c);border-color:var(--silver)}
+.panel{display:none;padding:clamp(18px,4vw,28px);background:var(--soft);border:1px solid var(--line);border-radius:var(--r)}
+.panel.active{display:block}
+.panel>h2{margin-bottom:4px}
+.lead{color:var(--muted);margin-bottom:16px}
+.head-row{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.head-row h2{margin:0}
+.section-image{width:64px;height:64px;object-fit:contain;border:1px solid var(--line);border-radius:12px;background:#15191f;flex:none}
+.filters{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.form-grid.two{grid-template-columns:2fr 1fr;align-items:end}
+label{display:block;margin-bottom:5px;color:var(--muted);font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+select,input{width:100%;min-height:46px;padding:10px 12px;color:var(--white);background:#171d25;border:1px solid var(--line);border-radius:9px}
+select:disabled{opacity:.55}
+.function-list,.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:14px 0}
+.function-option,.card{padding:14px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.function-option{display:flex;flex-direction:column;gap:8px;cursor:pointer;font-size:.92rem;text-transform:none;letter-spacing:0;font-weight:500;color:var(--white);margin:0}
+.function-main{display:flex;gap:10px;align-items:flex-start;width:100%}
+.function-option input{width:auto;min-height:auto;margin-top:5px;accent-color:var(--blue);flex:none}
+.function-label{flex:1;line-height:1.4}
+.function-option:has(input:checked){border-color:var(--silver);background:rgba(40,120,189,.16)}
+.tip-btn{flex:none;width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:#171d25;color:var(--silver);font-size:.78rem;font-weight:800;display:inline-grid;place-items:center;cursor:pointer;padding:0;line-height:1;transition:.15s}
+.tip-btn:hover,.tip-btn[aria-expanded="true"]{border-color:var(--silver);background:var(--navy);color:var(--white)}
+.tip-box{display:none;padding:9px 11px;background:#15191f;border:1px solid var(--line);border-radius:8px;color:var(--silver);font-size:.82rem;line-height:1.45}
+.function-option.open .tip-box{display:block}
+.selected-count{margin:10px 0 0;color:var(--green);font-size:.88rem;font-weight:700}
+.card h3{margin-bottom:4px;font-size:1rem}
+.card p{margin:0;color:var(--muted);font-size:.9rem}
+.price{display:inline-block;margin-top:8px;color:var(--silver);font-weight:800}
+.badge{display:inline-block;margin-right:7px;padding:2px 8px;border-radius:6px;font-size:.66rem;font-weight:850;letter-spacing:.04em;text-transform:uppercase;vertical-align:middle}
+.badge.confirm{color:var(--gold);border:1px solid var(--gold);background:rgba(229,179,78,.1)}
+.badge.no{color:var(--red);border:1px solid var(--red);background:rgba(225,123,123,.1)}
+.notice{margin:14px 0;padding:12px 14px;color:var(--silver);background:rgba(229,179,78,.08);border-left:3px solid var(--gold);border-radius:7px;font-size:.9rem}
+.empty{padding:16px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;text-align:center}
+.cta{margin-top:18px;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.cta h3{margin-bottom:10px}
+.how{padding:8px 0 44px}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.how-grid strong{display:inline-grid;width:32px;height:32px;margin-bottom:8px;place-items:center;background:var(--navy);border:1px solid var(--silver);border-radius:50%}
+footer{padding:26px 0 90px;color:var(--muted);border-top:1px solid var(--line);text-align:center;font-size:.88rem}
+footer a{color:var(--silver);text-decoration:underline}
+footer p{margin-bottom:6px}
+.float-wa{position:fixed;right:16px;bottom:16px;z-index:30;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+@media(max-width:900px){.filters{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.hero-grid{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(2,1fr)}.how-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.container{width:min(100% - 24px,1100px)}.nav{min-height:78px}.filters,.form-grid,.form-grid.two{grid-template-columns:1fr}.tab{padding:10px;font-size:.85rem;min-height:56px}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="#" aria-label="Coding Toledo"><img src="logo_coding_toledo.png" alt="Logo Coding Toledo"></a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>Eletrônica automotiva <span>em Toledo e região.</span></h1>
+      <p class="hero-copy">Diagnóstico, coding, linha diesel, híbridos e elétricos.</p>
+      <p><a class="button" href="#servicos">Ver serviços</a></p>
+    </div>
+    <aside class="mobile-callout">
+      <strong>Atendimento móvel</strong>
+      <p>Vamos até você, sem custo de deslocamento no perímetro urbano de Toledo. Atendemos também Cascavel e região.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="services container" id="servicos">
+  <div class="tabs" role="tablist">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="coding">Personalização & Coding</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="diesel">Linha Diesel & Oficina</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="ev">Híbridos & Elétricos</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="pre">Diagnóstico & Pré-compra</button>
+  </div>
+
+  <section class="panel active" id="coding" role="tabpanel">
+    <h2>Personalização & Coding</h2>
+    <p class="lead">Escolha seu veículo. Toque no ícone <strong>?</strong> de cada função para ver como funciona.</p>
+
+    <div class="filters">
+      <div><label for="make">Marca</label><select id="make"><option value="">Selecione</option></select></div>
+      <div><label for="model">Modelo</label><select id="model" disabled><option value="">Selecione a marca</option></select></div>
+      <div><label for="year">Ano</label><select id="year" disabled><option value="">Selecione o modelo</option></select></div>
+      <div><label for="version">Versão</label><select id="version" disabled><option value="">Selecione o ano</option></select></div>
+    </div>
+
+    <div id="functionBox" class="empty">Selecione marca, modelo, ano e versão.</div>
+    <div id="selectedCount" class="selected-count" aria-live="polite"></div>
+    <div id="brandNotice"></div>
+
+    <div class="cta">
+      <h3>Solicitar orçamento</h3>
+      <div class="form-grid two">
+        <div><label for="codingCity">Cidade</label><input id="codingCity" placeholder="Ex.: Toledo, Cascavel, Palotina, Marechal..."></div>
+        <div><button class="button" id="codingSend" type="button" style="width:100%">WhatsApp</button></div>
+      </div>
+      <p class="lead" style="margin:0;font-size:.82rem">Peças e módulos usados ou fornecidos pelo cliente não têm garantia de funcionamento ou durabilidade.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="diesel" role="tabpanel">
+    <div class="head-row">
+      <img class="section-image" src="linha_diesel_coding_toledo.png" alt="Linha Diesel" loading="lazy">
+      <h2>Linha Diesel & Oficina</h2>
+    </div>
+    <div class="cards">
+      <article class="card"><h3>Regeneração de DPF</h3><p>Após avaliação do veículo.</p><span class="price">R$ 250 a R$ 450+ ou sob consulta</span></article>
+      <article class="card"><h3>Freio eletrônico (EPB)</h3><p>Recuo de pinça e calibração.</p><span class="badge confirm">A confirmar</span></article>
+      <article class="card"><h3>Bateria (BMS)</h3><p>Registro após troca.</p><span class="badge confirm">A confirmar</span></article>
+      <article class="card"><h3>TPMS, TBI e câmbio</h3><p>Aprendizados e adaptações.</p><span class="badge confirm">A confirmar</span></article>
+      <article class="card"><h3>PROXI Fiat/Jeep</h3><p>Depende de teste no veículo.</p><span class="badge no">Não confirmada</span></article>
+    </div>
+    <div class="notice">Procedimentos sujeitos à compatibilidade do veículo. Valor sob consulta.</div>
+
+    <div class="cta">
+      <h3>Solicitar atendimento</h3>
+      <div class="form-grid">
+        <div><label for="dieselVehicle">Veículo</label><input id="dieselVehicle" placeholder="Ex.: Hilux"></div>
+        <div><label for="dieselYear">Ano</label><select id="dieselYear" class="year-select"></select></div>
+        <div><label for="dieselVersion">Versão</label><input id="dieselVersion" placeholder="Ex.: SRV 2.8 (ou não sei)"></div>
+      </div>
+      <div class="form-grid">
+        <div><label for="dieselCity">Cidade</label><input id="dieselCity" placeholder="Ex.: Toledo, Cascavel, Palotina, Marechal..."></div>
+        <div><label for="dieselService">Serviço</label>
+          <select id="dieselService" class="sort-me">
+            <option>Bateria (BMS)</option><option>Freio eletrônico (EPB)</option><option>Regeneração de DPF</option>
+            <option>PROXI Fiat/Jeep</option><option>TBI / câmbio</option><option>TPMS</option><option>Outro</option>
+          </select></div>
+        <div><label>&nbsp;</label><button class="button" id="dieselSend" type="button" style="width:100%">WhatsApp</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="ev" role="tabpanel">
+    <div class="head-row">
+      <img class="section-image" src="hibridos_e_eletricos_coding_toledo.png" alt="Híbridos e Elétricos" loading="lazy">
+      <h2>Híbridos & Elétricos</h2>
+    </div>
+    <div class="cards">
+      <article class="card"><h3>Avaliação pré-compra</h3><p>Triagem eletrônica prévia.</p><span class="badge confirm">A confirmar</span></article>
+      <article class="card"><h3>Diagnóstico EV/Hybrid</h3><p>Módulos e falhas acessíveis.</p><span class="badge confirm">A confirmar</span></article>
+      <article class="card"><h3>Saúde da bateria</h3><p>Dados SOH/SOC quando disponíveis.</p><span class="badge confirm">A confirmar</span></article>
+    </div>
+    <div class="notice">Orçamento sob consulta. Os dados disponíveis variam conforme o veículo.</div>
+
+    <div class="cta">
+      <h3>Solicitar avaliação</h3>
+      <div class="form-grid">
+        <div><label for="evVehicle">Veículo</label><input id="evVehicle" placeholder="Ex.: BYD Dolphin"></div>
+        <div><label for="evYear">Ano</label><select id="evYear" class="year-select"></select></div>
+        <div><label for="evVersion">Versão</label><input id="evVersion" placeholder="Ex.: Plus (ou não sei)"></div>
+      </div>
+      <div class="form-grid">
+        <div><label for="evCity">Cidade</label><input id="evCity" placeholder="Ex.: Toledo, Cascavel, Palotina, Marechal..."></div>
+        <div><label for="evService">Serviço</label>
+          <select id="evService" class="sort-me"><option>Avaliação pré-compra</option><option>Diagnóstico EV/Hybrid</option><option>Saúde da bateria</option></select></div>
+        <div><label>&nbsp;</label><button class="button" id="evSend" type="button" style="width:100%">WhatsApp</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="pre" role="tabpanel">
+    <h2>Diagnóstico & Pré-compra</h2>
+    <p class="lead">Veículos a combustão.</p>
+    <div class="cards">
+      <article class="card"><h3>Pré-compra estático</h3><span class="price">Até 2019: R$ 150<br>2020+: R$ 200</span></article>
+      <article class="card"><h3>Pré-compra dinâmico</h3><p>Com teste de rodagem.</p><span class="price">Até 2019: R$ 250<br>2020+: R$ 300 a R$ 350</span></article>
+    </div>
+    <div class="notice">Não substitui vistoria mecânica ou estrutural.</div>
+
+    <div class="cta">
+      <h3>Agendar</h3>
+      <div class="form-grid">
+        <div><label for="preVehicle">Veículo</label><input id="preVehicle" placeholder="Ex.: Corolla"></div>
+        <div><label for="preYear">Ano</label><select id="preYear" class="year-select"></select></div>
+        <div><label for="preVersion">Versão</label><input id="preVersion" placeholder="Ex.: XEi 2.0 (ou não sei)"></div>
+      </div>
+      <div class="form-grid">
+        <div><label for="preCity">Cidade</label><input id="preCity" placeholder="Ex.: Toledo, Cascavel, Palotina, Marechal..."></div>
+        <div><label for="preService">Serviço</label>
+          <select id="preService" class="sort-me"><option>Pré-compra dinâmico</option><option>Pré-compra estático</option></select></div>
+        <div><label>&nbsp;</label><button class="button" id="preSend" type="button" style="width:100%">WhatsApp</button></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<section class="how container">
+  <div class="how-grid">
+    <article class="card"><strong>1</strong><h3>Envie os dados</h3><p>Veículo, ano e serviço.</p></article>
+    <article class="card"><strong>2</strong><h3>Triagem</h3><p>Confirmamos compatibilidade e valor.</p></article>
+    <article class="card"><strong>3</strong><h3>Atendimento móvel</h3><p>Sem deslocamento cobrado em Toledo (perímetro urbano). Consulte deslocamento para Cascavel e região.</p></article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <p><b>CODING TOLEDO</b> · Toledo, Cascavel, Marechal Cândido Rondon, Palotina, Assis Chateaubriand, Maripá e Quatro Pontes (PR)</p>
+    <p>WhatsApp: <a href="https://wa.me/5545998496383" target="_blank" rel="noopener">(45) 99849-6383</a> · Instagram: <a href="https://instagram.com/coding.toledo" target="_blank" rel="noopener">@coding.toledo</a></p>
+    <p>A disponibilidade depende do veículo, ano, módulos e equipamento instalado.</p>
+  </div>
+</footer>
+
+<a class="button float-wa" id="floatWhatsApp" target="_blank" rel="noopener">WhatsApp</a>
+
+<script>
+const WHATSAPP="5545998496383";
+const link=m=>`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(m)}`;
+const collator=new Intl.Collator("pt-BR",{sensitivity:"base",numeric:true});
+const sortAZ=a=>[...a].sort((x,y)=>collator.compare(x,y));
+const UNSURE="Não sei informar";
+document.getElementById("floatWhatsApp").href=link("Olá! Vim pelo site da Coding Toledo e gostaria de informações e orçamento.");
+
+/* Abas */
+const tabs=[...document.querySelectorAll(".tab")],panels=[...document.querySelectorAll(".panel")];
+tabs.forEach(t=>t.addEventListener("click",()=>{
+  tabs.forEach(i=>{const a=i===t;i.classList.toggle("active",a);i.setAttribute("aria-selected",String(a))});
+  panels.forEach(p=>p.classList.toggle("active",p.id===t.getAttribute("aria-controls")));
+}));
+
+/* Serviços em ordem alfabética ("Outro" por último) */
+document.querySelectorAll(".sort-me").forEach(s=>{
+  const opts=[...s.options].sort((a,b)=>{
+    if(a.text==="Outro")return 1; if(b.text==="Outro")return -1;
+    return collator.compare(a.text,b.text);
+  });
+  s.innerHTML="";opts.forEach(o=>s.add(o));
+});
+
+/* Anos nas demais abas */
+document.querySelectorAll(".year-select").forEach(s=>{
+  s.add(new Option("Selecione",""));
+  for(let y=2027;y>=1995;y--)s.add(new Option(y,y));
+  s.add(new Option(UNSURE,UNSURE));
+});
+
+const C="A confirmar",N="Não confirmada";
+
+/* Explicação detalhada e acessível de cada função */
+const DESC={
+ "Angel Eyes / DRL":"Ajusta a intensidade luminosa dos Angel Eyes (DRL), libera opção de ligar/desligar no menu iDrive e permite manter as lanternas traseiras acesas junto com o DRL.",
+ "Ar-condicionado (perfil intenso / memória)":"Ajusta o perfil de resfriamento do ar-condicionado digital Climatronic para o modo clima quente (resfriamento mais rápido) e/ou memoriza a recirculação de ar ao desligar o carro.",
+ "Assistentes ADAS":"Calibração ou ativação de recursos ligados à câmera no para-brisa e radar frontal, como assistente de permanência em faixa (Lane Assist), reconhecimento de placas ou farol alto automático. Exige hardware original instalado.",
+ "Aviso de mudança de faixa":"Ativa ou ajusta o alerta de saída de faixa (Active Lane Assist) no painel e volante. Requer câmera multifuncional original instalada no para-brisa.",
+ "Aviso sonoro de alarme (bipe)":"Ativa o alerta sonoro curto (buzina ou sirene) ao travar e destravar o veículo pelo controle remoto, com opção de ligar ou desligar na central multimídia quando compatível.",
+ "Aviso sonoro do cinto":"Desativa ou altera o alerta sonoro contínuo do cinto de segurança no painel. Item sujeito à verificação de compatibilidade no módulo.",
+ "Avisos legais de tela":"Remove a mensagem inicial de isenção de responsabilidade exibida na central multimídia toda vez que o veículo é ligado.",
+ "Câmera, sensores ou neblina":"Habilita no módulo central (BCM) equipamentos originais instalados posteriormente, como câmera de ré, sensores traseiros ou faróis de neblina.",
+ "Câmeras e sensores":"Habilita a visualização da câmera de ré e dos sensores de estacionamento na tela original iDrive após instalação de acessórios ou retrofits compatíveis.",
+ "Coming Home / Leaving Home":"Acende automaticamente os faróis ou luzes de neblina ao destravar o veículo à noite ou ao abrir a porta para sair, iluminando o entorno. O modo automático depende de sensor crepuscular.",
+ "Destravar ao desligar":"Destrava automaticamente todas as portas assim que o botão Start/Stop é pressionado para desligar o motor, evitando ter que puxar a maçaneta duas vezes.",
+ "Display esportivo (potência/torque)":"Habilita na tela do iDrive os mostradores esportivos em tempo real de potência (cv) e torque (Nm/kgfm), conforme compatibilidade da central.",
+ "DRL / iluminação":"Personaliza as luzes de rodagem diurna (DRL): opção de ligar/desligar na multimídia, apagar ao puxar o freio de mão, usar lanternas traseiras junto com o DRL (Scandinavian DRL) ou ajustar intensidade.",
+ "Drop-out de DRL na seta":"Configura o comportamento da luz diurna (DRL) ao acionar a seta, permitindo apagar ou reduzir o brilho do lado correspondente (ou manter acesa).",
+ "Easy Entry":"Recua automaticamente o banco do motorista ao abrir a porta com o carro desligado para facilitar a entrada e saída, retornando à posição memorizada ao ligar. Exige banco elétrico com módulo de memória.",
+ "Habilitação de acessórios":"Ativa no sistema eletrônico do veículo acessórios originais instalados (como engate, câmera de ré ou faróis auxiliares), conforme compatibilidade.",
+ "Iluminação de boas-vindas":"Personaliza quais luzes acendem ao destravar o veículo (Angel Eyes, faróis de neblina, luzes de maçaneta) e o tempo que permanecem acesas.",
+ "Lap Timer / temp. de óleo":"Habilita o cronômetro de voltas no computador de bordo junto com a leitura digital da temperatura do óleo do motor e indicador de marcha.",
+ "Layouts de painel":"Altera o modo de exibição e disposição dos mostradores no painel digital e na central multimídia, liberando modos esportivos (como layout S/RS em modelos compatíveis).",
+ "Litros para reabastecer":"Exibe no computador de bordo a quantidade aproximada de combustível (em litros) que falta para completar o tanque.",
+ "Logotipo de inicialização":"Altera a animação de abertura exibida na tela da central multimídia iDrive ao ligar o carro (ex.: logotipo M Performance ou Alpina).",
+ "Luz de curva (Cornering)":"Acende automaticamente o farol de neblina correspondente ao lado para o qual você esterça o volante ou aciona a seta em baixa velocidade, ampliando a visibilidade lateral em manobras e esquinas.",
+ "Medida de pneus":"Atualiza o tamanho do conjunto roda/pneu no módulo eletrônico para manter a precisão do velocímetro, odômetro e trocas do câmbio automático.",
+ "Medida de pneus/rodas":"Reprograma a circunferência de rolagem na central após troca por rodas ou pneus maiores ou menores, corrigindo a marcação do velocímetro e hodômetro.",
+ "Memória do ar-condicionado":"Faz o sistema de ar-condicionado lembrar a última configuração escolhida (ligado/desligado e recirculação) ao religar o veículo.",
+ "Memória do Start/Stop":"Faz o veículo lembrar a última configuração escolhida no botão do Start/Stop mesmo após desligar e religar o carro, sem precisar desativar a cada partida.",
+ "Menu oculto MMI":"Libera o menu verde de engenharia da central multimídia MMI (plataformas até 2019), permitindo ajustes avançados de áudio, Bluetooth e configurações internas.",
+ "Modo Off-Road na multimídia":"Libera a tela Off-Road na central multimídia (VW Play / Discover compatíveis), exibindo bússola, ângulo de esterço das rodas, altitude e temperaturas de óleo e arrefecimento.",
+ "Modo Sport+ / resposta esportiva":"Libera o modo de condução Sport+ e ajustes mais diretos de resposta do câmbio/acelerador em modelos BMW compatíveis.",
+ "Pisca conforto":"Permite ajustar quantas vezes a seta pisca ao dar apenas um toque rápido na alavanca (padrão de fábrica é 3 vezes; ajustável entre 1 e 5 piscadas conforme o módulo).",
+ "PROXI":"Procedimento de alinhamento eletrônico da rede CAN do veículo para reconhecer módulos substituídos ou corrigir hodômetro piscando no painel. Depende de teste no carro.",
+ "Rebatimento de retrovisores ao travar":"Recolhe os retrovisores externos automaticamente ao travar o carro pela chave (sem precisar segurar o botão) e abre ao destravar ou ligar a ignição. Exige rebatimento elétrico de fábrica.",
+ "Rebatimento / Tilt Down":"Ajusta o rebatimento elétrico dos retrovisores ao travar ou a inclinação do espelho direito na ré, quando o veículo possui o hardware elétrico compatível.",
+ "Resposta do acelerador":"Ajusta o perfil de resposta do pedal do acelerador (modo direto/Audi), reduzindo o atraso inicial (delay) nas arrancadas sem alterar a potência original do motor.",
+ "Retrovisor na ré (Tilt Down)":"Ao engatar a marcha à ré com o seletor no espelho direito, o retrovisor inclina automaticamente para baixo para facilitar a visualização do meio-fio e evitar ralados nas rodas. Requer retrovisor elétrico compatível.",
+ "Soundaktor":"Ajusta o volume (de 0% a 100%) ou desativa o atuador acústico original que projeta som esportivo do motor na cabine em versões esportivas equipadas (como GTI, GLI e RS).",
+ "Start/Stop":"Altera o comportamento do sistema que desliga o motor em paradas rápidas, permitindo memorizar o último estado escolhido ou reduzir a atuação automática conforme a arquitetura eletrônica do veículo.",
+ "Tema do painel digital":"Altera o grafismo, as cores e a escala de velocidade do painel 100% digital (Active Info Display / Digital Cockpit), liberando visuais das linhas esportivas como GTI, GLI ou R-Line.",
+ "Temas do Virtual Cockpit":"Desbloqueia layouts visuais esportivos (como conta-giros central estilo S/RS) no painel digital Audi Virtual Cockpit em unidades compatíveis.",
+ "Temperatura e pressão dos pneus":"Exibe na tela do iDrive a temperatura dos pneus junto com a pressão, em veículos equipados com sensores TPMS individuais nas rodas.",
+ "Travamento automático":"Configura o travamento automático das portas ao atingir cerca de 15 km/h e/ou o destravamento automático ao retirar a chave da ignição ou desligar o motor.",
+ "Varredura de ponteiros (Staging)":"Ao ligar a ignição, os ponteiros do velocímetro e conta-giros sobem até o máximo e retornam ao zero, como nas versões esportivas.",
+ "Velocidade digital":"Exibe a velocidade real em números digitais no computador de bordo do painel de instrumentos, facilitando a leitura rápida.",
+ "Vídeo em movimento (VIM)":"Desbloqueia a reprodução de vídeos na tela da central multimídia com o veículo em movimento, antes bloqueada por padrão de fábrica ao sair da imobilidade. Depende do modelo exato da central.",
+ "Vidros / teto pela chave":"Habilita a abertura ou o fechamento de todos os vidros (e teto solar, quando equipado) pelo controle remoto da chave original, reduzindo o atraso e permitindo fechamento contínuo."
+};
+
+/* Cada versão: [nome, ano inicial, ano final] */
+/* Itens por marca: [nome, classificação, ano mínimo opcional, ano máximo opcional] */
+const vehicleData={
+ "Audi":{models:{
+  "A1":[["Ambition",2011,2018],["Attraction",2011,2018],["S line",2013,2018],["Sportback",2013,2018]],
+  "A3":[["Ambiente",2014,2026],["Ambition",2013,2022],["Attraction",2006,2016],["Performance",2016,2026],["Prestige",2016,2026],["S line",2018,2026],["S3",2014,2026],["Sedan",2014,2026],["Sportback",2006,2026]],
+  "A4":[["Ambiente",2012,2026],["Attraction",2008,2016],["Avant",2012,2026],["Performance",2016,2026],["Prestige",2016,2026],["S line",2018,2026],["S4",2012,2026]],
+  "A5":[["Ambiente",2012,2026],["Performance",2016,2026],["Prestige",2016,2026],["S line",2018,2026],["S5",2012,2026],["Sportback",2012,2026]],
+  "A6":[["Ambiente",2012,2026],["Avant",2012,2026],["Performance",2016,2026],["Prestige",2016,2026],["S line",2018,2026],["S6",2014,2026]],
+  "Q3":[["Ambiente",2013,2026],["Attraction",2013,2018],["Black Edition",2018,2026],["Performance",2016,2026],["Prestige",2016,2026],["S line",2018,2026],["Sportback",2020,2026]],
+  "Q5":[["Ambiente",2011,2026],["Attraction",2011,2016],["Black Edition",2018,2026],["Performance",2016,2026],["Prestige",2016,2026],["S line",2018,2026],["Sportback",2020,2026]],
+  "Q7":[["Ambiente",2008,2026],["Performance",2016,2026],["Prestige",2016,2026],["S line",2018,2026],["TDI",2008,2026],["TFSI",2008,2026]],
+  "Q8":[["Performance",2019,2026],["Prestige",2019,2026],["S line",2019,2026],["SQ8",2020,2026]],
+  "RS 3":[["Sedan",2018,2026],["Sportback",2018,2026]],
+  "RS 4":[["Avant",2013,2026]],
+  "RS 5":[["Coupé",2012,2026],["Sportback",2019,2026]],
+  "RS 6":[["Avant",2014,2026],["Performance",2020,2026]],
+  "RS Q3":[["Padrão",2020,2026],["Sportback",2020,2026]],
+  "RS Q8":[["Padrão",2021,2026]],
+  "TT":[["Coupé",2007,2023],["Roadster",2007,2023],["TT RS",2012,2023],["TTS",2009,2023]]},
+  items:[
+   ["Assistentes ADAS",N,2016],
+   ["Aviso de mudança de faixa",N,2016],
+   ["Aviso sonoro de alarme (bipe)",C,2009],
+   ["Aviso sonoro do cinto",N],
+   ["Coming Home / Leaving Home",C,2009],
+   ["DRL / iluminação",C],
+   ["Easy Entry",C,2012],
+   ["Lap Timer / temp. de óleo",C,2010],
+   ["Layouts de painel",C,2016],
+   ["Litros para reabastecer",C,2013],
+   ["Luz de curva (Cornering)",C,2009],
+   ["Menu oculto MMI",C,2009,2019],
+   ["Pisca conforto",C],
+   ["Rebatimento de retrovisores ao travar",C,2010],
+   ["Retrovisor na ré (Tilt Down)",C],
+   ["Start/Stop",C,2013],
+   ["Temas do Virtual Cockpit",C,2016],
+   ["Travamento automático",C],
+   ["Varredura de ponteiros (Staging)",C,2009],
+   ["Vídeo em movimento (VIM)",N,2010],
+   ["Vidros / teto pela chave",C]
+  ],
+  notice:"A partir de 2020 pode exigir liberação adicional (SFD, com custo à parte). Veículos 2024+ (SFD2) possuem proteção rígida e são atendidos somente sob consulta."},
+ "BMW":{models:{
+  "Série 1":[["116i",2012,2019],["118i",2012,2026],["120i",2012,2026],["125i",2013,2019],["M Sport",2012,2026],["M135i",2013,2019],["M140i",2017,2019],["Sport",2012,2026]],
+  "Série 3":[["320i",2012,2026],["328i",2012,2018],["330e",2017,2026],["330i",2017,2026],["Luxury",2012,2018],["M Sport",2012,2026],["M340i",2020,2026],["Sport",2012,2026]],
+  "Série 5":[["520i",2011,2026],["528i",2011,2017],["530e",2018,2026],["530i",2017,2026],["540i",2017,2026],["Luxury",2011,2026],["M Sport",2011,2026],["M550i",2018,2026]],
+  "X1":[["M Sport",2013,2026],["sDrive18i",2013,2026],["sDrive20i",2013,2026],["X-Line",2013,2026],["xDrive25i",2013,2026],["xLine",2013,2026]],
+  "X3":[["M Sport",2018,2026],["M40i",2018,2026],["sDrive20i",2018,2026],["X-Line",2018,2026],["xDrive20i",2018,2026],["xDrive30e",2020,2026],["xDrive30i",2018,2026]],
+  "X5":[["M Sport",2014,2026],["M50i",2019,2026],["xDrive30d",2014,2026],["xDrive40e",2016,2026],["xDrive40i",2019,2026],["xDrive45e",2020,2026],["xDrive50i",2014,2018]]},
+  items:[
+   ["Angel Eyes / DRL",C,2012],
+   ["Aviso sonoro de alarme (bipe)",C,2012],
+   ["Aviso sonoro do cinto",N],
+   ["Avisos legais de tela",N,2012],
+   ["Câmeras e sensores",C,2012],
+   ["Destravar ao desligar",C],
+   ["Display esportivo (potência/torque)",C,2012],
+   ["Iluminação de boas-vindas",C,2012],
+   ["Logotipo de inicialização",C,2012],
+   ["Memória do ar-condicionado",C,2012],
+   ["Memória do Start/Stop",C,2012],
+   ["Modo Sport+ / resposta esportiva",C,2012],
+   ["Pisca conforto",C,2012],
+   ["Rebatimento de retrovisores ao travar",C,2012],
+   ["Retrovisor na ré (Tilt Down)",C,2012],
+   ["Temperatura e pressão dos pneus",C,2014],
+   ["Velocidade digital",C],
+   ["Vídeo em movimento (VIM)",C,2012],
+   ["Vidros / teto pela chave",C]
+  ],
+  notice:"Compatibilidade confirmada por veículo (séries F, G e U). Modelos mais recentes (série G/U) possuem módulos com proteção avançada, verificados na triagem."},
+ "Fiat":{models:{
+  "Argo":[["1.0 Firefly",2020,2026],["1.3 Firefly",2018,2026],["1.8 E.torQ",2017,2022],["Drive",2017,2026],["HGT",2018,2026],["Precision",2018,2026],["Trekking",2019,2026]],
+  "Cronos":[["1.3 Firefly",2018,2026],["1.8 E.torQ",2018,2022],["Drive",2018,2026],["Precision",2018,2026],["S-Design",2020,2026]],
+  "Fastback":[["Abarth",2023,2026],["Audace",2023,2026],["Impetus",2023,2026],["Limited Edition",2023,2026]],
+  "Mobi":[["Drive",2017,2026],["Like",2016,2026],["Trekking",2019,2026],["Way",2016,2022]],
+  "Pulse":[["Abarth",2023,2026],["Audace",2022,2026],["Drive",2022,2026],["Impetus",2022,2026]],
+  "Strada":[["Cabine Dupla",2010,2020],["Cabine Plus",2020,2026],["Cabine Simples",2010,2026],["Endurance",2020,2026],["Freedom",2020,2026],["Ranch",2021,2026],["Volcano",2020,2026],["Working",2010,2026]],
+  "Toro":[["Diesel",2016,2026],["Endurance",2016,2026],["Flex",2016,2026],["Freedom",2016,2026],["Ranch",2021,2026],["Ultra",2021,2026],["Volcano",2016,2026]]},
+  items:[
+   ["Aviso sonoro de alarme (bipe)",C,2016],
+   ["Aviso sonoro do cinto",N],
+   ["Câmera, sensores ou neblina",N,2016],
+   ["DRL / iluminação",C,2016],
+   ["Drop-out de DRL na seta",C,2016],
+   ["Luz de curva (Cornering)",C,2016],
+   ["Medida de pneus/rodas",N,2016],
+   ["PROXI",N,2016],
+   ["Rebatimento / Tilt Down",C,2016],
+   ["Travamento automático",C,2016]
+  ],
+  notice:"Compatibilidade confirmada por veículo. Modelos 2018+ possuem bloqueio Security Gateway (SGW) e podem exigir acesso de segurança específico."},
+ "Jeep":{models:{
+  "Commander":[["Blackhawk",2023,2026],["Diesel",2022,2026],["Flex",2022,2026],["Limited",2022,2026],["Overland",2022,2026]],
+  "Compass":[["4xe",2022,2026],["Diesel",2016,2026],["Flex",2016,2026],["Limited",2016,2026],["Longitude",2016,2026],["S",2021,2026],["Sport",2016,2026],["Trailhawk",2016,2026]],
+  "Renegade":[["Diesel",2015,2026],["Flex",2015,2026],["Limited",2015,2026],["Longitude",2015,2026],["Moab",2019,2022],["Sport",2015,2026],["Trailhawk",2015,2026]]},
+  items:[
+   ["Aviso sonoro de alarme (bipe)",C],
+   ["Aviso sonoro do cinto",N],
+   ["DRL / iluminação",C],
+   ["Drop-out de DRL na seta",C],
+   ["Habilitação de acessórios",N],
+   ["Luz de curva (Cornering)",C],
+   ["Medida de pneus",N],
+   ["PROXI",N],
+   ["Rebatimento / Tilt Down",C],
+   ["Start/Stop",N,2018],
+   ["Travamento automático",C],
+   ["Vidros / teto pela chave",C]
+  ],
+  notice:"Compatibilidade confirmada por veículo. Modelos 2018+ possuem bloqueio Security Gateway (SGW) e podem exigir acesso de segurança específico."},
+ "Volkswagen":{models:{
+  "Amarok":[["Comfortline",2011,2026],["Extreme",2018,2026],["Highline",2011,2026],["Trendline",2010,2026],["V6",2018,2026]],
+  "CrossFox":[["Padrão",2010,2021]],
+  "Fox":[["Comfortline",2010,2021],["Highline",2010,2021],["Prime",2010,2021],["Trendline",2010,2021],["Xtreme",2012,2021]],
+  "Fusca":[["1.4 TSI",2012,2016],["2.0 TSI",2012,2016]],
+  "Gol":[["1.0",2009,2023],["1.6",2009,2023],["Comfortline",2009,2023],["Highline",2009,2023],["Rallye",2009,2023],["Track",2009,2023],["Trendline",2009,2023]],
+  "Golf":[["Comfortline",2009,2021],["GTI",2013,2021],["Highline",2009,2021],["Sportline",2009,2018],["Variant",2014,2018]],
+  "Jetta":[["Comfortline",2011,2026],["GLI",2018,2026],["Highline",2011,2026],["Trendline",2011,2018]],
+  "Nivus":[["Comfortline",2020,2026],["GTS",2023,2026],["Highline",2020,2026],["Sense",2020,2026]],
+  "Passat":[["2.0 TSI",2011,2023],["Comfortline",2011,2023],["Highline",2011,2023],["R-Line",2016,2023]],
+  "Polo":[["1.0 MPI",2018,2026],["1.0 TSI",2018,2026],["Comfortline",2018,2026],["GTS",2019,2026],["Highline",2018,2026],["Track",2023,2026]],
+  "Saveiro":[["Cross",2009,2023],["Extreme",2013,2023],["Highline",2009,2023],["Pepper",2016,2023],["Robust",2013,2023],["Trendline",2009,2023]],
+  "SpaceFox":[["Comfortline",2010,2018],["Highline",2010,2018],["Sportline",2010,2018],["Trend",2010,2018]],
+  "T-Cross":[["200 TSI",2019,2026],["250 TSI",2020,2026],["Comfortline",2019,2026],["Highline",2019,2026],["Sense",2019,2026]],
+  "Taos":[["Comfortline",2021,2026],["Highline",2021,2026]],
+  "Tiguan":[["Allspace",2018,2026],["Comfortline",2009,2026],["Highline",2009,2026],["R-Line",2018,2026],["Trendline",2009,2018]],
+  "Touareg":[["Diesel",2011,2026],["Gasolina",2011,2026]],
+  "Up!":[["Cross",2014,2021],["High",2014,2021],["Move",2014,2021],["Pepper",2016,2021],["Run",2014,2021],["Take",2014,2021],["TSI",2016,2021]],
+  "Virtus":[["Comfortline",2018,2026],["GTS",2019,2026],["Highline",2018,2026],["Sense",2018,2026]],
+  "Voyage":[["1.0",2009,2023],["1.6",2009,2023],["Comfortline",2009,2023],["Highline",2009,2023],["Trendline",2009,2023]]},
+  items:[
+   ["Ar-condicionado (perfil intenso / memória)",C,2014],
+   ["Assistentes ADAS",N,2016],
+   ["Aviso sonoro de alarme (bipe)",C],
+   ["Aviso sonoro do cinto",N],
+   ["Coming Home / Leaving Home",C,2010],
+   ["DRL / iluminação",C],
+   ["Litros para reabastecer",C,2013],
+   ["Luz de curva (Cornering)",C],
+   ["Modo Off-Road na multimídia",C,2016],
+   ["Pisca conforto",C],
+   ["Rebatimento de retrovisores ao travar",C,2014],
+   ["Resposta do acelerador",C,2014],
+   ["Retrovisor na ré (Tilt Down)",C],
+   ["Soundaktor",C,2013],
+   ["Start/Stop",C,2013],
+   ["Tema do painel digital",C,2018],
+   ["Travamento automático",C],
+   ["Varredura de ponteiros (Staging)",C,2010],
+   ["Velocidade digital",C,2013],
+   ["Vídeo em movimento (VIM)",N,2014],
+   ["Vidros / teto pela chave",C]
+  ],
+  notice:"A partir de 2020 pode exigir liberação adicional (SFD, com custo à parte). Veículos 2024+ (SFD2) possuem proteção rígida e são atendidos somente sob consulta."}
+};
+
+/* Regras específicas por modelo/plataforma e versão para precisão técnica */
+const MODEL_RULES={
+ "Volkswagen":{
+  "Gol":{exclude:["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Litros para reabastecer","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Resposta do acelerador","Retrovisor na ré (Tilt Down)","Soundaktor","Start/Stop","Tema do painel digital","Vídeo em movimento (VIM)"]},
+  "Voyage":{exclude:["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Litros para reabastecer","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Resposta do acelerador","Retrovisor na ré (Tilt Down)","Soundaktor","Start/Stop","Tema do painel digital","Vídeo em movimento (VIM)"]},
+  "Saveiro":{exclude:["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Litros para reabastecer","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Resposta do acelerador","Retrovisor na ré (Tilt Down)","Soundaktor","Start/Stop","Tema do painel digital","Vídeo em movimento (VIM)"]},
+  "Fox":{exclude:["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Litros para reabastecer","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Resposta do acelerador","Soundaktor","Start/Stop","Tema do painel digital","Vídeo em movimento (VIM)"]},
+  "CrossFox":{exclude:["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Litros para reabastecer","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Resposta do acelerador","Soundaktor","Start/Stop","Tema do painel digital","Vídeo em movimento (VIM)"]},
+  "SpaceFox":{exclude:["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Litros para reabastecer","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Resposta do acelerador","Soundaktor","Start/Stop","Tema do painel digital","Vídeo em movimento (VIM)"]},
+  "Up!":{exclude:["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Litros para reabastecer","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Resposta do acelerador","Retrovisor na ré (Tilt Down)","Soundaktor","Start/Stop","Tema do painel digital","Varredura de ponteiros (Staging)","Vídeo em movimento (VIM)"]},
+  "Amarok":{exclude:["Assistentes ADAS","Modo Off-Road na multimídia","Soundaktor","Tema do painel digital"]},
+  "Polo":{exclude:["Soundaktor"],versionExclude:{"1.0 MPI":["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Tema do painel digital","Vídeo em movimento (VIM)"],"Track":["Ar-condicionado (perfil intenso / memória)","Assistentes ADAS","Luz de curva (Cornering)","Modo Off-Road na multimídia","Rebatimento de retrovisores ao travar","Tema do painel digital","Vídeo em movimento (VIM)"],"Sense":["Ar-condicionado (perfil intenso / memória)","Rebatimento de retrovisores ao travar","Tema do painel digital"]}},
+  "Virtus":{exclude:["Soundaktor"],versionExclude:{"Sense":["Ar-condicionado (perfil intenso / memória)","Rebatimento de retrovisores ao travar","Tema do painel digital"]}},
+  "Nivus":{exclude:["Soundaktor"],versionExclude:{"Sense":["Ar-condicionado (perfil intenso / memória)","Rebatimento de retrovisores ao travar","Tema do painel digital"]}},
+  "T-Cross":{exclude:["Soundaktor"],versionExclude:{"Sense":["Ar-condicionado (perfil intenso / memória)","Rebatimento de retrovisores ao travar","Tema do painel digital"]}},
+  "Taos":{exclude:["Soundaktor"]},
+  "Golf":{versionExclude:{"Comfortline":["Soundaktor"],"Highline":["Soundaktor"],"Sportline":["Soundaktor"],"Variant":["Soundaktor"]}},
+  "Jetta":{versionExclude:{"Trendline":["Ar-condicionado (perfil intenso / memória)","Soundaktor","Tema do painel digital"],"Comfortline":["Soundaktor"],"Highline":["Soundaktor"]}},
+  "Passat":{versionExclude:{"Comfortline":["Soundaktor"],"Highline":["Soundaktor"]}},
+  "Tiguan":{versionExclude:{"Trendline":["Soundaktor","Tema do painel digital"],"Comfortline":["Soundaktor"],"Highline":["Soundaktor"]}}
+ },
+ "Audi":{
+  "A1":{exclude:["Assistentes ADAS","Aviso de mudança de faixa","Easy Entry","Layouts de painel","Temas do Virtual Cockpit"]},
+  "A3":{versionExclude:{"Attraction":["Easy Entry","Layouts de painel","Temas do Virtual Cockpit"],"Ambiente":["Temas do Virtual Cockpit"]}},
+  "A4":{versionExclude:{"Attraction":["Layouts de painel","Temas do Virtual Cockpit"]}},
+  "Q3":{versionExclude:{"Attraction":["Layouts de painel","Temas do Virtual Cockpit"]}},
+  "Q5":{versionExclude:{"Attraction":["Layouts de painel","Temas do Virtual Cockpit"]}}
+ },
+ "Fiat":{
+  "Mobi":{exclude:["Aviso sonoro de alarme (bipe)","Câmera, sensores ou neblina","DRL / iluminação","Drop-out de DRL na seta","Luz de curva (Cornering)","Medida de pneus/rodas","PROXI","Rebatimento / Tilt Down"]}
+ }
+};
+
+const make=document.getElementById("make"),model=document.getElementById("model"),
+      year=document.getElementById("year"),version=document.getElementById("version"),
+      box=document.getElementById("functionBox"),bn=document.getElementById("brandNotice"),
+      selCount=document.getElementById("selectedCount");
+
+function updateSelectedCount(){
+  const n=box.querySelectorAll("input:checked").length;
+  selCount.textContent=n?`${n} ${n===1?"função selecionada":"funções selecionadas"}`:"";
+}
+
+function updateBrandNotice(){
+  if(!make.value){bn.innerHTML="";return;}
+  let text=vehicleData[make.value].notice;
+  const y=year.value&&year.value!==UNSURE?Number(year.value):null;
+  if((make.value==="Volkswagen"||make.value==="Audi")&&y!==null){
+    if(y>=2024){
+      text="Atenção: veículos 2024+ utilizam proteção SFD2, com restrições mais rígidas. A viabilidade é confirmada somente sob consulta após verificação prévia.";
+    }else if(y>=2020){
+      text="Atenção: veículos 2020 a 2023 utilizam proteção SFD. Algumas funções exigem liberação online adicional (custo à parte).";
+    }
+  }else if((make.value==="Fiat"||make.value==="Jeep")&&y!==null&&y>=2018){
+    text="Atenção: veículos 2018+ possuem módulo Security Gateway (SGW), podendo exigir acesso de segurança específico. Compatibilidade confirmada no veículo.";
+  }
+  bn.innerHTML=`<div class="notice">${text}</div>`;
+}
+
+sortAZ(Object.keys(vehicleData)).forEach(m=>make.add(new Option(m,m)));
+const reset=(s,t)=>{s.innerHTML="";s.add(new Option(t,""));s.disabled=true};
+const empty=t=>{box.className="empty";box.textContent=t;selCount.textContent=""};
+const versionsOf=()=>vehicleData[make.value].models[model.value];
+
+make.addEventListener("change",()=>{
+  reset(model,"Selecione o modelo");reset(year,"Selecione o modelo");reset(version,"Selecione o ano");
+  empty("Selecione marca, modelo, ano e versão.");
+  updateBrandNotice();
+  if(!make.value)return;
+  sortAZ(Object.keys(vehicleData[make.value].models)).forEach(x=>model.add(new Option(x,x)));
+  model.disabled=false;
+});
+
+model.addEventListener("change",()=>{
+  reset(year,"Selecione o ano");reset(version,"Selecione o ano");
+  empty("Selecione ano e versão.");
+  updateBrandNotice();
+  if(!model.value)return;
+  const list=versionsOf();
+  const from=Math.min(...list.map(v=>v[1])),to=Math.max(...list.map(v=>v[2]));
+  for(let y=to;y>=from;y--)year.add(new Option(y,y));
+  year.add(new Option(UNSURE,UNSURE));
+  year.disabled=false;
+});
+
+year.addEventListener("change",()=>{
+  reset(version,"Selecione a versão");empty("Selecione a versão.");
+  updateBrandNotice();
+  if(!year.value)return;
+  const y=Number(year.value);
+  const list=versionsOf().filter(v=>year.value===UNSURE||(y>=v[1]&&y<=v[2]));
+  sortAZ(list.map(v=>v[0])).forEach(n=>version.add(new Option(n,n)));
+  version.add(new Option(UNSURE,UNSURE));
+  version.disabled=false;
+});
+
+version.addEventListener("change",()=>{
+  if(!version.value){empty("Selecione a versão.");return;}
+  const y=year.value===UNSURE?null:Number(year.value);
+  const ver=version.value;
+  const rule=(MODEL_RULES[make.value]&&MODEL_RULES[make.value][model.value])||{};
+  const verEx=(rule.versionExclude&&ver!==UNSURE&&rule.versionExclude[ver])||[];
+  const excluded=new Set([...(rule.exclude||[]),...verEx]);
+  box.className="function-list";box.innerHTML="";
+  const items=vehicleData[make.value].items
+    .filter(([n,c,min,max])=>{
+      if(excluded.has(n))return false;
+      if(min&&y!==null&&y<min)return false;
+      if(max&&y!==null&&y>max)return false;
+      return true;
+    })
+    .sort((a,b)=>collator.compare(a[0],b[0]));
+  items.forEach(([name,cls])=>{
+    const l=document.createElement("label");l.className="function-option";
+    const row=document.createElement("div");row.className="function-main";
+    const c=document.createElement("input");c.type="checkbox";c.value=`${name} (${cls})`;
+    c.addEventListener("change",updateSelectedCount);
+    const s=document.createElement("span");s.className="function-label";
+    const b=document.createElement("span");
+    b.className="badge "+(cls===N?"no":"confirm");b.textContent=cls;
+    s.append(b,document.createTextNode(name));
+
+    const tipBtn=document.createElement("button");
+    tipBtn.type="button";tipBtn.className="tip-btn";tipBtn.textContent="?";
+    tipBtn.setAttribute("aria-label",`Explicação sobre ${name}`);
+    tipBtn.setAttribute("aria-expanded","false");
+
+    const tipBox=document.createElement("div");
+    tipBox.className="tip-box";
+    tipBox.textContent=DESC[name]||"Consulte detalhes de compatibilidade para este veículo.";
+
+    tipBtn.addEventListener("click",e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      const willOpen=!l.classList.contains("open");
+      box.querySelectorAll(".function-option.open").forEach(el=>{
+        el.classList.remove("open");
+        const btn=el.querySelector(".tip-btn");
+        if(btn)btn.setAttribute("aria-expanded","false");
+      });
+      if(willOpen){
+        l.classList.add("open");
+        tipBtn.setAttribute("aria-expanded","true");
+      }
+    });
+
+    row.append(c,s,tipBtn);
+    l.append(row,tipBox);
+    box.append(l);
+  });
+  updateSelectedCount();
+});
+
+document.getElementById("codingSend").addEventListener("click",()=>{
+  if(!make.value||!model.value||!year.value||!version.value){alert("Selecione marca, modelo, ano e versão.");return}
+  const city=document.getElementById("codingCity").value.trim()||"A informar";
+  const sel=[...box.querySelectorAll("input:checked")].map(i=>`- ${i.value}`);
+  const msg=["Olá! Vim pelo site da Coding Toledo.","Pedido: Personalização / Coding",
+   `Marca: ${make.value}`,`Modelo: ${model.value}`,`Ano: ${year.value}`,`Versão: ${version.value}`,
+   `Cidade: ${city}`,"Itens de interesse:",
+   sel.length?sel.join("\n"):"- Quero saber o que é possível no meu veículo.","",
+   "Gostaria de confirmar compatibilidade e orçamento.",
+   "Meu endereço fica no perímetro urbano de Toledo? (informar)"].join("\n");
+  window.open(link(msg),"_blank","noopener");
+});
+
+function bindForm(c){
+  document.getElementById(c.btn).addEventListener("click",()=>{
+    const g=id=>document.getElementById(id).value.trim()||"A informar";
+    const y=document.getElementById(c.y).value||"A informar";
+    const msg=["Olá! Vim pelo site da Coding Toledo.",`Área: ${c.area}`,`Veículo: ${g(c.v)}`,
+     `Ano: ${y}`,`Versão: ${g(c.ver)}`,`Cidade: ${g(c.c)}`,
+     `Serviço: ${document.getElementById(c.s).value}`,"",
+     "Gostaria de confirmar compatibilidade e orçamento.",
+     "Meu endereço fica no perímetro urbano de Toledo? (informar)"].join("\n");
+    window.open(link(msg),"_blank","noopener");
+  });
+}
+bindForm({btn:"dieselSend",v:"dieselVehicle",ver:"dieselVersion",y:"dieselYear",c:"dieselCity",s:"dieselService",area:"Linha Diesel & Oficina"});
+bindForm({btn:"evSend",v:"evVehicle",ver:"evVersion",y:"evYear",c:"evCity",s:"evService",area:"Híbridos & Elétricos"});
+bindForm({btn:"preSend",v:"preVehicle",ver:"preVersion",y:"preYear",c:"preCity",s:"preService",area:"Diagnóstico & Pré-compra"});
+</script>
+</body>
+</html>
